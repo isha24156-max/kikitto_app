@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  mail: MyString
+  name: MyString
+  password: 1
+  done: false
+
+two:
+  mail: MyString
+  name: MyString
+  password: 1
+  done: false
