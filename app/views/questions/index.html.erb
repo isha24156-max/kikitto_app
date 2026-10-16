@@ -8,9 +8,9 @@
   <% @questions.each do |question| %>
     <%= render question %>
     <p>
-      <%= link_to "Show this question", question %>
+      <%= link_to "この質問を見る", question %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New question", new_question_path %>
+<%= link_to "質問追加", new_question_path %>
