@@ -21,19 +21,20 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_params) # user_params から next_action を除外してモデル作成
 
     respond_to do |format|
       if @user.save
-        # 新規登録成功時にセッションへ user_id を保存（自動ログイン）
         session[:user_id] = @user.id
 
-        # 遷移先を @user から questions_path（質問一覧）に変更
-        format.html { redirect_to questions_path, notice: "ユーザー登録が完了しました。" }
+        # 送信された next_action の値で遷移先を判定
+        redirect_url = params[:user][:next_action] == "A" ? questions_path : login_path
+
+        format.html { redirect_to redirect_url, notice: "ユーザー登録が完了しました。" }
         format.json { render :show, status: :created, location: @user }
       else
-        format.html { render :new, status: :unprocessable_content }
-        format.json { render json: @user.errors, status: :unprocessable_content }
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -45,8 +46,8 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: "User was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @user }
       else
-        format.html { render :edit, status: :unprocessable_content }
-        format.json { render json: @user.errors, status: :unprocessable_content }
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -69,6 +70,7 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
+      # :next_action をここからは削除し、DBに保存する項目のみ指定します
       params.require(:user).permit(:mail, :name, :password, :password_confirmation, :done)
     end
 end
