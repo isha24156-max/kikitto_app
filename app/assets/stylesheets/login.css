@@ -1,5 +1,5 @@
 /* ログイン画面 (sessions#new) だけに適用 */
-body.sessions.new,
+body.sessions.new
 body.sessions.create {
     /* 全体の配置と背景 */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
