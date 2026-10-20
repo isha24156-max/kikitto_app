@@ -1,0 +1,16 @@
+<div class="mypage-container">
+    <div class="mypage-topbar">
+        <%= link_to root_path, class: "back-button" do%>
+            ↩
+        <% end %>
+
+        <div class="user-info">
+            <span>ID:<%= @user.id %></span>
+            <span class="app-logo">Kikitto</span>
+        </div>
+    </div>
+
+    <div class="saved-questions">
+        <h2>【保存した質問】</h2>
+    </div>
+</div>
