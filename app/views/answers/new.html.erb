@@ -1,11 +1,250 @@
-<% content_for :title, "New answer" %>
+<div class="answers-page">
 
-<h1>New answer</h1>
+  <!-- ヘッダー -->
+  <header class="kikitto-header">
+    <%= link_to "←", :back, class: "back-button" %>
+    <h1>Kikitto</h1>
+  </header>
 
-<%= render "form", answer: @answer %>
+  <!-- 質問内容 -->
+  <section class="question-area">
+    <div class="question-label">質問内容</div>
 
-<br>
+    <div class="question-content">
+      <% if @question.present? %>
+        <%= simple_format(@question.que_content) %>
+      <% end %>
+    </div>
 
-<div>
-  <%= link_to "Back to answers", answers_path %>
+    <div class="question-date">
+      <%= Date.current.strftime("%Y/%m/%d") %>
+    </div>
+  </section>
+
+  <!-- 回答一覧 -->
+  <section class="answer-list-area">
+
+    <table class="answer-table">
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>回答内容</th>
+        </tr>
+      </thead>
+
+      <tbody id="answer-table-body">
+
+        <% @answers.each do |answer| %>
+          <tr class="answer-row">
+            <td>
+              <%= answer.created_at.strftime("%m/%d") if answer.created_at %>
+            </td>
+
+            <td>
+              <%= simple_format(answer.ans_content) %>
+            </td>
+          </tr>
+        <% end %>
+
+        <% if @answers.empty? %>
+          <tr class="empty-row">
+            <td colspan="2" class="empty-message">
+              まだありません
+            </td>
+          </tr>
+        <% end %>
+
+      </tbody>
+    </table>
+
+  </section>
+
+  <!-- ページ切り替え -->
+  <div class="pagination-area">
+
+    <button type="button"
+            class="page-button"
+            id="prev-page"
+            aria-label="前のページ">
+      ◁
+    </button>
+
+    <div id="page-numbers"></div>
+
+    <button type="button"
+            class="page-button"
+            id="next-page"
+            aria-label="次のページ">
+      ▷
+    </button>
+
+  </div>
+
+  <!-- 回答フォーム -->
+  <div id="answer-form-area" hidden>
+
+    <%= form_with model: @answer,
+                  url: answers_path,
+                  local: true do |f| %>
+
+      <%= f.hidden_field :question_id,
+          value: @question&.id || params[:question_id] %>
+
+      <div class="answer-input-area">
+
+        <%= f.label :ans_content,
+                    "回答内容",
+                    class: "answer-label" %>
+
+        <%= f.text_area :ans_content,
+            required: true,
+            class: "answer-textarea",
+            placeholder: "回答を入力してください" %>
+
+      </div>
+
+      <div class="answer-buttons">
+
+        <button type="button"
+                id="close-answer"
+                class="close-answer-button">
+          閉じる
+        </button>
+
+        <%= f.submit "回答投稿",
+            class: "submit-answer-button" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+  <!-- ＋ボタン -->
+  <button type="button"
+          id="open-answer"
+          aria-label="回答フォームを開く">
+    +
+  </button>
+
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // =====================================
+  // 回答フォームの開閉
+  // =====================================
+
+  const openButton = document.getElementById("open-answer");
+  const closeButton = document.getElementById("close-answer");
+  const formArea = document.getElementById("answer-form-area");
+
+  if (openButton && formArea) {
+
+    openButton.addEventListener("click", function () {
+      formArea.hidden = false;
+      openButton.hidden = true;
+    });
+
+    if (closeButton) {
+      closeButton.addEventListener("click", function () {
+        formArea.hidden = true;
+        openButton.hidden = false;
+      });
+    }
+
+  }
+
+  // =====================================
+  // ページ切り替え
+  // =====================================
+
+  const answerRows = Array.from(
+    document.querySelectorAll("#answer-table-body .answer-row")
+  );
+
+  const pageNumbersArea = document.getElementById("page-numbers");
+  const prevButton = document.getElementById("prev-page");
+  const nextButton = document.getElementById("next-page");
+
+  if (!pageNumbersArea || !prevButton || !nextButton) return;
+
+  // 1ページに表示する回答数
+  const rowsPerPage = 3;
+
+  // 回答が0件でも1ページは表示する
+  const totalPages = Math.max(
+    1,
+    Math.ceil(answerRows.length / rowsPerPage)
+  );
+
+  let currentPage = 1;
+
+  // ページ番号を作成
+  for (let page = 1; page <= totalPages; page++) {
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "page-number";
+    button.textContent = page;
+    button.dataset.page = page;
+
+    button.addEventListener("click", function () {
+      changePage(Number(this.dataset.page));
+    });
+
+    pageNumbersArea.appendChild(button);
+
+  }
+
+  // ページを切り替える
+  function changePage(page) {
+
+    if (page < 1 || page > totalPages) return;
+
+    currentPage = page;
+
+    // 表示する回答を切り替える
+    answerRows.forEach(function (row, index) {
+
+      const rowPage = Math.floor(index / rowsPerPage) + 1;
+
+      row.style.display = rowPage === currentPage ? "" : "none";
+
+    });
+
+    // ページ番号の選択状態を更新
+    const pageButtons = pageNumbersArea.querySelectorAll(".page-number");
+
+    pageButtons.forEach(function (button) {
+
+      const isActive = Number(button.dataset.page) === currentPage;
+
+      button.classList.toggle("active", isActive);
+      button.setAttribute("aria-current", isActive ? "page" : "false");
+
+    });
+
+    // 前後のボタンを更新
+    prevButton.disabled = currentPage === 1;
+    nextButton.disabled = currentPage === totalPages;
+
+  }
+
+  // 前のページ
+  prevButton.addEventListener("click", function () {
+    changePage(currentPage - 1);
+  });
+
+  // 次のページ
+  nextButton.addEventListener("click", function () {
+    changePage(currentPage + 1);
+  });
+
+  // 最初は1ページ目を表示
+  changePage(1);
+
+});
+</script>
