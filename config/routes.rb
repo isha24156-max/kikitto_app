@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "mypage/index"
   # ログイン・ログアウト用ルーティング
   get    '/login',  to: 'sessions#new'
   post   '/login',  to: 'sessions#create'

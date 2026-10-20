@@ -3,8 +3,8 @@
 <%= render @question %>
 
 <div>
-  <%= link_to "Edit this question", edit_question_path(@question) %> |
-  <%= link_to "Back to questions", questions_path %>
+  <%= link_to "質問変更", edit_question_path(@question) %> |
+  <%= link_to "戻る", questions_path %>
 
-  <%= button_to "Destroy this question", @question, method: :delete %>
+  <%= button_to "質問を消す", @question, method: :delete %>
 </div>
