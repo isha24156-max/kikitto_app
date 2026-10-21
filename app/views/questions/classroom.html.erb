@@ -1,0 +1,59 @@
+
+<% content_for :title, "専用質問一覧" %>
+
+<div class="questions-container">
+  <p class="questions-notice"><%= notice %></p>
+
+  <h1>
+    <%= @grade %>年<%= @classroom %>組・教科<%= @subject_number %>
+  </h1>
+
+  <h2>質問一覧</h2>
+
+  <p>選択したクラスの質問一覧ページです。</p>
+
+  <div class="classroom-back">
+    <%= link_to "質問一覧に戻る", questions_path %>
+  </div>
+
+  <table class="questions-table">
+    <thead>
+      <tr>
+        <th>日付</th>
+        <th>内容</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @questions.each do |question| %>
+        <tr>
+          <td><%= question.deadline %></td>
+          <td>
+            <%= question.q_content %>
+
+            <div class="question-link">
+              <%= link_to "この質問を見る", new_answer_path %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+
+      <% if @questions.empty? %>
+        <tr>
+          <td colspan="2" class="empty-message">
+            質問はまだありません。
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="questions-pagination">
+    <%= paginate @questions %>
+  </div>
+
+  <div class="questions-add">
+    <%= link_to "+", new_question_path,
+        aria: { label: "質問を追加" } %>
+  </div>
+</div>

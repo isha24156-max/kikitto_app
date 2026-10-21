@@ -1,70 +1,150 @@
-class QuestionsController < ApplicationController
-  before_action :set_question, only: %i[ show edit update destroy ]
 
-  # GET /questions or /questions.json
+class QuestionsController < ApplicationController
+  before_action :set_question, only: %i[show edit update destroy]
+
+  # 質問一覧・検索
   def index
-    @questions = Question.order(created_at: :desc).page(params[:page]).per(15)
+    @questions = Question.all
+
+    # 質問内容で検索
+    if params[:q].present?
+      keyword = ActiveRecord::Base.sanitize_sql_like(params[:q].strip)
+      @questions = @questions.where(
+        "q_content LIKE ?",
+        "%#{keyword}%"
+      )
+    end
+
+    @questions = @questions.order(created_at: :desc)
+                           .page(params[:page])
+                           .per(15)
   end
-  
-  # GET /questions/1 or /questions/1.json
+
+  # 質問の詳細
   def show
   end
 
-  # GET /questions/new
+  # 質問の新規作成画面
   def new
     @question = Question.new
   end
 
-  # GET /questions/1/edit
+  # 質問の編集画面
   def edit
   end
 
-  # POST /questions or /questions.json
+  # 質問の新規作成
   def create
     @question = Question.new(question_params)
 
     respond_to do |format|
       if @question.save
-        format.html { redirect_to @question, notice: "Question was successfully created." }
-        format.json { render :show, status: :created, location: @question }
+        format.html do
+          redirect_to @question,
+                      notice: "質問を作成しました。"
+        end
+
+        format.json do
+          render :show,
+                 status: :created,
+                 location: @question
+        end
       else
-        format.html { render :new, status: :unprocessable_content }
-        format.json { render json: @question.errors, status: :unprocessable_content }
+        format.html do
+          render :new,
+                 status: :unprocessable_entity
+        end
+
+        format.json do
+          render json: @question.errors,
+                 status: :unprocessable_entity
+        end
       end
     end
   end
 
-  # PATCH/PUT /questions/1 or /questions/1.json
+  # 質問の更新
   def update
     respond_to do |format|
       if @question.update(question_params)
-        format.html { redirect_to @question, notice: "Question was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @question }
+        format.html do
+          redirect_to @question,
+                      notice: "質問を更新しました。",
+                      status: :see_other
+        end
+
+        format.json do
+          render :show,
+                 status: :ok,
+                 location: @question
+        end
       else
-        format.html { render :edit, status: :unprocessable_content }
-        format.json { render json: @question.errors, status: :unprocessable_content }
+        format.html do
+          render :edit,
+                 status: :unprocessable_entity
+        end
+
+        format.json do
+          render json: @question.errors,
+                 status: :unprocessable_entity
+        end
       end
     end
   end
 
-  # DELETE /questions/1 or /questions/1.json
+  # 質問の削除
   def destroy
     @question.destroy!
 
     respond_to do |format|
-      format.html { redirect_to questions_path, notice: "Question was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
+      format.html do
+        redirect_to questions_path,
+                    notice: "質問を削除しました。",
+                    status: :see_other
+      end
+
+      format.json do
+        head :no_content
+      end
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_question
-      @question = Question.find(params[:id])
+  # 学年・クラス・教科ごとの専用質問一覧ページ
+  def classroom
+    @grade = params[:grade]
+    @classroom = params[:classroom]
+    @subject_number = params[:subject]
+
+    # 選択された値が正しいか確認
+    unless (1..3).cover?(@grade.to_i) &&
+           (1..4).cover?(@classroom.to_i) &&
+           (1..6).cover?(@subject_number.to_i)
+
+      redirect_to questions_path,
+                  alert: "学年・クラス・教科を選択してください。"
+      return
     end
 
-    # Only allow a list of trusted parameters through.
-    def question_params
-      params.require(:question).permit(:deadline, :q_content, :user_id, :subject_id)
-    end
+    # 現在は質問を新しい順に表示
+    @questions = Question.order(created_at: :desc)
+                        .page(params[:page])
+                        .per(15)
+  end
+
+  private
+
+  # URLのIDから質問を取得
+  def set_question
+    @question = Question.find(params[:id])
+  end
+
+  # 保存を許可する項目
+  def question_params
+    params.require(:question).permit(
+      :deadline,
+      :q_content,
+      :user_id,
+      :subject_id
+    )
+  end
 end

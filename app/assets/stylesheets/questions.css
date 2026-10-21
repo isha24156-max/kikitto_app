@@ -347,3 +347,73 @@ body {
         font-size: 16px;
     }
 }
+
+/* 確認画面の背景 */
+.class-confirm-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+  }
+  
+  /* 非表示 */
+  .class-confirm-modal[hidden] {
+    display: none !important;
+  }
+  
+  /* 画面中央のポップアップ */
+  .class-confirm-box {
+    width: 100%;
+    max-width: 420px;
+    padding: 30px 24px;
+  
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  
+    text-align: center;
+    box-sizing: border-box;
+  }
+  
+  .class-confirm-box h2 {
+    margin-top: 0;
+    font-size: 24px;
+  }
+  
+  .class-confirm-box p {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+  
+  .class-confirm-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 24px;
+  }
+  
+  .class-confirm-buttons button {
+    min-width: 100px;
+    padding: 11px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  
+  #class-cancel {
+    background: #eee;
+    color: #333;
+  }
+  
+  #class-ok {
+    background: #4285f4;
+    color: white;
+  }
