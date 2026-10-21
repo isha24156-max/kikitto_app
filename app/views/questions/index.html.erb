@@ -166,13 +166,16 @@
     document.getElementById("class-confirm-modal").hidden = true;
   });
 
-  // OK
-  document.getElementById("class-ok").addEventListener("click", () => {
-    const params = new URLSearchParams({
-      grade: selectedGrade,
-      classroom: selectedClassroom,
-      subject: selectedSubject
-    });
+  // OKボタン
+document.getElementById("class-ok").addEventListener("click", () => {
+  const params = new URLSearchParams({
+    grade: selectedGrade,
+    classroom: selectedClassroom,
+    subject: selectedSubject
+  });
+
+  window.location.href = `/questions/classroom?${params.toString()}`;
+});
 
     window.location.href =
       `/questions/classroom?${params.toString()}`;
