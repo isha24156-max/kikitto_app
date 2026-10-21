@@ -53,7 +53,10 @@ body {
 ========================= */
 .questions-header {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 3fr;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 600px;
+    min-height: 100px;
     background-color: #4285ee;
     color: white;
     border: 1px solid #222;
@@ -77,16 +80,22 @@ body {
     border-right: 1px solid #777;
 }
 
+.dropdown:last-child {
+    border-right: none;
+}
+
 .dropdown-label {
     display: block;
     width: 100%;
-    height: 100%;
+    min-height: 100px;
     padding: 8px 12px;
     border: none;
     background: transparent;
     color: white;
     font: inherit;
-    text-align: left;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: normal;
     cursor: pointer;
 }
 
@@ -122,6 +131,7 @@ body {
     color: #222;
     font-size: 18px;
     text-align: left;
+    white-space: nowrap;
     cursor: pointer;
 }
 
@@ -175,7 +185,7 @@ body {
 .questions-table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
     margin-top: 20px;
     font-size: 18px;
 }
@@ -191,17 +201,19 @@ body {
     border: 1px solid #bbb;
     padding: 10px;
     height: 35px;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 .questions-table th:nth-child(1),
 .questions-table td:nth-child(1) {
-    width: 10%;
+    width: 15%;
+    white-space: nowrap;
 }
 
 .questions-table th:nth-child(2),
 .questions-table td:nth-child(2) {
-    width: 60%;
+    width: 55%;
 }
 
 .questions-table th:nth-child(3),
@@ -291,6 +303,75 @@ body {
 }
 
 /* =========================
+   確認画面の背景
+========================= */
+.class-confirm-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+}
+
+.class-confirm-modal[hidden] {
+    display: none !important;
+}
+
+/* =========================
+   確認画面のポップアップ
+========================= */
+.class-confirm-box {
+    width: 100%;
+    max-width: 420px;
+    padding: 30px 24px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.class-confirm-box h2 {
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.class-confirm-box p {
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.class-confirm-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.class-confirm-buttons button {
+    min-width: 100px;
+    padding: 11px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+#class-cancel {
+    background: #eee;
+    color: #333;
+}
+
+#class-ok {
+    background: #4285f4;
+    color: white;
+}
+
+/* =========================
    スマートフォン
 ========================= */
 @media (max-width: 600px) {
@@ -303,7 +384,8 @@ body {
     }
 
     .questions-header {
-        grid-template-columns: 1fr 1fr 1fr 1.5fr;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        max-width: 100%;
         font-size: 14px;
     }
 
@@ -337,6 +419,27 @@ body {
         padding: 6px;
     }
 
+    .questions-table th:nth-child(1),
+    .questions-table td:nth-child(1) {
+        width: 20%;
+        white-space: normal;
+    }
+
+    .questions-table th:nth-child(2),
+    .questions-table td:nth-child(2) {
+        width: 50%;
+    }
+
+    .questions-table th:nth-child(3),
+    .questions-table td:nth-child(3) {
+        width: 10%;
+    }
+
+    .questions-table th:nth-child(4),
+    .questions-table td:nth-child(4) {
+        width: 20%;
+    }
+
     .questions-pagination {
         gap: 5px;
     }
@@ -347,73 +450,3 @@ body {
         font-size: 16px;
     }
 }
-
-/* 確認画面の背景 */
-.class-confirm-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-  
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    box-sizing: border-box;
-  }
-  
-  /* 非表示 */
-  .class-confirm-modal[hidden] {
-    display: none !important;
-  }
-  
-  /* 画面中央のポップアップ */
-  .class-confirm-box {
-    width: 100%;
-    max-width: 420px;
-    padding: 30px 24px;
-  
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-  
-    text-align: center;
-    box-sizing: border-box;
-  }
-  
-  .class-confirm-box h2 {
-    margin-top: 0;
-    font-size: 24px;
-  }
-  
-  .class-confirm-box p {
-    font-size: 17px;
-    line-height: 1.8;
-  }
-  
-  .class-confirm-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    margin-top: 24px;
-  }
-  
-  .class-confirm-buttons button {
-    min-width: 100px;
-    padding: 11px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 15px;
-  }
-  
-  #class-cancel {
-    background: #eee;
-    color: #333;
-  }
-  
-  #class-ok {
-    background: #4285f4;
-    color: white;
-  }
