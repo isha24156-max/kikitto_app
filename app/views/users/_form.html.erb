@@ -1,43 +1,55 @@
 <%= form_with(model: user) do |form| %>
   <% if user.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
+    <div class="alert-message">
+      <h2><%= user.errors.count %>件のエラーが発生しました:</h2>
       <ul>
         <% user.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+          <% 
+            attribute_names = { mail: "メールアドレス", name: "名前", password: "パスワード", password_confirmation: "パスワード（確認用）" }
+            attr_name = attribute_names[error.attribute] || error.attribute.to_s.humanize
+          %>
+          <li><%= attr_name %><%= error.message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :mail, style: "display: block" %>
-    <%= form.text_field :mail %>
+  <div class="form-group">
+    <%= form.label :mail, "メールアドレス" %>
+    <%= form.text_field :mail, placeholder: "example@domain.com" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :name, "名前" %>
+    <%= form.text_field :name, placeholder: "山田 太郎" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :password, "パスワード" %>
+    <%= form.password_field :password %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :password_confirmation, "パスワード（確認用）" %>
+    <%= form.password_field :password_confirmation %>
+  </div>
+
+  <!-- ラジオボタンエリア -->
+  <div class="form-group">
+    <label class="form-label-title">次のアクションを選択</label>
+    <div class="radio-group">
+      <label class="radio-label">
+        <%= form.radio_button :next_action, "A", checked: true %>
+        <span>生徒 (質問ページへ)</span>
+      </label>
+      <label class="radio-label">
+        <%= form.radio_button :next_action, "B" %>
+        <span>教師 (ログイン画面へ)</span>
+      </label>
+    </div>
   </div>
 
   <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
-
-  <!-- 既存のフォーム内のパスワード部分を以下に変更 -->
-<div>
-  <%= form.label :password, "パスワード" %>
-  <%= form.password_field :password %>
-</div>
-
-<div>
-  <%= form.label :password_confirmation, "パスワード（確認用）" %>
-  <%= form.password_field :password_confirmation %>
-</div>
-
-  <div>
-    <%= form.label :done, style: "display: block" %>
-    <%= form.check_box :done %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit "登録する", class: "btn-primary" %>
   </div>
 <% end %>
