@@ -5,12 +5,146 @@
         <% end %>
 
         <div class="user-info">
-            <span>ID:<%= @user.id %></span>
+            <span>ID:<%= @user.mail %></span>
             <span class="app-logo">Kikitto</span>
         </div>
     </div>
 
-    <div class="saved-questions">
-        <h2>【保存した質問】</h2>
+    <div class="questions-container">
+
+        <div class="saved-questions">
+            <h2>【保存した質問】</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>日付</th>
+                        <th>内容</th>
+                        <th>ブックマーク</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% 5.times do %>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button type="button" aria-label="ブックマーク">☆</button>
+                            </td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+
+            
+            <div class="pagination">
+                <% if @saved_page > 1 %>
+                    <%= link_to "◁", mypage_index_path(
+                    saved_page: @saved_page - 1,
+                    my_page: @my_page
+                    ) %>
+                <% else %>
+                    <span>◁</span>
+                <% end %>
+
+                <% (1..@saved_total_pages).each do |page| %>
+                    <%= link_to page, mypage_index_path(
+                    saved_page: page,
+                    my_page: @my_page
+                    ), class: (page == @saved_page ? "current-page" : "") %>
+                <% end %>
+
+                <% if @saved_page < @saved_total_pages %>
+                    <%= link_to "▷", mypage_index_path(
+                    saved_page: @saved_page + 1,
+                    my_page: @my_page
+                    ) %>
+                <% else %>
+                    <span>▷</span>
+                <% end %>
+            </div>
+
+        </div>
+
+        
+        <div class="my-questions">
+            <h2>【自分のした質問】</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                    <th>日付</th>
+                    <th>内容</th>
+                    <th>消去</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% @my_questions.each do |question| %>
+                        <tr>
+                        <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
+                        <td><%= question.q_content %></td>
+                        <td>
+                            <button
+                                type="button"
+                                class="delete-button"
+                                data-question-id="<%= question.id %>"
+                                data-question-content="<%= question.q_content %>">
+                                消去
+                            </button>
+                        </td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+
+            
+            <div class="pagination">
+                <% if @my_page > 1 %>
+                    <%= link_to "◁", mypage_index_path(
+                    saved_page: @saved_page,
+                    my_page: @my_page - 1
+                    ) %>
+                <% else %>
+                    <span>◁</span>
+                <% end %>
+
+                <% (1..@my_total_pages).each do |page| %>
+                    <%= link_to page, mypage_index_path(
+                    saved_page: @saved_page,
+                    my_page: page
+                    ), class: (page == @my_page ? "current-page" : "") %>
+                <% end %>
+
+                <% if @my_page < @my_total_pages %>
+                    <%= link_to "▷", mypage_index_path(
+                    saved_page: @saved_page,
+                    my_page: @my_page + 1
+                    ) %>
+                <% else %>
+                    <span>▷</span>
+                <% end %>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="delete-modal" class="delete-modal" hidden>
+    <div class="delete-modal-content">
+        <p>本当に<br>この質問を削除しますか</p>
+
+        <div class="delete-modal-buttons">
+        <button type="button" id="cancel-delete">キャンセル</button>
+
+        <%= form_with url: mypage_question_path(id: 0),
+                        method: :delete,
+                        id: "delete-form" do %>
+            <button type="submit" class="confirm-delete">
+            削除
+            </button>
+        <% end %>
+        </div>
     </div>
 </div>
