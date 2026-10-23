@@ -2,19 +2,16 @@
 /* =========================
    全体
 ========================= */
-* {
+body.questions.index .questions-container,
+body.questions.index .questions-container * {
     box-sizing: border-box;
 }
 
-html,
-body {
+body.questions.index {
     width: 100%;
-    min-height: 100%;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-}
-
-body {
     font-family: "Meiryo", sans-serif;
     font-size: 20px;
     color: #222;
@@ -53,10 +50,10 @@ body {
 ========================= */
 .questions-header {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
-    max-width: 600px;
-    min-height: 100px;
+    max-width: 100%;
+    min-height: 55px;
     background-color: #4285ee;
     color: white;
     border: 1px solid #222;
@@ -87,15 +84,15 @@ body {
 .dropdown-label {
     display: block;
     width: 100%;
-    min-height: 100px;
+    min-height: 55px;
     padding: 8px 12px;
     border: none;
     background: transparent;
     color: white;
     font: inherit;
     text-align: center;
-    white-space: normal;
-    overflow-wrap: normal;
+    white-space: nowrap;
+    overflow: hidden;
     cursor: pointer;
 }
 
@@ -449,4 +446,78 @@ body {
         padding: 6px 8px;
         font-size: 16px;
     }
+
+}
+
+
+/* 質問一覧のレイアウトを優先して適用 */
+body.questions.index .questions-container {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 30px;
+}
+
+body.questions.index .questions-header {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    max-width: none;
+}
+
+body.questions.index .questions-search {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+body.questions.index .questions-search input {
+    width: 55%;
+    max-width: 600px;
+}
+
+body.questions.index .questions-table {
+    display: table;
+    width: 100%;
+    max-width: none;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+body.questions.index .questions-table th:nth-child(1),
+body.questions.index .questions-table td:nth-child(1) {
+    width: 15%;
+}
+
+body.questions.index .questions-table th:nth-child(2),
+body.questions.index .questions-table td:nth-child(2) {
+    width: 55%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+body.questions.index .questions-table th:nth-child(3),
+body.questions.index .questions-table td:nth-child(3) {
+    width: 10%;
+}
+
+body.questions.index .questions-table th:nth-child(4),
+body.questions.index .questions-table td:nth-child(4) {
+    width: 20%;
+}
+
+body.questions.index .questions-pagination {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+body.questions.index .questions-add {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
 }
