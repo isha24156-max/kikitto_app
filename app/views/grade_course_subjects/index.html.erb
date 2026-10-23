@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Grade course subjects" %>
+
+<h1>Grade course subjects</h1>
+
+<div id="grade_course_subjects">
+  <% @grade_course_subjects.each do |grade_course_subject| %>
+    <%= render grade_course_subject %>
+    <p>
+      <%= link_to "Show this grade course subject", grade_course_subject %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New grade course subject", new_grade_course_subject_path %>

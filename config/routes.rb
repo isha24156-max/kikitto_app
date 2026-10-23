@@ -1,5 +1,8 @@
 
 Rails.application.routes.draw do
+  resources :grade_course_subjects
+  resources :courses
+  resources :grades
   get "mypage/index"
 
   # ログイン・ログアウト用ルーティング

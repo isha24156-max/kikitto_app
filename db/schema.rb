@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_10_13_024113) do
+ActiveRecord::Schema[7.2].define(version: 2026_10_23_045850) do
   create_table "answers", force: :cascade do |t|
     t.text "ans_content"
     t.integer "user_id"
@@ -22,6 +22,26 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_13_024113) do
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
     t.integer "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.integer "c_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "grade_course_subjects", force: :cascade do |t|
+    t.integer "subject_id"
+    t.integer "course_id"
+    t.integer "grade_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "grades", force: :cascade do |t|
+    t.integer "g_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
