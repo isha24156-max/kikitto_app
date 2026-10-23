@@ -2,7 +2,7 @@
 <% content_for :title, "質問一覧" %>
 
 <div class="questions-container">
- 
+  
 
   <p class="questions-notice"><%= notice %></p>
 
@@ -100,9 +100,9 @@
 
     <% (1..total_pages).each do |page| %>
       <a href="#"
-         class="<%= 'active' if page == 1 %>"
-         aria-current="<%= 'page' if page == 1 %>"
-         onclick="event.preventDefault();">
+          class="<%= 'active' if page == 1 %>"
+          aria-current="<%= 'page' if page == 1 %>"
+          onclick="event.preventDefault();">
         <%= page %>
       </a>
     <% end %>

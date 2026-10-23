@@ -12,7 +12,7 @@
 
     <div class="question-content">
       <% if @question.present? %>
-        <%= simple_format(@question.que_content) %>
+        <%= simple_format(@question.q_content) %>
       <% end %>
     </div>
 
@@ -130,7 +130,7 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("turbo:load", function () {
 
   // =====================================
   // 回答フォームの開閉

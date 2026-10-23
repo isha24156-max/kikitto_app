@@ -15,8 +15,8 @@ class AnswersController < ApplicationController
     if params[:question_id].present?
       @question = Question.find(params[:question_id])
   
-      @answers = Answer.where(question_id: @question.id)
-                       .order(created_at: :desc)
+      @answers = Answer.where(question_id: params[:question_id])
+                        .order(created_at: :desc)
     else
       @question = nil
       @answers = Answer.none
