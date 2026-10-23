@@ -25,14 +25,6 @@ Rails.application.routes.draw do
   resources :subjects
   resources :bookmarks
 
-<<<<<<< HEAD
   # トップページ
   root "questions#index"
-=======
-  root 'questions#index' # トップページを任意で指定
-
-  delete "mypage/questions/:id",
-        to: "mypage#destroy_question",
-        as: :mypage_question
->>>>>>> b4116ce077d8c9620400b924ee65bd465d8b97fe
 end
