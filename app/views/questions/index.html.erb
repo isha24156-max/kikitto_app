@@ -128,53 +128,49 @@
 </div>
 
 <script>
-  let selectedGrade = null;
-  let selectedClassroom = null;
-  let selectedSubject = null;
+let selectedGrade = null;
+let selectedClassroom = null;
+let selectedSubject = null;
 
-  function selectOption(button, category, number) {
-    const dropdown = button.closest(".dropdown");
-    const label = dropdown.querySelector(".dropdown-label");
+function selectOption(button, category, number) {
+  const dropdown = button.closest(".dropdown");
+  const label = dropdown.querySelector(".dropdown-label");
 
-    label.textContent = button.textContent.trim() + " ▼";
+  label.textContent = button.textContent.trim() + " ▼";
 
-    dropdown.querySelectorAll(".dropdown-menu button").forEach(item => {
-      item.classList.remove("selected");
-    });
+  dropdown.querySelectorAll(".dropdown-menu button").forEach((item) => {
+    item.classList.remove("selected");
+  });
 
-    button.classList.add("selected");
+  button.classList.add("selected");
 
-    if (category === "grade") {
-      selectedGrade = number;
-    } else if (category === "classroom") {
-      selectedClassroom = number;
-    } else if (category === "subject") {
-      selectedSubject = number;
-    }
-
-    // 3項目が選択されたら確認画面を表示
-    if (selectedGrade && selectedClassroom && selectedSubject) {
-      document.getElementById("class-confirm-message").textContent =
-        `あなたは${selectedGrade}年${selectedClassroom}組の教科${selectedSubject}のクラスに入りますか？`;
-
-      document.getElementById("class-confirm-modal").hidden = false;
-    }
+  if (category === "grade") {
+    selectedGrade = number;
+  } else if (category === "classroom") {
+    selectedClassroom = number;
+  } else if (category === "subject") {
+    selectedSubject = number;
   }
 
-  // キャンセル
-  document.getElementById("class-cancel").addEventListener("click", () => {
-    document.getElementById("class-confirm-modal").hidden = true;
+  if (selectedGrade && selectedClassroom && selectedSubject) {
+    document.getElementById("class-confirm-message").textContent =
+      `あなたは${selectedGrade}年${selectedClassroom}組の教科${selectedSubject}のクラスに入りますか？`;
+
+    document.getElementById("class-confirm-modal").hidden = false;
+  }
+}
+
+document.getElementById("class-cancel").addEventListener("click", () => {
+  document.getElementById("class-confirm-modal").hidden = true;
+});
+
+document.getElementById("class-ok").addEventListener("click", () => {
+  const params = new URLSearchParams({
+    grade: selectedGrade,
+    classroom: selectedClassroom,
+    subject: selectedSubject
   });
 
-  // OK
-  document.getElementById("class-ok").addEventListener("click", () => {
-    const params = new URLSearchParams({
-      grade: selectedGrade,
-      classroom: selectedClassroom,
-      subject: selectedSubject
-    });
-
-    window.location.href =
-      `/questions/classroom?${params.toString()}`;
-  });
+  window.location.href = `/questions/classroom?${params.toString()}`;
+});
 </script>
