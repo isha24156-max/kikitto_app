@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Rails.application.routes.draw do
 # resources :grade_course_subjects
 # resources :courses
@@ -20,6 +21,8 @@
 # root 'questions#index' # トップページを任意で指定
 # end
 
+=======
+>>>>>>> 06896d27234dc7a12e04fa36647173d114b1d321
 
 Rails.application.routes.draw do
   resources :grade_course_subjects
@@ -27,11 +30,20 @@ Rails.application.routes.draw do
   resources :grades
 
   get "mypage/index"
+<<<<<<< HEAD
 
   # ログイン・ログアウト
   get    "/login",  to: "sessions#new"
   post   "/login",  to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
+=======
+  get "teacher_mypage/index"
+
+  # ログイン・ログアウト用ルーティング
+  get    '/login',  to: 'sessions#new'
+  post   '/login',  to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+>>>>>>> 06896d27234dc7a12e04fa36647173d114b1d321
 
   # 新規登録・ユーザー管理
   resources :users

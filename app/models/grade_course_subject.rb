@@ -1,7 +1,7 @@
 class GradeCourseSubject < ApplicationRecord
-  belongs_to :subject
   belongs_to :grade
   belongs_to :course
+  belongs_to :subject
 
-  has_many :questions
+  validates :subject_id, uniqueness: { scope: [ :grade_id, :course_id ] }
 end

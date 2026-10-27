@@ -1,8 +1,7 @@
 <%= form_with(model: grade_course_subject) do |form| %>
   <% if grade_course_subject.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(grade_course_subject.errors.count, "error") %> prohibited this grade_course_subject from being saved:</h2>
-
+      <h2><%= pluralize(grade_course_subject.errors.count, "error") %> prohibited this record from being saved:</h2>
       <ul>
         <% grade_course_subject.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -12,21 +11,21 @@
   <% end %>
 
   <div>
-    <%= form.label :subject_id, style: "display: block" %>
-    <%= form.number_field :subject_id %>
+    <%= form.label :grade_id, "学年", style: "display: block" %>
+    <%= form.collection_select :grade_id, Grade.order(:g_number), :id, :g_number, prompt: "学年を選択してください" %>
   </div>
 
   <div>
-    <%= form.label :course_id, style: "display: block" %>
-    <%= form.number_field :course_id %>
+    <%= form.label :course_id, "クラス", style: "display: block" %>
+    <%= form.collection_select :course_id, Course.order(:c_number), :id, :c_number, prompt: "クラスを選択してください" %>
   </div>
 
   <div>
-    <%= form.label :grade_id, style: "display: block" %>
-    <%= form.number_field :grade_id %>
+    <%= form.label :subject_id, "教科", style: "display: block" %>
+    <%= form.collection_select :subject_id, Subject.order(:subiect_name), :id, :subiect_name, prompt: "教科を選択してください" %>
   </div>
 
-  <div>
+  <div style="margin-top: 10px;">
     <%= form.submit %>
   </div>
 <% end %>
