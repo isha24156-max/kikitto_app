@@ -96,7 +96,7 @@
           <td>
             <%= question.q_content %>
             <div class="question-link">
-              <%= link_to "この質問を見る", new_answer_path %>
+              <%= link_to "この質問を見る", new_answer_path(question_id:question.id) %>
             </div>
           </td>
           <td></td>

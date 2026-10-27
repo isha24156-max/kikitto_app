@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_10_23_045850) do
+ActiveRecord::Schema[7.2].define(version: 2026_10_27_021359) do
   create_table "answers", force: :cascade do |t|
     t.text "ans_content"
     t.integer "user_id"
@@ -50,9 +50,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_23_045850) do
     t.date "deadline"
     t.text "q_content"
     t.integer "user_id"
-    t.integer "subject_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "grade_course_subject_id"
+    t.index ["grade_course_subject_id"], name: "index_questions_on_grade_course_subject_id"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -69,4 +70,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_23_045850) do
     t.datetime "updated_at", null: false
     t.string "password_digest"
   end
+
+  add_foreign_key "questions", "grade_course_subjects"
 end
