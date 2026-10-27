@@ -521,3 +521,29 @@ body.questions.index .questions-add {
     width: 100%;
     justify-content: flex-end;
 }
+
+
+/* ブックマークボタン */
+body.questions.index .bookmark-cell {
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  body.questions.index .bookmark-button {
+    display: inline-block;
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+    color: #333;
+    font-size: 25px;
+    cursor: pointer;
+  }
+  
+  body.questions.index .bookmark-button:hover {
+    color: #4285ee;
+  }
+  
+  body.questions.index .bookmark-button.bookmarked {
+    color: #f0ad00;
+  }
+  
