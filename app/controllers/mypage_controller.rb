@@ -21,9 +21,13 @@ class MypageController < ApplicationController
     saved_page = [params[:saved_page].to_i, 1].max
     my_page = [params[:my_page].to_i, 1].max
 
-    # ページ数を計算（5件ずつ）
-    @saved_total_pages = [(saved_questions.length / 5.0).ceil, 1].max
-    @my_total_pages = [(my_questions.count / 5.0).ceil, 1].max
+    
+    # 1ページに表示する件数
+    per_page = 10
+
+    # ページ数を計算（10件ずつ）
+    @saved_total_pages = [(saved_questions.length / per_page.to_f).ceil, 1].max
+    @my_total_pages = [(my_questions.count / per_page.to_f).ceil, 1].max
 
     # ページ数を超えないように調整
     @saved_page = [saved_page, @saved_total_pages].min
@@ -31,11 +35,12 @@ class MypageController < ApplicationController
 
     # 表示する質問を取得
     @saved_questions = saved_questions
-      .slice((@saved_page - 1) * 5, 5) || []
+      .slice((@saved_page - 1) * per_page, per_page) || []
 
     @my_questions = my_questions
-      .offset((@my_page - 1) * 5)
-      .limit(5)
+      .offset((@my_page - 1) * per_page)
+      .limit(per_page)
+
   end
 
   def destroy_question

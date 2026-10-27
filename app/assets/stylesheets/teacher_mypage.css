@@ -1,0 +1,288 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.teacher-mypage-container {
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* マイページ全体 */
+.teacher-mypage-container {
+    width: 100%;
+    min-height: 100vh;
+    color: #000;
+    background: #fff;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+/* 上部の青いバー */
+.teacher-topbar {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    background: #4285f4;
+    border: 1px solid #777;
+    box-sizing: border-box;
+}
+
+.teacher-back-button {
+    color: #fff;
+    font-size: 34px;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.teacher-user-info {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    color: #fff;
+    font-size: 20px;
+}
+
+.teacher-app-logo {
+    font-size: 40px;
+}
+
+/* メイン領域 */
+.teacher-main {
+    display: flex;
+    min-height: calc(100vh - 46px);
+}
+
+/* 左側の質問一覧 */
+.teacher-question-area {
+    flex: 1;
+    min-width: 0;
+    padding: 26px 60px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.teacher-question-area h1 {
+    margin: 18px 0 26px 30px;
+    font-size: 30px;
+    font-weight: normal;
+}
+
+.teacher-question-table {
+    width: 100%;
+    table-layout: fixed;
+    font-size: 22px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.teacher-question-table th,
+.teacher-question-table td {
+    height: 50px;
+    padding: 8px 12px;
+    border: 1px solid #aaa;
+    text-align: left;
+    font-weight: normal;
+}
+
+.teacher-question-table th {
+    height: 70px;
+    background: #d9d9d9;
+}
+
+/* 未回答の表は2列で表示 */
+.unanswered-table th:nth-child(2),
+.unanswered-table td:nth-child(2) {
+    width: auto;
+}
+
+/* 3つの表の日付列の幅を統一 */
+.teacher-question-table th:first-child,
+.teacher-question-table td:first-child {
+    width: 140px;
+}
+
+/* ページ切り替え */
+.teacher-pagination {
+    position: absolute;
+    bottom: 110px;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.teacher-pagination button {
+    min-width: 70px;
+    height: 39px;
+    border: 1px solid #888;
+    background: #d0d0d0;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.teacher-pagination button:first-child,
+.teacher-pagination button:last-child {
+    min-width: 25px;
+    border: none;
+    background: transparent;
+}
+
+.teacher-pagination button.active {
+    background: #4285f4;
+}
+
+.teacher-pagination button:disabled {
+    cursor: default;
+}
+
+/* 右側メニュー */
+.teacher-sidebar {
+    width: 450px;
+    flex-shrink: 0;
+    padding: 45px 16px 20px;
+    background: #eee;
+    border-left: 1px solid #777;
+    box-sizing: border-box;
+}
+
+/* 教科変更 */
+.teacher-subject-select {
+    padding: 12px;
+    margin-bottom: 300px;
+    background: #4285f4;
+    border-radius: 22px;
+}
+
+.teacher-subject-select label {
+    display: block;
+    margin-bottom: 5px;
+    color: #fff;
+    text-align: center;
+    font-size: 27px;
+}
+
+.teacher-subject-select select {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #777;
+    border-radius: 9px;
+    background: #fff;
+    font-size: 18px;
+}
+
+/* 右側の3つのボタン */
+.teacher-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.teacher-menu button {
+    width: 100%;
+    min-height: 78px;
+    border: 1px solid #4285f4;
+    border-radius: 14px;
+    background: #fff;
+    color: #4285f4;
+    font-size: 34px;
+    cursor: pointer;
+}
+
+.teacher-menu button.selected {
+    background: #4285f4;
+    color: #fff;
+}
+
+/* 表示する画面・隠す画面 */
+.teacher-question-view[hidden] {
+    display: none !important;
+}
+
+.teacher-question-view {
+    display: block;
+}
+
+.teacher-question-view h1 {
+    margin-top: 18px;
+}
+
+#teacher-page-numbers {
+    display: flex;
+    gap: 12px;
+}
+
+#teacher-page-numbers button {
+    min-width: 45px;
+    height: 39px;
+    border: 1px solid #888;
+    background: #d0d0d0;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+#teacher-page-numbers button.active {
+    background: #4285f4;
+}
+
+.teacher-pagination button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+.teacher-delete-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.teacher-delete-button svg {
+    display: block;
+}
+
+.teacher-delete-button:hover {
+    opacity: 0.65;
+}
+
+/* 質問一覧の日付列 */
+#all .teacher-question-table th:first-child,
+#all .teacher-question-table td:first-child {
+    width: 130px;
+}
+
+/* 質問一覧の消去列 */
+#all .teacher-question-table th:last-child,
+#all .teacher-question-table td:last-child {
+    width: 80px;
+    text-align: center;
+}
+
+/* ごみ箱ボタン */
+.teacher-delete-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}

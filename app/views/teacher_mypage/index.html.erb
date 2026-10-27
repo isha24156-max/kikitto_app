@@ -1,0 +1,143 @@
+
+<div class="teacher-mypage-container">
+
+    <!-- 上部の青いバー -->
+    <header class="teacher-topbar">
+        <%= link_to root_path, class: "teacher-back-button", aria: { label: "質問一覧に戻る" } do %>
+        ↩
+        <% end %>
+
+        <div class="teacher-user-info">
+        <span>ID：<%= current_user.mail %></span>
+        <span class="teacher-app-logo">Kikitto</span>
+        </div>
+    </header>
+
+    <!-- 左側の質問一覧と右側のメニュー -->
+    <div class="teacher-main">
+
+        
+        <main class="teacher-question-area">
+
+            <!-- 未回答 -->
+            <section class="teacher-question-view active" id="unanswered">
+                <h1>【未回答質問】</h1>
+
+                <table class="teacher-question-table unanswered-table">
+                <thead>
+                    <tr>
+                    <th>日付</th>
+                    <th>内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% 3.times do %>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <% end %>
+                </tbody>
+                </table>
+            </section>
+
+            <!-- 回答履歴 -->
+            <section class="teacher-question-view" id="history" hidden>
+                <h1>【回答履歴】</h1>
+
+                <table class="teacher-question-table">
+                <thead>
+                    <tr>
+                    <th>日付</th>
+                    <th>内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% 3.times do %>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <% end %>
+                </tbody>
+                </table>
+            </section>
+
+            <!-- 質問一覧 -->
+            <section class="teacher-question-view" id="all" hidden>
+                <h1>【質問一覧】</h1>
+
+                <table class="teacher-question-table">
+                <thead>
+                    <tr>
+                    <th>日付</th>
+                    <th>内容</th>
+                    <th>消去</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @questions.each do |question| %>
+                        <tr>
+                            <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
+                            <td><%= question.q_content %></td>
+                            <td>
+                                <button type="button"
+                                    class="teacher-delete-button"
+                                    data-question-id="<%= question.id %>"
+                                    data-question-content="<%= question.q_content %>"
+                                    aria-label="質問を削除">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="28" height="28"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="red"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M3 6h18"/>
+                                        <path d="M8 6V4h8v2"/>
+                                        <path d="M19 6l-1 14H6L5 6"/>
+                                        <path d="M10 11v5M14 11v5"/>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    <% end %>
+                </tbody>
+                </table>
+            </section>
+
+            <!-- ページ切り替え -->
+            <nav class="teacher-pagination" aria-label="ページ切り替え">
+                <button type="button" id="teacher-prev" disabled>◁</button>
+                <div id="teacher-page-numbers"></div>
+                <button type="button" id="teacher-next" disabled>▷</button>
+            </nav>
+
+        </main>
+
+
+        <aside class="teacher-sidebar">
+
+            <div class="teacher-subject-select">
+                <label for="teacher-subject">教科変更</label>
+                <select id="teacher-subject">
+                <option value="">教科を選択</option>
+                </select>
+            </div>
+
+            <nav class="teacher-menu">
+                <button type="button" class="selected" data-view="unanswered">
+                未回答
+                </button>
+                <button type="button" data-view="history">
+                回答履歴
+                </button>
+                <button type="button" data-view="all">
+                質問一覧
+                </button>
+            </nav>
+
+        </aside>
+    </div>
+</div>

@@ -5,129 +5,156 @@
         <% end %>
 
         <div class="user-info">
-            <span>ID:<%= @user.mail %></span>
+            <span>ID：<%= @user.mail %></span>
             <span class="app-logo">Kikitto</span>
         </div>
     </div>
 
     <div class="questions-container">
 
+        
         <div class="saved-questions">
             <h2>【保存した質問】</h2>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>日付</th>
-                        <th>内容</th>
-                        <th>ブックマーク</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <% 5.times do %>
+            <% if @saved_questions.present? %>
+                <table>
+                    <thead>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <button type="button" aria-label="ブックマーク">☆</button>
-                            </td>
+                            <th>日付</th>
+                            <th>内容</th>
+                            <th>ブックマーク</th>
                         </tr>
+                    </thead>
+
+                    <tbody>
+                        <% @saved_questions.each do |question| %>
+                            <tr>
+                                <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
+                                <td><%= question.q_content %></td>
+                                <td>
+                                    <button type="button" aria-label="ブックマーク">☆</button>
+                                </td>
+                            </tr>
+                        <% end %>
+
+                        <% (5 - @saved_questions.length).times do %>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <% if @saved_page > 1 %>
+                        <%= link_to "◁", mypage_index_path(
+                            saved_page: @saved_page - 1,
+                            my_page: @my_page
+                        ) %>
+                    <% else %>
+                        <span>◁</span>
                     <% end %>
-                </tbody>
-            </table>
 
-            
-            <div class="pagination">
-                <% if @saved_page > 1 %>
-                    <%= link_to "◁", mypage_index_path(
-                    saved_page: @saved_page - 1,
-                    my_page: @my_page
-                    ) %>
-                <% else %>
-                    <span>◁</span>
-                <% end %>
+                    <% (1..@saved_total_pages).each do |page| %>
+                        <%= link_to page, mypage_index_path(
+                            saved_page: page,
+                            my_page: @my_page
+                        ), class: (page == @saved_page ? "current-page" : "") %>
+                    <% end %>
 
-                <% (1..@saved_total_pages).each do |page| %>
-                    <%= link_to page, mypage_index_path(
-                    saved_page: page,
-                    my_page: @my_page
-                    ), class: (page == @saved_page ? "current-page" : "") %>
-                <% end %>
+                    <% if @saved_page < @saved_total_pages %>
+                        <%= link_to "▷", mypage_index_path(
+                            saved_page: @saved_page + 1,
+                            my_page: @my_page
+                        ) %>
+                    <% else %>
+                        <span>▷</span>
+                    <% end %>
+                </div>
 
-                <% if @saved_page < @saved_total_pages %>
-                    <%= link_to "▷", mypage_index_path(
-                    saved_page: @saved_page + 1,
-                    my_page: @my_page
-                    ) %>
-                <% else %>
-                    <span>▷</span>
-                <% end %>
-            </div>
-
+            <% else %>
+                <p class="no-saved-questions">保存した質問はありません</p>
+            <% end %>
         </div>
 
-        
         <div class="my-questions">
             <h2>【自分のした質問】</h2>
 
-            <table>
-                <thead>
-                    <tr>
-                    <th>日付</th>
-                    <th>内容</th>
-                    <th>消去</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <% @my_questions.each do |question| %>
+            <% if @my_questions.present? %>
+                <table>
+                    <thead>
                         <tr>
-                        <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
-                        <td><%= question.q_content %></td>
-                        <td>
-                            <button
-                                type="button"
-                                class="delete-button"
-                                data-question-id="<%= question.id %>"
-                                data-question-content="<%= question.q_content %>">
-                                消去
-                            </button>
-                        </td>
+                            <th>日付</th>
+                            <th>内容</th>
+                            <th>消去</th>
                         </tr>
+                    </thead>
+
+                    <tbody>
+                        <% @my_questions.each do |question| %>
+                            <tr>
+                                <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
+                                <td><%= question.q_content %></td>
+                                <td>
+                                    <button type="button"
+                                        class="delete-button"
+                                        data-question-id="<%= question.id %>"
+                                        data-question-content="<%= question.q_content %>"
+                                        aria-label="質問を削除">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            width="28" height="28"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="red"
+                                            stroke-width="1.8"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M3 6h18"/>
+                                            <path d="M8 6V4h8v2"/>
+                                            <path d="M19 6l-1 14H6L5 6"/>
+                                            <path d="M10 11v5M14 11v5"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <% if @my_page > 1 %>
+                        <%= link_to "◁", mypage_index_path(
+                            saved_page: @saved_page,
+                            my_page: @my_page - 1
+                        ) %>
+                    <% else %>
+                        <span>◁</span>
                     <% end %>
-                </tbody>
-            </table>
 
-            
-            <div class="pagination">
-                <% if @my_page > 1 %>
-                    <%= link_to "◁", mypage_index_path(
-                    saved_page: @saved_page,
-                    my_page: @my_page - 1
-                    ) %>
-                <% else %>
-                    <span>◁</span>
-                <% end %>
+                    <% (1..@my_total_pages).each do |page| %>
+                        <%= link_to page, mypage_index_path(
+                            saved_page: @saved_page,
+                            my_page: page
+                        ), class: (page == @my_page ? "current-page" : "") %>
+                    <% end %>
 
-                <% (1..@my_total_pages).each do |page| %>
-                    <%= link_to page, mypage_index_path(
-                    saved_page: @saved_page,
-                    my_page: page
-                    ), class: (page == @my_page ? "current-page" : "") %>
-                <% end %>
+                    <% if @my_page < @my_total_pages %>
+                        <%= link_to "▷", mypage_index_path(
+                            saved_page: @saved_page,
+                            my_page: @my_page + 1
+                        ) %>
+                    <% else %>
+                        <span>▷</span>
+                    <% end %>
+                </div>
 
-                <% if @my_page < @my_total_pages %>
-                    <%= link_to "▷", mypage_index_path(
-                    saved_page: @saved_page,
-                    my_page: @my_page + 1
-                    ) %>
-                <% else %>
-                    <span>▷</span>
-                <% end %>
-            </div>
-
+            <% else %>
+                <p class="no-my-questions">自分のした質問はありません</p>
+            <% end %>
         </div>
+
     </div>
 </div>
 
