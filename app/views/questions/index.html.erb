@@ -100,9 +100,30 @@
             </div>
           </td>
           <td></td>
-          <td>
-            <span class="bookmark-box">□</span>
-          </td>
+          
+<td class="bookmark-cell">
+  <% if logged_in? %>
+    <% bookmark = current_user.bookmarks.find_by(question_id: question.id) %>
+
+    <% if bookmark %>
+      <%= button_to "★",
+          bookmark_path(bookmark),
+          method: :delete,
+          class: "bookmark-button bookmarked",
+          title: "ブックマークを解除" %>
+    <% else %>
+      <%= button_to "☆",
+          bookmarks_path,
+          method: :post,
+          params: { question_id: question.id },
+          class: "bookmark-button",
+          title: "ブックマークに保存" %>
+    <% end %>
+  <% else %>
+    <%= link_to "☆", login_path, title: "ログインして保存" %>
+  <% end %>
+</td>
+
         </tr>
       <% end %>
 

@@ -1,70 +1,77 @@
-class BookmarksController < ApplicationController
-  before_action :set_bookmark, only: %i[ show edit update destroy ]
 
-  # GET /bookmarks or /bookmarks.json
+class BookmarksController < ApplicationController
+  before_action :require_login, only: %i[index create destroy]
+  before_action :set_bookmark, only: %i[show edit update destroy]
+
   def index
-    @bookmarks = Bookmark.all
+    @bookmarks = Bookmark.where(user_id: session[:user_id])
+                         .includes(:question)
   end
 
-  # GET /bookmarks/1 or /bookmarks/1.json
   def show
   end
 
-  # GET /bookmarks/new
   def new
     @bookmark = Bookmark.new
   end
 
-  # GET /bookmarks/1/edit
   def edit
   end
 
-  # POST /bookmarks or /bookmarks.json
   def create
-    @bookmark = Bookmark.new(bookmark_params)
+    question = Question.find_by(id: params[:question_id])
 
-    respond_to do |format|
-      if @bookmark.save
-        format.html { redirect_to @bookmark, notice: "Bookmark was successfully created." }
-        format.json { render :show, status: :created, location: @bookmark }
-      else
-        format.html { render :new, status: :unprocessable_content }
-        format.json { render json: @bookmark.errors, status: :unprocessable_content }
-      end
+    unless question
+      redirect_back fallback_location: questions_path,
+                    alert: "質問が見つかりません。"
+      return
+    end
+
+    @bookmark = Bookmark.find_or_create_by(
+      user_id: session[:user_id],
+      question_id: question.id
+    )
+
+    if @bookmark.persisted?
+      redirect_back fallback_location: questions_path,
+                    notice: "ブックマークに保存しました。"
+    else
+      redirect_back fallback_location: questions_path,
+                    alert: "ブックマークを保存できませんでした。"
     end
   end
 
-  # PATCH/PUT /bookmarks/1 or /bookmarks/1.json
   def update
-    respond_to do |format|
-      if @bookmark.update(bookmark_params)
-        format.html { redirect_to @bookmark, notice: "Bookmark was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @bookmark }
-      else
-        format.html { render :edit, status: :unprocessable_content }
-        format.json { render json: @bookmark.errors, status: :unprocessable_content }
-      end
+    unless @bookmark.user_id == session[:user_id]
+      redirect_to questions_path, alert: "操作できません。"
+      return
+    end
+
+    if @bookmark.update(bookmark_params.except(:user_id))
+      redirect_to bookmarks_path, notice: "ブックマークを更新しました。"
+    else
+      redirect_to bookmarks_path, alert: "更新できませんでした。"
     end
   end
 
-  # DELETE /bookmarks/1 or /bookmarks/1.json
   def destroy
-    @bookmark.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to bookmarks_path, notice: "Bookmark was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
+    unless @bookmark.user_id == session[:user_id]
+      redirect_to questions_path, alert: "操作できません。"
+      return
     end
+
+    @bookmark.destroy
+    redirect_back fallback_location: mypage_index_path,
+                  notice: "ブックマークを解除しました。"
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_bookmark
-      @bookmark = Bookmark.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def bookmark_params
-      params.require(:bookmark).permit(:user_id, :question_id)
-    end
+  def set_bookmark
+    @bookmark = Bookmark.find(params[:id])
+  end
+
+  def bookmark_params
+    params.require(:bookmark).permit(:question_id)
+  end
 end
