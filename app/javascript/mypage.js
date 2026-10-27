@@ -9,7 +9,7 @@ document.addEventListener("turbo:load", () => {
         button.addEventListener("click", () => {
             const id = button.dataset.questionId;
     
-            deleteForm.action = `/mypage/questions/${id}`;
+            deleteForm.action = `/questions/${id}`;
             modal.hidden = false;
         });
         });

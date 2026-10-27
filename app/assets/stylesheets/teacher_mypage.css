@@ -1,10 +1,3 @@
-html,
-body {
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
-}
-
 .teacher-mypage-container {
     height: 100vh;
     overflow: hidden;
@@ -88,7 +81,7 @@ body {
 .teacher-question-table th,
 .teacher-question-table td {
     height: 50px;
-    padding: 8px 12px;
+    padding: 2px 12px;
     border: 1px solid #aaa;
     text-align: left;
     font-weight: normal;
@@ -114,7 +107,7 @@ body {
 /* ページ切り替え */
 .teacher-pagination {
     position: absolute;
-    bottom: 110px;
+    bottom: 70px;
     left: 0;
     right: 0;
 

@@ -165,9 +165,9 @@
         <div class="delete-modal-buttons">
         <button type="button" id="cancel-delete">キャンセル</button>
 
-        <%= form_with url: mypage_question_path(id: 0),
-                        method: :delete,
-                        id: "delete-form" do %>
+        <%= form_with url: question_path(id: 0),
+                method: :delete,
+                id: "delete-form" do %>
             <button type="submit" class="confirm-delete">
             削除
             </button>
