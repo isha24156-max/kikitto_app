@@ -1,0 +1,12 @@
+<% content_for :title, "Editing grade course subject" %>
+
+<h1>Editing grade course subject</h1>
+
+<%= render "form", grade_course_subject: @grade_course_subject %>
+
+<br>
+
+<div>
+  <%= link_to "Show this grade course subject", @grade_course_subject %> |
+  <%= link_to "Back to grade course subjects", grade_course_subjects_path %>
+</div>

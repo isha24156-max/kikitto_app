@@ -1,0 +1,330 @@
+
+/* マイページ全体 */
+.mypage-container {
+    min-height: 100vh;
+    background-color: #ffffff;
+    color: #000000;
+    font-family: sans-serif;
+    box-sizing: border-box;
+    border: 1px solid #777777;
+}
+
+/* 上部の青いバー */
+.mypage-topbar {
+    height: 46px;
+    background-color: #4285f4;
+    border-bottom: 1px solid #333333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    box-sizing: border-box;
+}
+
+/* 戻るボタン */
+.back-button {
+    color: #ffffff;
+    font-size: 34px;
+    text-decoration: none;
+    line-height: 1;
+}
+
+  /* IDとKikitto */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.app-logo {
+    font-size: 34px;
+    font-weight: normal;
+}
+
+/* 左右の質問一覧 */
+.questions-container {
+    display: flex;
+    gap: 28px;
+    padding: 44px 38px 24px;
+    align-items: flex-start;
+}
+
+/* それぞれの質問欄 */
+.saved-questions,
+.my-questions {
+    flex: 1;
+    min-width: 0;
+}
+
+/* 見出し */
+.saved-questions h2,
+.my-questions h2 {
+    font-size: 21px;
+    font-weight: normal;
+    margin: 0 0 2px 24px;
+}
+
+/* 表 */
+.saved-questions table,
+.my-questions table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 22px;
+}
+
+/* 表の枠線 */
+.saved-questions th,
+.saved-questions td,
+.my-questions th,
+.my-questions td {
+    border: 1px solid #a6a6a6;
+    padding: 8px 12px;
+    height: 42px;
+    box-sizing: border-box;
+    text-align: left;
+    font-weight: normal;
+}
+
+/* 見出し行 */
+.saved-questions th,
+.my-questions th {
+    background-color: #d9d9d9;
+    height: 54px;
+}
+
+/* 日付列 */
+.saved-questions th:first-child,
+.saved-questions td:first-child,
+.my-questions th:first-child,
+.my-questions td:first-child {
+    width: 16%;
+}
+
+/* 保存した質問のブックマーク列 */
+.saved-questions th:last-child,
+.saved-questions td:last-child {
+    width: 22%;
+    text-align: center;
+}
+
+/* 自分の質問の削除列 */
+.my-questions th:last-child,
+.my-questions td:last-child {
+    width: 22%;
+}
+
+/* ブックマークボタン */
+.saved-questions button {
+    color: #4285f4;
+    background: transparent;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* 削除ボタン */
+.my-questions td button {
+    color: #ff0000;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* ページネーション */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* ページ番号・矢印 */
+.pagination a,
+.pagination span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    height: 38px;
+    box-sizing: border-box;
+    border: 1px solid #888888;
+    background-color: #d0d0d0;
+    color: #000000;
+    text-decoration: none;
+    font-size: 22px;
+}
+
+/* 選択中のページ */
+.pagination a.current-page {
+    background-color: #4285f4;
+    color: #000000;
+}
+
+/* 前後の矢印 */
+.pagination a:first-child,
+.pagination span:first-child,
+.pagination a:last-child,
+.pagination span:last-child {
+    min-width: 24px;
+    border: none;
+    background: transparent;
+    font-size: 24px;
+}
+
+
+/* 表のサイズを安定させる */
+.saved-questions table,
+.my-questions table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+/* 見出し・各行のサイズ */
+.saved-questions th,
+.saved-questions td,
+.my-questions th,
+.my-questions td {
+    height: 52px;
+    padding: 8px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 見出しの高さ */
+.saved-questions th,
+.my-questions th {
+    height: 48px;
+}
+
+/* 日付列の幅 */
+.saved-questions th:first-child,
+.saved-questions td:first-child,
+.my-questions th:first-child,
+.my-questions td:first-child {
+    width: 85px;
+}
+
+/* 保存した質問のブックマーク列 */
+.saved-questions th:last-child,
+.saved-questions td:last-child {
+    width: 85px;
+    text-align: center;
+}
+
+/* 自分の質問の削除列 */
+.my-questions th:last-child,
+.my-questions td:last-child {
+    width: 85px;
+    text-align: center;
+}
+
+/* 内容の列 */
+.saved-questions th:nth-child(2),
+.saved-questions td:nth-child(2),
+.my-questions th:nth-child(2),
+.my-questions td:nth-child(2) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 画面全体の横幅に合わせる */
+.mypage-container {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 左右の質問欄 */
+.questions-container {
+    display: flex;
+    flex-direction: row;
+    gap: 28px;
+    padding: 44px 38px 24px;
+    box-sizing: border-box;
+    align-items: flex-start;
+}
+
+.saved-questions,
+.my-questions {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/* 日付列は日付全体が見える幅にする */
+.saved-questions th:first-child,
+.saved-questions td:first-child,
+.my-questions th:first-child,
+.my-questions td:first-child {
+    width: 100px;
+    min-width: 100px;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    padding: 6px;
+    font-size: 16px;
+}
+
+/* 削除確認の背景 */
+.delete-modal[hidden] {
+    display: none;
+}
+
+.delete-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* 確認画面 */
+.delete-modal-content {
+    width: 360px;
+    max-width: calc(100% - 40px);
+    padding: 36px 24px 28px;
+    background: white;
+    border: 1px solid #888;
+    border-radius: 40px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.delete-modal-content p {
+    font-size: 25px;
+    margin: 35px 0 12px;
+}
+
+/* ボタン */
+.delete-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+.delete-modal-buttons button {
+    border: none;
+    border-radius: 9px;
+    padding: 10px 18px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#cancel-delete {
+    background: #bdbdbd;
+    color: black;
+}
+
+.confirm-delete {
+    background: red;
+    color: white;
+}

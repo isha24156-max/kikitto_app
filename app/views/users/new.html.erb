@@ -1,11 +1,11 @@
 <% content_for :title, "New user" %>
 
-<h1>New user</h1>
+<div class="auth-container">
+  <h1>Kikitto</h1>
 
-<%= render "form", user: @user %>
+  <%= render "form", user: @user %>
 
-<br>
-
-<div>
-  <%= link_to "Back to users", users_path %>
+  <div class="secondary-action">
+    <%= link_to "ログイン画面に戻る", login_path, class: "btn-link" %>
+  </div>
 </div>

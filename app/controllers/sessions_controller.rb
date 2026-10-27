@@ -1,15 +1,25 @@
 class SessionsController < ApplicationController
   def new
-    # ログイン画面表示
   end
 
   def create
-    user = User.find_by(mail: params[:session][:mail])
-    if user && user.authenticate(params[:session][:password])
+    email = params[:email] # フォームのフィールド名に合わせて変更してください (:mail など)
+    password = params[:password]
+
+    # 1. 未入力チェック
+    if email.blank? || password.blank?
+      flash.now[:alert] = "メールアドレスとパスワードを入力してください"
+      render :new, status: :unprocessable_entity
+      return
+    end
+
+    # 2. ユーザー検索 & パスワード照合
+    user = User.find_by(mail: email) # DBのカラム名が mail の場合
+    if user && user.authenticate(password)
       session[:user_id] = user.id
-      flash[:notice] = "ログインしました"
-      redirect_to questions_path # ログイン後の遷移先（マイページや質問一覧など）
+      redirect_to questions_path, notice: "ログインしました"
     else
+      # 3. 不一致エラー
       flash.now[:alert] = "メールアドレスまたはパスワードが正しくありません"
       render :new, status: :unprocessable_entity
     end
@@ -17,7 +27,6 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
-    flash[:notice] = "ログアウトしました"
-    redirect_to login_path
+    redirect_to login_path, notice: "ログアウトしました"
   end
 end

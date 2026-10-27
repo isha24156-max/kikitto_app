@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :grade_course_subjects
+  resources :courses
+  resources :grades
   get "mypage/index"
   # ログイン・ログアウト用ルーティング
   get    '/login',  to: 'sessions#new'
@@ -14,5 +17,6 @@ Rails.application.routes.draw do
   resources :subjects
   resources :bookmarks
 
-  root 'questions#index' # トップページを任意で指定
+  # トップページ
+  root "questions#index" # トップページを任意で指定
 end
