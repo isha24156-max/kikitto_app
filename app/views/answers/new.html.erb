@@ -130,121 +130,294 @@
 </div>
 
 <script>
-document.addEventListener("turbo:load", function () {
+(function () {
 
   // =====================================
-  // 回答フォームの開閉
+  // Turboのイベント重複を防ぐ
   // =====================================
 
-  const openButton = document.getElementById("open-answer");
-  const closeButton = document.getElementById("close-answer");
-  const formArea = document.getElementById("answer-form-area");
+  if (window.answersPageController) {
+    window.answersPageController.destroy();
+  }
 
-  if (openButton && formArea) {
+  const controller = {
+    destroy: function () {}
+  };
 
-    openButton.addEventListener("click", function () {
-      formArea.hidden = false;
-      openButton.hidden = true;
-    });
+  window.answersPageController = controller;
 
-    if (closeButton) {
-      closeButton.addEventListener("click", function () {
-        formArea.hidden = true;
-        openButton.hidden = false;
-      });
+  // =====================================
+  // ページの初期化
+  // =====================================
+
+  function initializeAnswersPage() {
+
+    // Turboのプレビュー画面では実行しない
+    if (document.documentElement.hasAttribute("data-turbo-preview")) {
+      return;
     }
 
+    // =====================================
+    // 回答フォームの開閉
+    // =====================================
+
+    const openButton = document.getElementById("open-answer");
+    const closeButton = document.getElementById("close-answer");
+    const formArea = document.getElementById("answer-form-area");
+
+    if (openButton && formArea) {
+
+      openButton.onclick = function () {
+        formArea.hidden = false;
+        openButton.hidden = true;
+      };
+
+      if (closeButton) {
+
+        closeButton.onclick = function () {
+          formArea.hidden = true;
+          openButton.hidden = false;
+        };
+
+      }
+
+    }
+
+    // =====================================
+    // ページ切り替え
+    // =====================================
+
+    const answerRows = Array.from(
+      document.querySelectorAll(
+        "#answer-table-body .answer-row"
+      )
+    );
+
+    const pageNumbersArea =
+      document.getElementById("page-numbers");
+
+    const prevButton =
+      document.getElementById("prev-page");
+
+    const nextButton =
+      document.getElementById("next-page");
+
+    if (
+      !pageNumbersArea ||
+      !prevButton ||
+      !nextButton
+    ) {
+      return;
+    }
+
+    // =====================================
+    // 1ページに表示する回答数
+    // =====================================
+
+    const rowsPerPage = 14;
+
+    // =====================================
+    // 回答数からページ数を計算
+    // =====================================
+
+    const totalPages = Math.max(
+      1,
+      Math.ceil(answerRows.length / rowsPerPage)
+    );
+
+    let currentPage = 1;
+
+    // =====================================
+    // ページ番号をリセット
+    // =====================================
+
+    pageNumbersArea.innerHTML = "";
+
+    // =====================================
+    // ページ番号を作成
+    // =====================================
+
+    for (
+      let page = 1;
+      page <= totalPages;
+      page++
+    ) {
+
+      const button = document.createElement("button");
+
+      button.type = "button";
+      button.className = "page-number";
+
+      button.textContent = page;
+      button.dataset.page = page;
+
+      // ページ番号を押したとき
+      button.onclick = function () {
+
+        changePage(
+          Number(this.dataset.page)
+        );
+
+      };
+
+      pageNumbersArea.appendChild(button);
+
+    }
+
+    // =====================================
+    // ページ切り替え
+    // =====================================
+
+    function changePage(page) {
+
+      // ページ範囲を確認
+      if (
+        page < 1 ||
+        page > totalPages
+      ) {
+        return;
+      }
+
+      currentPage = page;
+
+      // =====================================
+      // 回答を表示・非表示
+      // =====================================
+
+      answerRows.forEach(function (row, index) {
+
+        const rowPage =
+          Math.floor(index / rowsPerPage) + 1;
+
+        row.style.display =
+          rowPage === currentPage ? "" : "none";
+
+      });
+
+      // =====================================
+      // ページ番号の選択状態
+      // =====================================
+
+      const pageButtons =
+        pageNumbersArea.querySelectorAll(
+          ".page-number"
+        );
+
+      pageButtons.forEach(function (button) {
+
+        const isActive =
+          Number(button.dataset.page) === currentPage;
+
+        button.classList.toggle(
+          "active",
+          isActive
+        );
+
+        button.setAttribute(
+          "aria-current",
+          isActive ? "page" : "false"
+        );
+
+      });
+
+      // =====================================
+      // 前後ボタン
+      // =====================================
+
+      prevButton.disabled =
+        currentPage === 1;
+
+      nextButton.disabled =
+        currentPage === totalPages;
+
+    }
+
+    // =====================================
+    // 前のページ
+    // =====================================
+
+    prevButton.onclick = function () {
+
+      changePage(currentPage - 1);
+
+    };
+
+    // =====================================
+    // 次のページ
+    // =====================================
+
+    nextButton.onclick = function () {
+
+      changePage(currentPage + 1);
+
+    };
+
+    // =====================================
+    // 最初のページを表示
+    // =====================================
+
+    changePage(1);
+
   }
 
   // =====================================
-  // ページ切り替え
+  // Turbo読み込み
   // =====================================
 
-  const answerRows = Array.from(
-    document.querySelectorAll("#answer-table-body .answer-row")
+  document.addEventListener(
+    "turbo:load",
+    initializeAnswersPage
   );
 
-  const pageNumbersArea = document.getElementById("page-numbers");
-  const prevButton = document.getElementById("prev-page");
-  const nextButton = document.getElementById("next-page");
+  // =====================================
+  // コントローラーの終了処理
+  // =====================================
 
-  if (!pageNumbersArea || !prevButton || !nextButton) return;
+  controller.destroy = function () {
 
-  // 1ページに表示する回答数
-  const rowsPerPage = 3;
+    document.removeEventListener(
+      "turbo:load",
+      initializeAnswersPage
+    );
 
-  // 回答が0件でも1ページは表示する
-  const totalPages = Math.max(
-    1,
-    Math.ceil(answerRows.length / rowsPerPage)
-  );
+    const openButton =
+      document.getElementById("open-answer");
 
-  let currentPage = 1;
+    const closeButton =
+      document.getElementById("close-answer");
 
-  // ページ番号を作成
-  for (let page = 1; page <= totalPages; page++) {
+    const prevButton =
+      document.getElementById("prev-page");
 
-    const button = document.createElement("button");
+    const nextButton =
+      document.getElementById("next-page");
 
-    button.type = "button";
-    button.className = "page-number";
-    button.textContent = page;
-    button.dataset.page = page;
+    if (openButton) {
+      openButton.onclick = null;
+    }
 
-    button.addEventListener("click", function () {
-      changePage(Number(this.dataset.page));
-    });
+    if (closeButton) {
+      closeButton.onclick = null;
+    }
 
-    pageNumbersArea.appendChild(button);
+    if (prevButton) {
+      prevButton.onclick = null;
+    }
 
-  }
+    if (nextButton) {
+      nextButton.onclick = null;
+    }
 
-  // ページを切り替える
-  function changePage(page) {
+    const pageNumbersArea =
+      document.getElementById("page-numbers");
 
-    if (page < 1 || page > totalPages) return;
+    if (pageNumbersArea) {
 
-    currentPage = page;
+      pageNumbersArea.innerHTML = "";
 
-    // 表示する回答を切り替える
-    answerRows.forEach(function (row, index) {
+    }
 
-      const rowPage = Math.floor(index / rowsPerPage) + 1;
+  };
 
-      row.style.display = rowPage === currentPage ? "" : "none";
-
-    });
-
-    // ページ番号の選択状態を更新
-    const pageButtons = pageNumbersArea.querySelectorAll(".page-number");
-
-    pageButtons.forEach(function (button) {
-
-      const isActive = Number(button.dataset.page) === currentPage;
-
-      button.classList.toggle("active", isActive);
-      button.setAttribute("aria-current", isActive ? "page" : "false");
-
-    });
-
-    // 前後のボタンを更新
-    prevButton.disabled = currentPage === 1;
-    nextButton.disabled = currentPage === totalPages;
-
-  }
-
-  // 前のページ
-  prevButton.addEventListener("click", function () {
-    changePage(currentPage - 1);
-  });
-
-  // 次のページ
-  nextButton.addEventListener("click", function () {
-    changePage(currentPage + 1);
-  });
-
-  // 最初は1ページ目を表示
-  changePage(1);
-
-});
+})();
 </script>
