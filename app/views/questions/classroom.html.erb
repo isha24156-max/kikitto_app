@@ -1,26 +1,45 @@
 
 <% content_for :title, "専用質問一覧" %>
 
-<div class="questions-container">
+<div class="questions-container classroom-container">
   <p class="questions-notice"><%= notice %></p>
 
-  <h1>
-    <%= @grade %>年<%= @classroom %>組・教科<%= @subject_number %>
-  </h1>
-
-  <h2>質問一覧</h2>
-
-  <p>選択したクラスの質問一覧ページです。</p>
-
-  <div class="classroom-back">
-    <%= link_to "質問一覧に戻る", questions_path %>
+  <!-- 学年・クラス・教科 -->
+  <div class="classroom-header">
+    <div class="classroom-header-item">
+      <%= @grade %>年
+    </div>
+    <div class="classroom-header-item">
+      <%= @classroom %>組
+    </div>
+    <div class="classroom-header-item">
+      教科 <%= @subject_number %>
+    </div>
   </div>
 
+  <!-- 検索欄 -->
+  <div class="questions-search">
+    <%= form_with url: classroom_questions_path, method: :get, local: true do %>
+      <%= hidden_field_tag :grade, @grade %>
+      <%= hidden_field_tag :classroom, @classroom %>
+      <%= hidden_field_tag :subject, @subject_number %>
+
+      <%= text_field_tag :q, params[:q],
+          placeholder: "質問を検索",
+          class: "questions-search-input" %>
+
+      <%= submit_tag "検索", class: "questions-search-button" %>
+    <% end %>
+  </div>
+
+  <!-- 質問一覧 -->
   <table class="questions-table">
     <thead>
       <tr>
         <th>日付</th>
         <th>内容</th>
+        <th>回答</th>
+        <th>ブクマ</th>
       </tr>
     </thead>
 
@@ -28,19 +47,48 @@
       <% @questions.each do |question| %>
         <tr>
           <td><%= question.deadline %></td>
+
           <td>
             <%= question.q_content %>
-
             <div class="question-link">
-              <%= link_to "この質問を見る", new_answer_path %>
+              <%= link_to "この質問を見る", question_path(question) %>
             </div>
+          </td>
+
+          <td>
+            <%= link_to "回答する", new_answer_path(question_id: question.id) %>
+          </td>
+
+          <td class="bookmark-cell">
+            <% if logged_in? %>
+              <% bookmark = current_user.bookmarks.find_by(
+                question_id: question.id
+              ) %>
+
+              <% if bookmark %>
+                <%= button_to "★",
+                    bookmark_path(bookmark),
+                    method: :delete,
+                    class: "bookmark-button bookmarked",
+                    title: "ブックマークを解除" %>
+              <% else %>
+                <%= button_to "☆",
+                    bookmarks_path,
+                    method: :post,
+                    params: { question_id: question.id },
+                    class: "bookmark-button",
+                    title: "ブックマークに保存" %>
+              <% end %>
+            <% else %>
+              <%= link_to "☆", login_path, title: "ログインして保存" %>
+            <% end %>
           </td>
         </tr>
       <% end %>
 
       <% if @questions.empty? %>
         <tr>
-          <td colspan="2" class="empty-message">
+          <td colspan="4" class="empty-message">
             質問はまだありません。
           </td>
         </tr>
@@ -48,12 +96,22 @@
     </tbody>
   </table>
 
+  <!-- ページネーション -->
   <div class="questions-pagination">
-    <%= paginate @questions %>
+    <%= paginate @questions,
+        params: {
+          grade: @grade,
+          classroom: @classroom,
+          subject: @subject_number,
+          q: params[:q]
+        } %>
+  </div>
+
+  <div class="classroom-back">
+    <%= link_to "質問一覧に戻る", questions_path %>
   </div>
 
   <div class="questions-add">
-    <%= link_to "+", new_question_path,
-        aria: { label: "質問を追加" } %>
+    <%= link_to "+", new_question_path, aria: { label: "質問を追加" } %>
   </div>
 </div>
