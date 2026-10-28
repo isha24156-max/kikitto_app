@@ -111,7 +111,15 @@
     <%= link_to "質問一覧に戻る", questions_path %>
   </div>
 
-  <div class="questions-add">
-    <%= link_to "+", new_question_path, aria: { label: "質問を追加" } %>
-  </div>
+  
+<div class="questions-add">
+  <%= link_to "+",
+      new_question_path(
+        grade: @grade,
+        classroom: @classroom,
+        subject: @subject_number
+      ),
+      aria: { label: "質問を追加" } %>
+</div>
+
 </div>

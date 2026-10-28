@@ -26,9 +26,33 @@ class QuestionsController < ApplicationController
 
   # 質問の新規作成画面
   def new
-    @question = Question.new
-  end
+    @grade = params[:grade]
+    @classroom = params[:classroom]
+    @subject_number = params[:subject]
 
+    @question = Question.new
+
+    if @grade.present? &&
+       @classroom.present? &&
+       @subject_number.present?
+
+      grade_record = Grade.find_by(g_number: @grade)
+      course_record = Course.find_by(c_number: @classroom)
+
+      if grade_record && course_record
+        @grade_course_subject = GradeCourseSubject.find_by(
+          grade_id: grade_record.id,
+          course_id: course_record.id,
+          subject_id: @subject_number
+        )
+
+        if @grade_course_subject
+          @question.grade_course_subject_id =
+            @grade_course_subject.id
+        end
+      end
+    end
+  end
   # 質問の編集画面
   def edit
   end
@@ -115,7 +139,6 @@ class QuestionsController < ApplicationController
     @classroom = params[:classroom]
     @subject_number = params[:subject]
 
-    # 選択された値が正しいか確認
     unless (1..3).cover?(@grade.to_i) &&
            (1..4).cover?(@classroom.to_i) &&
            (1..6).cover?(@subject_number.to_i)
@@ -125,12 +148,29 @@ class QuestionsController < ApplicationController
       return
     end
 
-    # 現在は質問を新しい順に表示
-    @questions = Question.order(created_at: :desc)
-                        .page(params[:page])
-                        .per(15)
-  end
+    grade_record = Grade.find_by(g_number: @grade)
+    course_record = Course.find_by(c_number: @classroom)
 
+    if grade_record && course_record
+      combination = GradeCourseSubject.find_by(
+        grade_id: grade_record.id,
+        course_id: course_record.id,
+        subject_id: @subject_number
+      )
+
+      if combination
+        @questions = Question.where(
+          grade_course_subject_id: combination.id
+        ).order(created_at: :desc)
+         .page(params[:page])
+         .per(15)
+      else
+        @questions = Question.none.page(params[:page]).per(15)
+      end
+    else
+      @questions = Question.none.page(params[:page]).per(15)
+    end
+  end
   private
 
   # URLのIDから質問を取得
@@ -144,7 +184,7 @@ class QuestionsController < ApplicationController
       :deadline,
       :q_content,
       :user_id,
-      :subject_id
+      :grade_course_subject_id
     )
   end
 end
