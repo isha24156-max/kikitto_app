@@ -7,14 +7,14 @@ class MypageController < ApplicationController
 
     # 保存した質問
     saved_questions = @user.bookmarks
-      .includes(question: :subject)
+      .includes(question: :grade_course_subject)
       .map(&:question)
       .compact
       .uniq
 
     # 自分のした質問
     my_questions = @user.questions
-      .includes(:subject)
+      .includes(:grade_course_subject)
       .order(created_at: :desc)
 
     # ページ番号を取得

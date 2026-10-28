@@ -1,8 +1,8 @@
+
 <%= form_with(model: question) do |form| %>
   <% if question.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(question.errors.count, "error") %> prohibited this question from being saved:</h2>
-
+      <h2>質問を保存できませんでした。</h2>
       <ul>
         <% question.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -12,26 +12,49 @@
   <% end %>
 
   <div>
-    <%= form.label :deadline, style: "display: block" %>
+    <%= form.label :deadline, "期限", style: "display: block" %>
     <%= form.date_field :deadline %>
   </div>
 
   <div>
-    <%= form.label :q_content, style: "display: block" %>
+    <%= form.label :q_content, "質問内容", style: "display: block" %>
     <%= form.text_area :q_content %>
   </div>
 
   <div>
-    <%= form.label :user_id, style: "display: block" %>
+    <%= form.label :user_id, "ユーザーID", style: "display: block" %>
     <%= form.number_field :user_id %>
   </div>
 
-  <div>
-    <%= form.label :subject_id, style: "display: block" %>
-    <%= form.number_field :subject_id %>
-  </div>
+  <% if @grade_course_subject_id.present? %>
+    <%= form.hidden_field :grade_course_subject_id,
+          value: @grade_course_subject_id %>
+
+    <p>
+      選択中：<%= @grade %>年
+      <%= @classroom %>組
+      教科 <%= @subject_number %>
+    </p>
+  <% else %>
+    <div>
+      <%= form.label :grade_course_subject_id,
+            "学年・クラス・教科", style: "display: block" %>
+
+      <%= form.collection_select :grade_course_subject_id,
+            GradeCourseSubject.all,
+            :id,
+            :id,
+            { prompt: "組み合わせを選択してください" } %>
+    </div>
+  <% end %>
+
+  <% if @grade.present? && @classroom.present? && @subject_number.present? %>
+    <%= hidden_field_tag :grade, @grade %>
+    <%= hidden_field_tag :classroom, @classroom %>
+    <%= hidden_field_tag :subject, @subject_number %>
+  <% end %>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit "質問を投稿する" %>
   </div>
 <% end %>
