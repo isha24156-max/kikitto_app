@@ -1,4 +1,3 @@
-
 class QuestionsController < ApplicationController
   before_action :set_question, only: %i[show edit update destroy]
 
@@ -27,6 +26,17 @@ class QuestionsController < ApplicationController
   # 質問の新規作成画面
   def new
     @question = Question.new
+
+    if params[:grade].present? && params[:classroom].present? && params[:subject].present?
+      # カラム名を grade_id, course_id, subject_id に統一
+      gcs = GradeCourseSubject.find_by(
+        grade_id: params[:grade],
+        course_id: params[:classroom],
+        subject_id: params[:subject]
+      )
+
+      @question.GradeCourseSub = gcs.id if gcs.present?
+    end
   end
 
   # 質問の編集画面
@@ -40,8 +50,16 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       if @question.save
         format.html do
-          redirect_to @question,
-                      notice: "質問を作成しました。"
+          # 渡されたパラメータがあれば該当クラスの質問一覧へリダイレクト
+          if params[:grade].present? && params[:classroom].present? && params[:subject].present?
+            redirect_to classroom_questions_path(
+              grade: params[:grade],
+              classroom: params[:classroom],
+              subject: params[:subject]
+            ), notice: "質問を作成しました。"
+          else
+            redirect_to @question, notice: "質問を作成しました。"
+          end
         end
 
         format.json do
@@ -51,13 +69,11 @@ class QuestionsController < ApplicationController
         end
       else
         format.html do
-          render :new,
-                 status: :unprocessable_entity
+          render :new, status: :unprocessable_entity
         end
 
         format.json do
-          render json: @question.errors,
-                 status: :unprocessable_entity
+          render json: @question.errors, status: :unprocessable_entity
         end
       end
     end
@@ -125,10 +141,30 @@ class QuestionsController < ApplicationController
       return
     end
 
-    # 現在は質問を新しい順に表示
-    @questions = Question.order(created_at: :desc)
-                        .page(params[:page])
-                        .per(15)
+    # 1. カラム名を grade_id, course_id, subject_id に統一して検索
+    gcs = GradeCourseSubject.find_by(
+      grade_id: @grade,
+      course_id: @classroom,
+      subject_id: @subject_number
+    )
+
+    # 2. 接続IDが存在すればその質問のみを取得
+    @questions = if gcs.present?
+                   Question.where(GradeCourseSub: gcs.id)
+                 else
+                   Question.none
+                 end
+
+    # 3. 専用一覧画面でのキーワード検索処理
+    if params[:q].present?
+      keyword = ActiveRecord::Base.sanitize_sql_like(params[:q].strip)
+      @questions = @questions.where("q_content LIKE ?", "%#{keyword}%")
+    end
+
+    # 4. 並び替えとペジネーション
+    @questions = @questions.order(created_at: :desc)
+                           .page(params[:page])
+                           .per(15)
   end
 
   private
@@ -144,7 +180,7 @@ class QuestionsController < ApplicationController
       :deadline,
       :q_content,
       :user_id,
-      :subject_id
+      :GradeCourseSub
     )
   end
 end

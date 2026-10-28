@@ -11,27 +11,32 @@
     </div>
   <% end %>
 
+  <%# 1. 元のクラス一覧へ戻るためのパラメータ保持 %>
+  <%= hidden_field_tag :grade, params[:grade] %>
+  <%= hidden_field_tag :classroom, params[:classroom] %>
+  <%= hidden_field_tag :subject, params[:subject] %>
+
+  <%# 2. 接続ID（GradeCourseSub）を hidden フィールドで自動送信 %>
+  <%= form.hidden_field :GradeCourseSub %>
+
   <div>
-    <%= form.label :deadline, style: "display: block" %>
+    <%= form.label :deadline, "質問日", style: "display: block" %>
     <%= form.date_field :deadline %>
   </div>
 
   <div>
-    <%= form.label :q_content, style: "display: block" %>
+    <%= form.label :q_content, "質問内容", style: "display: block" %>
     <%= form.text_area :q_content %>
   </div>
 
   <div>
-    <%= form.label :user_id, style: "display: block" %>
+    <%= form.label :user_id, "ユーザーID", style: "display: block" %>
     <%= form.number_field :user_id %>
   </div>
 
-  <div>
-    <%= form.label :subject_id, style: "display: block" %>
-    <%= form.number_field :subject_id %>
-  </div>
+  <%# 接続IDはhiddenで送信するため、手入力用の subject_id は削除（またはコメントアウト） %>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit "質問を投稿する" %>
   </div>
 <% end %>
