@@ -546,4 +546,290 @@ body.questions.index .bookmark-cell {
   body.questions.index .bookmark-button.bookmarked {
     color: #f0ad00;
   }
+
+
+/* 専用質問一覧のレイアウト */
+body.questions.classroom .classroom-container {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 30px;
+    background: #f5f7fa;
+    font-family: "Meiryo", sans-serif;
+    font-size: 18px;
+  }
+  
+  /* 上部の青い3列 */
+  body.questions.classroom .classroom-header {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    min-height: 56px;
+    margin-bottom: 20px;
+    background: #4285ee;
+    color: white;
+  }
+  
+  body.questions.classroom .classroom-header-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border-right: 1px solid rgba(255, 255, 255, 0.35);
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  body.questions.classroom .classroom-header-item:last-child {
+    border-right: none;
+  }
+  
+  /* 検索欄 */
+  body.questions.classroom .questions-search {
+    width: 100%;
+    margin: 0 0 20px;
+    text-align: center;
+  }
+  
+  body.questions.classroom .questions-search form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  body.questions.classroom .questions-search-input {
+    box-sizing: border-box;
+    width: min(55%, 500px);
+    min-width: 0;
+    height: 44px;
+    padding: 8px 12px;
+    font-size: 16px;
+  }
+  
+  body.questions.classroom .questions-search-button {
+    min-height: 44px;
+    padding: 8px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* 表 */
+  body.questions.classroom .questions-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: transparent;
+  }
+  
+  body.questions.classroom .questions-table th,
+  body.questions.classroom .questions-table td {
+    padding: 12px 10px;
+    border: 1px solid #bdbdbd;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+  
+  body.questions.classroom .questions-table th {
+    background: #d6d6d6;
+    font-weight: normal;
+  }
+  
+  body.questions.classroom .questions-table th:nth-child(1),
+  body.questions.classroom .questions-table td:nth-child(1) {
+    width: 15%;
+  }
+  
+  body.questions.classroom .questions-table th:nth-child(2),
+  body.questions.classroom .questions-table td:nth-child(2) {
+    width: 55%;
+  }
+  
+  body.questions.classroom .questions-table th:nth-child(3),
+  body.questions.classroom .questions-table td:nth-child(3) {
+    width: 12%;
+  }
+  
+  body.questions.classroom .questions-table th:nth-child(4),
+  body.questions.classroom .questions-table td:nth-child(4) {
+    width: 18%;
+  }
+  
+  /* ブックマーク */
+  body.questions.classroom .bookmark-cell {
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  body.questions.classroom .bookmark-button {
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+    color: #333;
+    font-size: 25px;
+    cursor: pointer;
+  }
+  
+  body.questions.classroom .bookmark-button.bookmarked {
+    color: #f0ad00;
+  }
+  
+  body.questions.classroom .classroom-back {
+    margin-top: 20px;
+  }
+  
+  @media (max-width: 600px) {
+    body.questions.classroom .classroom-container {
+      padding: 12px;
+    }
+  
+    body.questions.classroom .classroom-header-item {
+      padding: 8px 4px;
+      font-size: 14px;
+    }
+  
+    body.questions.classroom .questions-table {
+      font-size: 14px;
+    }
+  
+    body.questions.classroom .questions-table th,
+    body.questions.classroom .questions-table td {
+      padding: 8px 5px;
+    }
+  
+    body.questions.classroom .questions-search-input {
+      width: 75%;
+    }
+  }
+  
+  
+/* 専用質問一覧の崩れを修正 */
+body.questions.classroom .classroom-container {
+    display: block !important;
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 30px !important;
+  }
+  
+  /* 各ブロックを縦に並べる */
+  body.questions.classroom .classroom-container > .classroom-header,
+  body.questions.classroom .classroom-container > .questions-search,
+  body.questions.classroom .classroom-container > .questions-table,
+  body.questions.classroom .classroom-container > .questions-pagination,
+  body.questions.classroom .classroom-container > .classroom-back {
+    display: block;
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: none !important;
+    float: none !important;
+    clear: both;
+  }
+  
+  /* ヘッダーは横3列 */
+  body.questions.classroom .classroom-container > .classroom-header {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 20px;
+  }
+  
+  /* 検索フォーム */
+  body.questions.classroom .classroom-search form,
+  body.questions.classroom .questions-search form {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* テーブルを通常の表として表示 */
+  body.questions.classroom table.questions-table {
+    display: table !important;
+    width: 100% !important;
+    max-width: none !important;
+    table-layout: fixed !important;
+    border-collapse: collapse;
+  }
+  
+  body.questions.classroom .questions-table thead {
+    display: table-header-group !important;
+  }
+  
+  body.questions.classroom .questions-table tbody {
+    display: table-row-group !important;
+  }
+  
+  body.questions.classroom .questions-table tr {
+    display: table-row !important;
+  }
+  
+  body.questions.classroom .questions-table th,
+  body.questions.classroom .questions-table td {
+    display: table-cell !important;
+    box-sizing: border-box;
+    float: none !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    vertical-align: middle;
+  }
+  
+  body.questions.classroom .questions-table th:nth-child(1),
+  body.questions.classroom .questions-table td:nth-child(1) {
+    width: 15% !important;
+  }
+  
+  body.questions.classroom .questions-table th:nth-child(2),
+  body.questions.classroom .questions-table td:nth-child(2) {
+    width: 55% !important;
+  }
+  
+  body.questions.classroom .questions-table th:nth-child(3),
+  body.questions.classroom .questions-table td:nth-child(3) {
+    width: 12% !important;
+  }
+  
+  body.questions.classroom .questions-table th:nth-child(4),
+  body.questions.classroom .questions-table td:nth-child(4) {
+    width: 18% !important;
+  }
+  
+  /* ページネーションを表の下に配置 */
+  body.questions.classroom .questions-pagination {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  
+/* 専用質問一覧の検索バーを短くする */
+body.questions.classroom .questions-search form {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  body.questions.classroom .questions-search-input {
+    flex: 0 1 480px !important;
+    width: 480px !important;
+    max-width: 60% !important;
+    min-width: 0;
+    height: 44px;
+    box-sizing: border-box;
+  }
+  
+  body.questions.classroom .questions-search-button {
+    flex: 0 0 auto;
+    width: auto !important;
+    min-width: 80px;
+    height: 44px;
+    padding: 8px 18px;
+    box-sizing: border-box;
+  }
   
