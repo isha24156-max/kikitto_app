@@ -27,17 +27,18 @@ class AnswersController < ApplicationController
   end
 
   
-def create
-  @answer = Answer.new(answer_params)
-
-  if @answer.save
-    redirect_to new_answer_path(question_id: @answer.question_id),
-                notice: "回答を投稿しました"
-  else
-    redirect_to new_answer_path(question_id: @answer.question_id),
-                alert: "回答を投稿できませんでした"
+  def create
+    @answer = Answer.new(answer_params)
+    @answer.user = current_user
+  
+    if @answer.save
+      redirect_to new_answer_path(question_id: @answer.question_id),
+                  notice: "回答を投稿しました"
+    else
+      redirect_to new_answer_path(question_id: @answer.question_id),
+                  alert: "回答を投稿できませんでした"
+    end
   end
-end
 
 
   def update

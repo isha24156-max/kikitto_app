@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resources :grades
 
   get "mypage/index"
+  get "teacher_mypage/index"
+
   # ログイン・ログアウト
   get    "/login",  to: "sessions#new"
   post   "/login",  to: "sessions#create"
@@ -25,4 +27,8 @@ Rails.application.routes.draw do
 
   # トップページ
   root "questions#index"
+
+  delete "teacher_mypage/:id",
+        to: "teacher_mypage#destroy_question",
+        as: :teacher_mypage_question
 end
