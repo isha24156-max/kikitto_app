@@ -6,12 +6,10 @@ class QuestionsController < ApplicationController
   def index
     @questions = Question.all
 
-    # 質問内容で検索
     if params[:q].present?
       keyword = ActiveRecord::Base.sanitize_sql_like(params[:q].strip)
       @questions = @questions.where(
-        "q_content LIKE ?",
-        "%#{keyword}%"
+        "q_content LIKE ?", "%#{keyword}%"
       )
     end
 
@@ -26,33 +24,14 @@ class QuestionsController < ApplicationController
 
   # 質問の新規作成画面
   def new
-    @grade = params[:grade]
-    @classroom = params[:classroom]
-    @subject_number = params[:subject]
-
     @question = Question.new
+    load_classroom_selection
 
-    if @grade.present? &&
-       @classroom.present? &&
-       @subject_number.present?
-
-      grade_record = Grade.find_by(g_number: @grade)
-      course_record = Course.find_by(c_number: @classroom)
-
-      if grade_record && course_record
-        @grade_course_subject = GradeCourseSubject.find_by(
-          grade_id: grade_record.id,
-          course_id: course_record.id,
-          subject_id: @subject_number
-        )
-
-        if @grade_course_subject
-          @question.grade_course_subject_id =
-            @grade_course_subject.id
-        end
-      end
+    if @grade_course_subject_id.present?
+      @question.grade_course_subject_id = @grade_course_subject_id
     end
   end
+
   # 質問の編集画面
   def edit
   end
@@ -60,12 +39,26 @@ class QuestionsController < ApplicationController
   # 質問の新規作成
   def create
     @question = Question.new(question_params)
+    load_classroom_selection
+
+    # 選択された学年・クラス・教科のIDを設定
+    if @grade_course_subject_id.present?
+      @question.grade_course_subject_id = @grade_course_subject_id
+    end
 
     respond_to do |format|
       if @question.save
         format.html do
-          redirect_to @question,
-                      notice: "質問を作成しました。"
+          if @grade_course_subject_id.present?
+            redirect_to classroom_questions_path(
+              grade: @grade,
+              classroom: @classroom,
+              subject: @subject_number
+            ), notice: "質問を作成しました。"
+          else
+            redirect_to questions_path,
+                        notice: "質問を作成しました。"
+          end
         end
 
         format.json do
@@ -75,8 +68,7 @@ class QuestionsController < ApplicationController
         end
       else
         format.html do
-          render :new,
-                 status: :unprocessable_entity
+          render :new, status: :unprocessable_entity
         end
 
         format.json do
@@ -133,11 +125,9 @@ class QuestionsController < ApplicationController
     end
   end
 
-  # 学年・クラス・教科ごとの専用質問一覧ページ
+  # 学年・クラス・教科ごとの専用質問一覧
   def classroom
-    @grade = params[:grade]
-    @classroom = params[:classroom]
-    @subject_number = params[:subject]
+    load_classroom_selection
 
     unless (1..3).cover?(@grade.to_i) &&
            (1..4).cover?(@classroom.to_i) &&
@@ -148,30 +138,55 @@ class QuestionsController < ApplicationController
       return
     end
 
+    if @grade_course_subject_id.present?
+      @questions = Question.where(
+        grade_course_subject_id: @grade_course_subject_id
+      )
+    else
+      @questions = Question.none
+    end
+
+    # 専用ページ内の検索
+    if params[:q].present?
+      keyword = ActiveRecord::Base.sanitize_sql_like(params[:q].strip)
+      @questions = @questions.where(
+        "q_content LIKE ?", "%#{keyword}%"
+      )
+    end
+
+    @questions = @questions.order(created_at: :desc)
+                           .page(params[:page])
+                           .per(15)
+  end
+
+  private
+
+  # 選択された学年・クラス・教科を取得
+  def load_classroom_selection
+    @grade = params[:grade]
+    @classroom = params[:classroom]
+    @subject_number = params[:subject]
+
+    @grade_course_subject = nil
+    @grade_course_subject_id = nil
+
+    return unless @grade.present? &&
+                  @classroom.present? &&
+                  @subject_number.present?
+
     grade_record = Grade.find_by(g_number: @grade)
     course_record = Course.find_by(c_number: @classroom)
 
-    if grade_record && course_record
-      combination = GradeCourseSubject.find_by(
-        grade_id: grade_record.id,
-        course_id: course_record.id,
-        subject_id: @subject_number
-      )
+    return unless grade_record && course_record
 
-      if combination
-        @questions = Question.where(
-          grade_course_subject_id: combination.id
-        ).order(created_at: :desc)
-         .page(params[:page])
-         .per(15)
-      else
-        @questions = Question.none.page(params[:page]).per(15)
-      end
-    else
-      @questions = Question.none.page(params[:page]).per(15)
-    end
+    @grade_course_subject = GradeCourseSubject.find_by(
+      grade_id: grade_record.id,
+      course_id: course_record.id,
+      subject_id: @subject_number
+    )
+
+    @grade_course_subject_id = @grade_course_subject&.id
   end
-  private
 
   # URLのIDから質問を取得
   def set_question
