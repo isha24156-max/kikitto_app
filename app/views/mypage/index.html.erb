@@ -27,52 +27,53 @@
                     </thead>
 
                     <tbody>
-                        <% @saved_questions.each do |question| %>
+                        <% @saved_bookmarks.each do |bookmark| %>
+                            <% question = bookmark.question %>
                             <tr>
                                 <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
-                                <td><%= question.q_content %></td>
                                 <td>
-                                    <button type="button" aria-label="ブックマーク">☆</button>
+                                    <%= link_to question.q_content,
+                                        new_answer_path(question_id: question.id) %>
                                 </td>
-                            </tr>
-                        <% end %>
-
-                        <% (5 - @saved_questions.length).times do %>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <button type="button"
+                                        class="unbookmark-button"
+                                        data-bookmark-id="<%= bookmark.id %>"
+                                        aria-label="ブックマークを外す">
+                                        ☆
+                                    </button>
+                                </td>
                             </tr>
                         <% end %>
                     </tbody>
                 </table>
 
-                <div class="pagination">
-                    <% if @saved_page > 1 %>
-                        <%= link_to "◁", mypage_index_path(
-                            saved_page: @saved_page - 1,
-                            my_page: @my_page
-                        ) %>
-                    <% else %>
-                        <span>◁</span>
-                    <% end %>
+                <% if @saved_total_pages >= 1 %>
+                    <div class="pagination">
+                        <% if @saved_page > 1 %>
+                            <%= link_to "◁", mypage_index_path(
+                                saved_page: @saved_page - 1,
+                                my_page: @my_page
+                            ) %>
+                        <% end %>
 
-                    <% (1..@saved_total_pages).each do |page| %>
-                        <%= link_to page, mypage_index_path(
-                            saved_page: page,
-                            my_page: @my_page
-                        ), class: (page == @saved_page ? "current-page" : "") %>
-                    <% end %>
+                        <% (1..@saved_total_pages).each do |page| %>
+                            <%= link_to page,
+                                mypage_index_path(
+                                    saved_page: page,
+                                    my_page: @my_page
+                                ),
+                                class: "page-number #{'current-page' if page == @saved_page}" %>
+                        <% end %>
 
-                    <% if @saved_page < @saved_total_pages %>
-                        <%= link_to "▷", mypage_index_path(
-                            saved_page: @saved_page + 1,
-                            my_page: @my_page
-                        ) %>
-                    <% else %>
-                        <span>▷</span>
-                    <% end %>
-                </div>
+                        <% if @saved_page < @saved_total_pages %>
+                            <%= link_to "▷", mypage_index_path(
+                                saved_page: @saved_page + 1,
+                                my_page: @my_page
+                            ) %>
+                        <% end %>
+                    </div>
+                <% end %>
 
             <% else %>
                 <p class="no-saved-questions">保存した質問はありません</p>
@@ -96,7 +97,10 @@
                         <% @my_questions.each do |question| %>
                             <tr>
                                 <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
-                                <td><%= question.q_content %></td>
+                                <td>
+                                    <%= link_to question.q_content,
+                                        new_answer_path(question_id: question.id) %>
+                                </td>
                                 <td>
                                     <button type="button"
                                         class="delete-button"
@@ -123,32 +127,34 @@
                     </tbody>
                 </table>
 
-                <div class="pagination">
-                    <% if @my_page > 1 %>
-                        <%= link_to "◁", mypage_index_path(
-                            saved_page: @saved_page,
-                            my_page: @my_page - 1
-                        ) %>
-                    <% else %>
-                        <span>◁</span>
-                    <% end %>
+                
+                <% if @my_total_pages >= 1 %>
+                    <div class="pagination">
+                        <% if @my_page > 1 %>
+                            <%= link_to "◁", mypage_index_path(
+                                saved_page: @saved_page,
+                                my_page: @my_page - 1
+                            ) %>
+                        <% end %>
 
-                    <% (1..@my_total_pages).each do |page| %>
-                        <%= link_to page, mypage_index_path(
-                            saved_page: @saved_page,
-                            my_page: page
-                        ), class: (page == @my_page ? "current-page" : "") %>
-                    <% end %>
+                        <% (1..@my_total_pages).each do |page| %>
+                            <%= link_to page,
+                                mypage_index_path(
+                                    saved_page: @saved_page,
+                                    my_page: page
+                                ),
+                                class: "page-number #{'current-page' if page == @my_page}" %>
+                        <% end %>
 
-                    <% if @my_page < @my_total_pages %>
-                        <%= link_to "▷", mypage_index_path(
-                            saved_page: @saved_page,
-                            my_page: @my_page + 1
-                        ) %>
-                    <% else %>
-                        <span>▷</span>
-                    <% end %>
-                </div>
+                        <% if @my_page < @my_total_pages %>
+                            <%= link_to "▷", mypage_index_path(
+                                saved_page: @saved_page,
+                                my_page: @my_page + 1
+                            ) %>
+                        <% end %>
+                    </div>
+                <% end %>
+
 
             <% else %>
                 <p class="no-my-questions">自分のした質問はありません</p>
@@ -172,6 +178,27 @@
             削除
             </button>
         <% end %>
+        </div>
+    </div>
+</div>
+
+
+<div id="unbookmark-modal" class="delete-modal" hidden>
+    <div class="delete-modal-content">
+        <p>ブックマークを<br>外しますか？</p>
+
+        <div class="delete-modal-buttons">
+            <button type="button" id="cancel-unbookmark">
+                キャンセル
+            </button>
+
+            <%= form_with url: bookmark_path(id: 0),
+                        method: :delete,
+                        id: "unbookmark-form" do %>
+                <button type="submit" class="confirm-delete">
+                    外す
+                </button>
+            <% end %>
         </div>
     </div>
 </div>
