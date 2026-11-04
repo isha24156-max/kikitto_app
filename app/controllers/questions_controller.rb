@@ -28,14 +28,14 @@ class QuestionsController < ApplicationController
     @question = Question.new
 
     if params[:grade].present? && params[:classroom].present? && params[:subject].present?
-      # カラム名を grade_id, course_id, subject_id に統一
       gcs = GradeCourseSubject.find_by(
         grade_id: params[:grade],
         course_id: params[:classroom],
         subject_id: params[:subject]
       )
 
-      @question.GradeCourseSub = gcs.id if gcs.present?
+      # ★ grade_course_subject_id に変更
+      @question.grade_course_subject_id = gcs.id if gcs.present?
     end
   end
 
@@ -50,7 +50,6 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       if @question.save
         format.html do
-          # 渡されたパラメータがあれば該当クラスの質問一覧へリダイレクト
           if params[:grade].present? && params[:classroom].present? && params[:subject].present?
             redirect_to classroom_questions_path(
               grade: params[:grade],
@@ -131,7 +130,6 @@ class QuestionsController < ApplicationController
     @classroom = params[:classroom]
     @subject_number = params[:subject]
 
-    # 選択された値が正しいか確認
     unless (1..3).cover?(@grade.to_i) &&
            (1..4).cover?(@classroom.to_i) &&
            (1..6).cover?(@subject_number.to_i)
@@ -141,27 +139,24 @@ class QuestionsController < ApplicationController
       return
     end
 
-    # 1. カラム名を grade_id, course_id, subject_id に統一して検索
     gcs = GradeCourseSubject.find_by(
       grade_id: @grade,
       course_id: @classroom,
       subject_id: @subject_number
     )
 
-    # 2. 接続IDが存在すればその質問のみを取得
+    # ★ grade_course_subject_id で指定
     @questions = if gcs.present?
-                   Question.where(GradeCourseSub: gcs.id)
+                   Question.where(grade_course_subject_id: gcs.id)
                  else
                    Question.none
                  end
 
-    # 3. 専用一覧画面でのキーワード検索処理
     if params[:q].present?
       keyword = ActiveRecord::Base.sanitize_sql_like(params[:q].strip)
       @questions = @questions.where("q_content LIKE ?", "%#{keyword}%")
     end
 
-    # 4. 並び替えとペジネーション
     @questions = @questions.order(created_at: :desc)
                            .page(params[:page])
                            .per(15)
@@ -169,7 +164,6 @@ class QuestionsController < ApplicationController
 
   private
 
-  # URLのIDから質問を取得
   def set_question
     @question = Question.find(params[:id])
   end
@@ -180,7 +174,7 @@ class QuestionsController < ApplicationController
       :deadline,
       :q_content,
       :user_id,
-      :GradeCourseSub
+      :grade_course_subject_id # ★ grade_course_subject_id に変更
     )
   end
 end

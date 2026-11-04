@@ -1,7 +1,9 @@
 <% content_for :title, "質問一覧" %>
 
+
 <div class="questions-container">
   <p class="questions-notice"><%= notice %></p>
+
 
   <div class="questions-header">
     <!-- 学年 -->
@@ -17,6 +19,7 @@
       </div>
     </div>
 
+
     <!-- クラス -->
     <div class="dropdown">
       <button type="button" class="dropdown-label">クラス ▼</button>
@@ -29,6 +32,7 @@
         <% end %>
       </div>
     </div>
+
 
     <!-- 教科 -->
     <div class="dropdown">
@@ -44,6 +48,7 @@
     </div>
   </div>
 
+
   <!-- 確認画面（モーダル） -->
   <div id="class-confirm-modal"
        class="class-confirm-modal"
@@ -51,6 +56,7 @@
     <div class="class-confirm-box">
       <h2>クラスの確認</h2>
       <p id="class-confirm-message"></p>
+
 
       <div class="class-confirm-buttons">
         <button type="button" id="class-cancel">
@@ -62,6 +68,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- 質問検索 -->
   <form class="questions-search"
@@ -78,22 +85,28 @@
   </form>
 </div>
 
+
 <script>
 let selectedGrade = null;
 let selectedClassroom = null;
 let selectedSubject = null;
 
+
 function selectOption(button, category, number) {
   const dropdown = button.closest(".dropdown");
   const label = dropdown.querySelector(".dropdown-label");
 
+
   label.textContent = button.textContent.trim() + " ▼";
+
 
   dropdown.querySelectorAll(".dropdown-menu button").forEach((item) => {
     item.classList.remove("selected");
   });
 
+
   button.classList.add("selected");
+
 
   if (category === "grade") {
     selectedGrade = number;
@@ -103,19 +116,23 @@ function selectOption(button, category, number) {
     selectedSubject = number;
   }
 
+
   // 3つすべて選択されたら確認画面（モーダル）を表示
   if (selectedGrade && selectedClassroom && selectedSubject) {
     document.getElementById("class-confirm-message").textContent =
       `あなたは${selectedGrade}年${selectedClassroom}組の教科${selectedSubject}のクラスに入りますか？`;
 
+
     document.getElementById("class-confirm-modal").hidden = false;
   }
 }
+
 
 // キャンセルを押したらモーダルを閉じる
 document.getElementById("class-cancel")?.addEventListener("click", () => {
   document.getElementById("class-confirm-modal").hidden = true;
 });
+
 
 // OKを押したら指定した部屋（専用一覧画面）へ遷移
 document.getElementById("class-ok")?.addEventListener("click", () => {
@@ -124,6 +141,7 @@ document.getElementById("class-ok")?.addEventListener("click", () => {
     classroom: selectedClassroom,
     subject: selectedSubject
   });
+
 
   window.location.href = `/questions/classroom?${params.toString()}`;
 });

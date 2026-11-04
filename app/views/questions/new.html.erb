@@ -1,15 +1,19 @@
 <% content_for :title, "質問追加" %>
 
+
 <h1>質問追加</h1>
 
+
 <%# grade, classroom, subject の各パラメータを form に渡す %>
-<%= render "form", 
-           question: @question, 
-           grade: params[:grade], 
-           classroom: params[:classroom], 
+<%= render "form",
+           question: @question,
+           grade: params[:grade],
+           classroom: params[:classroom],
            subject: params[:subject] %>
 
+
 <br>
+
 
 <div>
   <% if params[:grade].present? &&

@@ -1,8 +1,7 @@
-<%= form_with(model: question) do |form| %>
+<%= form_with(model: question, local: true) do |form| %>
   <% if question.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(question.errors.count, "error") %> prohibited this question from being saved:</h2>
-
+      <h2>質問を保存できませんでした。</h2>
       <ul>
         <% question.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,30 +10,42 @@
     </div>
   <% end %>
 
-  <%# 1. 元のクラス一覧へ戻るためのパラメータ保持 %>
+  <%# 元の専用部屋へ戻るためのパラメータ保持 %>
   <%= hidden_field_tag :grade, params[:grade] %>
   <%= hidden_field_tag :classroom, params[:classroom] %>
   <%= hidden_field_tag :subject, params[:subject] %>
 
-  <%# 2. 接続ID（GradeCourseSub）を hidden フィールドで自動送信 %>
-  <%= form.hidden_field :GradeCourseSub %>
+  <%# 接続ID（grade_course_subject_id）を自動送信 %>
+  <%= form.hidden_field :grade_course_subject_id %>
+
+  <!-- ★ 対象クラスの表示を最上部に移動 -->
+  <% if params[:grade].present? && params[:classroom].present? && params[:subject].present? %>
+    <p style="font-size: 1.1em; margin-bottom: 15px;">
+      <strong>対象クラス：</strong>
+      <%= params[:grade] %>年 <%= params[:classroom] %>組 教科<%= params[:subject] %>
+    </p>
+  <% end %>
 
   <div>
-    <%= form.label :deadline, "質問日", style: "display: block" %>
+    <%= form.label :deadline, "日付", style: "display: block" %>
     <%= form.date_field :deadline %>
   </div>
+
+  <br>
 
   <div>
     <%= form.label :q_content, "質問内容", style: "display: block" %>
     <%= form.text_area :q_content %>
   </div>
 
+  <br>
+
   <div>
     <%= form.label :user_id, "ユーザーID", style: "display: block" %>
     <%= form.number_field :user_id %>
   </div>
 
-  <%# 接続IDはhiddenで送信するため、手入力用の subject_id は削除（またはコメントアウト） %>
+  <br>
 
   <div>
     <%= form.submit "質問を投稿する" %>
