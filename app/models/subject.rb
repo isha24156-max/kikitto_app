@@ -3,5 +3,5 @@ class Subject < ApplicationRecord
   has_many :grades, -> { distinct }, through: :grade_course_subjects
   has_many :courses, -> { distinct }, through: :grade_course_subjects
 
-  validates :name, presence: true, uniqueness: true
+  validates :subject_name, presence: true, uniqueness: true
 end
