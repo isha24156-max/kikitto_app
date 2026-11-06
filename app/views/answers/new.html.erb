@@ -1,10 +1,12 @@
+
 <div class="answers-page">
 
   <!-- ヘッダー -->
   <header class="kikitto-header">
-    <%= link_to "←", :back, class: "back-button" %>
-    <h1>Kikitto</h1>
-  </header>
+  <%= link_to "←", root_path, class: "back-button" %>
+
+  <h1>Kikitto</h1>
+</header>
 
   <!-- 質問内容 -->
   <section class="question-area">
@@ -27,8 +29,9 @@
     <table class="answer-table">
       <thead>
         <tr>
-          <th>日付</th>
+          <th class="date-column">日付</th>
           <th>回答内容</th>
+          <th class="delete-column">操作</th>
         </tr>
       </thead>
 
@@ -36,19 +39,37 @@
 
         <% @answers.each do |answer| %>
           <tr class="answer-row">
+
+            <!-- 日付 -->
             <td>
               <%= answer.created_at.strftime("%m/%d") if answer.created_at %>
             </td>
 
-            <td>
+            <!-- 回答内容 -->
+            <td class="answer-content-cell">
               <%= simple_format(answer.ans_content) %>
             </td>
+
+            <!-- 削除ボタン -->
+            <td class="delete-column">
+
+              <%= button_to "削除",
+                  answer_path(answer),
+                  method: :delete,
+                  data: {
+                    turbo_confirm: "この回答を削除してもよろしいですか？"
+                  },
+                  class: "delete-answer-button" %>
+
+            </td>
+
           </tr>
         <% end %>
 
+        <!-- 回答がない場合 -->
         <% if @answers.empty? %>
           <tr class="empty-row">
-            <td colspan="2" class="empty-message">
+            <td colspan="3" class="empty-message">
               まだありません
             </td>
           </tr>
@@ -129,6 +150,7 @@
 
 </div>
 
+
 <script>
 (function () {
 
@@ -146,24 +168,36 @@
 
   window.answersPageController = controller;
 
+
   // =====================================
   // ページの初期化
   // =====================================
 
   function initializeAnswersPage() {
 
-    // Turboのプレビュー画面では実行しない
-    if (document.documentElement.hasAttribute("data-turbo-preview")) {
+    // Turboプレビューでは実行しない
+    if (
+      document.documentElement.hasAttribute(
+        "data-turbo-preview"
+      )
+    ) {
       return;
     }
+
 
     // =====================================
     // 回答フォームの開閉
     // =====================================
 
-    const openButton = document.getElementById("open-answer");
-    const closeButton = document.getElementById("close-answer");
-    const formArea = document.getElementById("answer-form-area");
+    const openButton =
+      document.getElementById("open-answer");
+
+    const closeButton =
+      document.getElementById("close-answer");
+
+    const formArea =
+      document.getElementById("answer-form-area");
+
 
     if (openButton && formArea) {
 
@@ -173,15 +207,14 @@
       };
 
       if (closeButton) {
-
         closeButton.onclick = function () {
           formArea.hidden = true;
           openButton.hidden = false;
         };
-
       }
 
     }
+
 
     // =====================================
     // ページ切り替え
@@ -202,6 +235,7 @@
     const nextButton =
       document.getElementById("next-page");
 
+
     if (
       !pageNumbersArea ||
       !prevButton ||
@@ -210,14 +244,16 @@
       return;
     }
 
+
     // =====================================
     // 1ページに表示する回答数
     // =====================================
 
     const rowsPerPage = 14;
 
+
     // =====================================
-    // 回答数からページ数を計算
+    // ページ数を計算
     // =====================================
 
     const totalPages = Math.max(
@@ -227,11 +263,13 @@
 
     let currentPage = 1;
 
+
     // =====================================
     // ページ番号をリセット
     // =====================================
 
     pageNumbersArea.innerHTML = "";
+
 
     // =====================================
     // ページ番号を作成
@@ -243,26 +281,24 @@
       page++
     ) {
 
-      const button = document.createElement("button");
+      const button =
+        document.createElement("button");
 
       button.type = "button";
       button.className = "page-number";
-
       button.textContent = page;
       button.dataset.page = page;
 
-      // ページ番号を押したとき
       button.onclick = function () {
-
         changePage(
           Number(this.dataset.page)
         );
-
       };
 
       pageNumbersArea.appendChild(button);
 
     }
+
 
     // =====================================
     // ページ切り替え
@@ -270,7 +306,6 @@
 
     function changePage(page) {
 
-      // ページ範囲を確認
       if (
         page < 1 ||
         page > totalPages
@@ -280,10 +315,8 @@
 
       currentPage = page;
 
-      // =====================================
-      // 回答を表示・非表示
-      // =====================================
 
+      // 回答を表示・非表示
       answerRows.forEach(function (row, index) {
 
         const rowPage =
@@ -294,10 +327,8 @@
 
       });
 
-      // =====================================
-      // ページ番号の選択状態
-      // =====================================
 
+      // ページ番号の選択状態
       const pageButtons =
         pageNumbersArea.querySelectorAll(
           ".page-number"
@@ -320,10 +351,8 @@
 
       });
 
-      // =====================================
-      // 前後ボタン
-      // =====================================
 
+      // 前後ボタン
       prevButton.disabled =
         currentPage === 1;
 
@@ -332,25 +361,24 @@
 
     }
 
+
     // =====================================
     // 前のページ
     // =====================================
 
     prevButton.onclick = function () {
-
       changePage(currentPage - 1);
-
     };
+
 
     // =====================================
     // 次のページ
     // =====================================
 
     nextButton.onclick = function () {
-
       changePage(currentPage + 1);
-
     };
+
 
     // =====================================
     // 最初のページを表示
@@ -360,6 +388,7 @@
 
   }
 
+
   // =====================================
   // Turbo読み込み
   // =====================================
@@ -368,6 +397,7 @@
     "turbo:load",
     initializeAnswersPage
   );
+
 
   // =====================================
   // コントローラーの終了処理
@@ -392,6 +422,7 @@
     const nextButton =
       document.getElementById("next-page");
 
+
     if (openButton) {
       openButton.onclick = null;
     }
@@ -408,13 +439,12 @@
       nextButton.onclick = null;
     }
 
+
     const pageNumbersArea =
       document.getElementById("page-numbers");
 
     if (pageNumbersArea) {
-
       pageNumbersArea.innerHTML = "";
-
     }
 
   };
