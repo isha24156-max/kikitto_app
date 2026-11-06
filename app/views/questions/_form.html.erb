@@ -1,3 +1,4 @@
+
 <%= form_with(model: question, local: true) do |form| %>
   <% if question.errors.any? %>
     <div style="color: red">
@@ -10,29 +11,14 @@
     </div>
   <% end %>
 
-  <%# それぞれの専用クラスルームに戻るためのパラメータ保持 %>
+  <%# 専用クラスルームに戻るためのパラメータ保持 %>
   <%= hidden_field_tag :grade, params[:grade] || (defined?(grade) ? grade : nil) %>
   <%= hidden_field_tag :classroom, params[:classroom] || (defined?(classroom) ? classroom : nil) %>
   <%= hidden_field_tag :subject, params[:subject] || (defined?(subject) ? subject : nil) %>
 
-  <!-- 入力フォーム項目 (日付、質問内容、ユーザーIDなど) -->
-  <div>
-    <%= form.label :deadline, "日付", style: "display: block" %>
-    <%= form.date_field :deadline %>
-  </div>
-
-  <br>
-
   <div>
     <%= form.label :q_content, "質問内容", style: "display: block" %>
     <%= form.text_area :q_content %>
-  </div>
-
-  <br>
-
-  <div>
-    <%= form.label :user_id, "ユーザーID", style: "display: block" %>
-    <%= form.number_field :user_id %>
   </div>
 
   <br>

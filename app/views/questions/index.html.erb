@@ -35,17 +35,24 @@
 
 
     <!-- 教科 -->
-    <div class="dropdown">
-      <button type="button" class="dropdown-label">教科 ▼</button>
-      <div class="dropdown-menu">
-        <% (1..6).each do |n| %>
-          <button type="button"
-                  onclick="selectOption(this, 'subject', '<%= n %>')">
-            教科<%= n %>
-          </button>
-        <% end %>
-      </div>
-    </div>
+    <!-- 教科 -->
+<div class="dropdown">
+  <button type="button" class="dropdown-label">教科 ▼</button>
+
+  <div class="dropdown-menu">
+    <% (1..6).each do |n| %>
+      <% subject = Subject.find_by(id: n) %>
+      <% subject_name = subject&.subiect_name || "教科未登録" %>
+
+      <button
+        type="button"
+        data-subject-name="<%= subject_name %>"
+        onclick="selectOption(this, 'subject', '<%= n %>')">
+        <%= subject_name %>
+      </button>
+    <% end %>
+  </div>
+</div>
   </div>
 
 
@@ -90,6 +97,7 @@
 let selectedGrade = null;
 let selectedClassroom = null;
 let selectedSubject = null;
+let selectedSubjectName = null;
 
 
 function selectOption(button, category, number) {
@@ -113,16 +121,15 @@ function selectOption(button, category, number) {
   } else if (category === "classroom") {
     selectedClassroom = number;
   } else if (category === "subject") {
-    selectedSubject = number;
-  }
+  selectedSubject = number;
+  selectedSubjectName = button.dataset.subjectName;
+}
 
 
   // 3つすべて選択されたら確認画面（モーダル）を表示
   if (selectedGrade && selectedClassroom && selectedSubject) {
     document.getElementById("class-confirm-message").textContent =
-      `あなたは${selectedGrade}年${selectedClassroom}組の教科${selectedSubject}のクラスに入りますか？`;
-
-
+     `あなたは${selectedGrade}年${selectedClassroom}組の${selectedSubjectName}のクラスに入りますか？`;
     document.getElementById("class-confirm-modal").hidden = false;
   }
 }
