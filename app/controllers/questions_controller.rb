@@ -140,26 +140,31 @@ end
     @question = Question.find(params[:id])
   end
 
-  # パラメータから紐付けデータを判定する共通処理
-  def load_classroom_selection
-    @grade = params[:grade]
-    @classroom = params[:classroom]
-    @subject_number = params[:subject] || params[:subject_number]
+# パラメータから紐付けデータを判定する共通処理
+# パラメータから紐付けデータを判定する共通処理
+def load_classroom_selection
+  @grade = params[:grade]
+  @classroom = params[:classroom]
+  @subject_number = params[:subject] || params[:subject_number]
+  @subject = Subject.find_by(id: @subject_number)
 
-    return if @grade.blank? || @classroom.blank? || @subject_number.blank?
+  # 教科番号から教科名を取得
+  @subject_record = Subject.find_by(id: @subject_number)
 
-    grade_record = Grade.find_by(g_number: @grade)
-    course_record = Course.find_by(c_number: @classroom)
+  return if @grade.blank? || @classroom.blank? || @subject_number.blank?
 
-    if grade_record && course_record
-      # 紐付けレコードを検索（存在しない場合は自動作成してIDを保証）
-      @grade_course_subject = GradeCourseSubject.find_or_create_by(
-        grade_id: grade_record.id,
-        course_id: course_record.id,
-        subject_id: @subject_number
-      )
-    end
+  grade_record = Grade.find_by(g_number: @grade)
+  course_record = Course.find_by(c_number: @classroom)
+
+  if grade_record && course_record
+    # 紐付けレコードを検索
+    @grade_course_subject = GradeCourseSubject.find_or_create_by(
+      grade_id: grade_record.id,
+      course_id: course_record.id,
+      subject_id: @subject_number
+    )
   end
+end
 
   def question_params
     params.require(:question).permit(
