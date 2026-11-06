@@ -157,35 +157,36 @@ document.addEventListener("turbo:load", () => {
     });
 
     renderPagination();
-});
+
 
 // =====================================
 // 先生側の質問削除モーダル
 // =====================================
 
-const teacherDeleteModal =
-    document.getElementById("teacher-delete-modal");
+    const teacherDeleteModal =
+        document.getElementById("teacher-delete-modal");
 
-const teacherCancelDelete =
-    document.getElementById("teacher-cancel-delete");
+    const teacherCancelDelete =
+        document.getElementById("teacher-cancel-delete");
 
-const teacherDeleteForm =
-    document.getElementById("teacher-delete-form");
+    const teacherDeleteForm =
+        document.getElementById("teacher-delete-form");
 
-if (teacherDeleteModal && teacherCancelDelete && teacherDeleteForm) {
+    if (teacherDeleteModal && teacherCancelDelete && teacherDeleteForm) {
 
-    document.querySelectorAll(".teacher-delete-button").forEach((button) => {
-        button.addEventListener("click", () => {
+        document.querySelectorAll(".teacher-delete-button").forEach((button) => {
+            button.addEventListener("click", () => {
 
-            const questionId = button.dataset.questionId;
+                const questionId = button.dataset.questionId;
 
-            teacherDeleteForm.action = `/teacher_mypage/${questionId}`;
+                teacherDeleteForm.action = `/teacher_mypage/${questionId}`;
 
-            teacherDeleteModal.hidden = false;
+                teacherDeleteModal.hidden = false;
+            });
         });
-    });
 
-    teacherCancelDelete.addEventListener("click", () => {
-        teacherDeleteModal.hidden = true;
-    });
-}
+        teacherCancelDelete.addEventListener("click", () => {
+            teacherDeleteModal.hidden = true;
+        });
+    }
+});
