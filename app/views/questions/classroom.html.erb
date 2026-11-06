@@ -2,6 +2,20 @@
 <% content_for :title, "専用質問一覧" %>
 
 <div class="questions-container classroom-container">
+
+  <!-- マイページボタン -->
+  <%= link_to mypage_index_path,
+      class: "mypage-icon-button",
+      aria: { label: "マイページへ" },
+      title: "マイページ" do %>
+
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="8" r="4"></circle>
+      <path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"></path>
+    </svg>
+
+  <% end %>
+
   <p class="questions-notice"><%= notice %></p>
 
   <!-- 学年・クラス・教科 -->
@@ -9,12 +23,15 @@
     <div class="classroom-header-item">
       <%= @grade %>年
     </div>
+
     <div class="classroom-header-item">
       <%= @classroom %>組
     </div>
+
     <div class="classroom-header-item">
-  <%= @subject&.subiect_name || "教科未登録" %>
-</div>
+      <%= @subject&.subject_name || "教科未登録" %>
+    </div>
+
   </div>
 
   <!-- 検索欄 -->
@@ -46,19 +63,25 @@
     <tbody>
       <% @questions.each do |question| %>
         <tr>
-          <td><%= question.deadline %></td>
-
           <td>
-            <%= question.q_content %>
-            <div class="question-link">
-              <%= link_to "この質問を見る", question_path(question) %>
-            </div>
+            <%= question.deadline %>
           </td>
 
+          <!-- 質問内容をクリックすると個別画面へ移動 -->
           <td>
-            <%= link_to "回答する", new_answer_path(question_id: question.id) %>
+            <%= link_to question_path(question),
+                class: "question-content-link" do %>
+              <%= question.q_content %>
+            <% end %>
           </td>
 
+          <!-- 回答する -->
+          <td>
+            <%= link_to "回答する",
+                new_answer_path(question_id: question.id) %>
+          </td>
+
+          <!-- ブックマーク -->
           <td class="bookmark-cell">
             <% if logged_in? %>
               <% bookmark = current_user.bookmarks.find_by(
@@ -80,7 +103,8 @@
                     title: "ブックマークに保存" %>
               <% end %>
             <% else %>
-              <%= link_to "☆", login_path, title: "ログインして保存" %>
+              <%= link_to "☆", login_path,
+                  title: "ログインして保存" %>
             <% end %>
           </td>
         </tr>
@@ -107,19 +131,20 @@
         } %>
   </div>
 
+  <!-- 質問一覧に戻る -->
   <div class="classroom-back">
     <%= link_to "質問一覧に戻る", questions_path %>
   </div>
 
-  
-<div class="questions-add">
-  <%= link_to "+",
-      new_question_path(
-        grade: @grade,
-        classroom: @classroom,
-        subject: @subject_number
-      ),
-      aria: { label: "質問を追加" } %>
-</div>
+  <!-- 質問追加ボタン -->
+  <div class="questions-add">
+    <%= link_to "+",
+        new_question_path(
+          grade: @grade,
+          classroom: @classroom,
+          subject: @subject_number
+        ),
+        aria: { label: "質問を追加" } %>
+  </div>
 
 </div>

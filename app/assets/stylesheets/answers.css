@@ -468,3 +468,31 @@
     gap: 10px;
   }
 }
+
+/* 削除ボタンの列 */
+.answer-table .delete-column {
+  width: 90px;
+  text-align: center;
+}
+
+/* 削除ボタン */
+.delete-answer-button {
+  background-color: #e57373;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+/* マウスを乗せたとき */
+.delete-answer-button:hover {
+  background-color: #d32f2f;
+}
+
+/* 削除ボタンのフォーム */
+.answer-table td form {
+  margin: 0;
+}

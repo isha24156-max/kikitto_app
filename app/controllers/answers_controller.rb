@@ -1,3 +1,4 @@
+
 class AnswersController < ApplicationController
   before_action :set_answer, only: %i[show edit update destroy]
 
@@ -11,12 +12,12 @@ class AnswersController < ApplicationController
 
   def new
     @answer = Answer.new
-  
+
     if params[:question_id].present?
       @question = Question.find(params[:question_id])
-  
-      @answers = Answer.where(question_id: params[:question_id])
-                        .order(created_at: :desc)
+
+      @answers = Answer.where(question_id: @question.id)
+                       .order(created_at: :desc)
     else
       @question = nil
       @answers = Answer.none
@@ -26,20 +27,20 @@ class AnswersController < ApplicationController
   def edit
   end
 
-  
+
   def create
     @answer = Answer.new(answer_params)
-    @answer.user = current_user
-  
+
     if @answer.save
       redirect_to new_answer_path(question_id: @answer.question_id),
-                  notice: "回答を投稿しました"
+                  notice: "回答を投稿しました",
+                  status: :see_other
     else
       redirect_to new_answer_path(question_id: @answer.question_id),
-                  alert: "回答を投稿できませんでした"
+                  alert: "回答を投稿できませんでした",
+                  status: :see_other
     end
   end
-
 
   def update
     if @answer.update(answer_params)
@@ -52,9 +53,11 @@ class AnswersController < ApplicationController
   end
 
   def destroy
+    question_id = @answer.question_id
+
     @answer.destroy!
 
-    redirect_to answers_path,
+    redirect_to new_answer_path(question_id: question_id),
                 notice: "回答を削除しました。",
                 status: :see_other
   end
