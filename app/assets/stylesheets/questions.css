@@ -833,3 +833,185 @@ body.questions.classroom .questions-search form {
     box-sizing: border-box;
   }
   
+  /* マイページボタン */
+body.questions.index .questions-container {
+  position: relative;
+}
+
+body.questions.index .mypage-icon-button {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4285ee;
+  border-radius: 50%;
+  text-decoration: none;
+  z-index: 100;
+  transition: 0.2s;
+}
+
+body.questions.index .mypage-icon-button:hover {
+  background-color: #286bd0;
+  transform: scale(1.08);
+}
+
+body.questions.index .mypage-icon-button svg {
+  width: 27px;
+  height: 27px;
+  fill: none;
+  stroke: white;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mypage-icon-button {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  z-index: 1000;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4285ee;
+  border-radius: 50%;
+  text-decoration: none;
+}
+
+.mypage-icon-button:hover {
+  background-color: #286bd0;
+}
+
+.mypage-icon-button svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: white;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 質問一覧の配置 */
+body.questions.index .questions-container {
+  position: relative;
+  padding-top: 65px;
+}
+
+/* マイページボタン */
+body.questions.index .mypage-icon-button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  background-color: #4285ee;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 10;
+  text-decoration: none;
+}
+
+/* 人型アイコン */
+body.questions.index .mypage-icon-button svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: white;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 質問内容を左寄せにする */
+body.questions.classroom .questions-table td:nth-child(2) {
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+
+/* 質問内容のクリック範囲 */
+body.questions.classroom .question-content-link {
+  display: flex;
+  width: 100%;
+  min-height: 35px;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  color: #222;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* マウスを乗せたとき */
+body.questions.classroom .question-content-link:hover {
+  color: #4285ee;
+  text-decoration: underline;
+}
+
+/* 質問一覧・専用質問一覧のマイページボタン */
+body.questions.index .mypage-icon-button,
+body.questions.classroom .mypage-icon-button {
+    position: fixed;
+    top: 15px;
+    right: 25px;
+    z-index: 1000;
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #4285ee;
+    border-radius: 50%;
+    text-decoration: none;
+
+    transition: 0.2s;
+}
+
+/* マウスを乗せたとき */
+body.questions.index .mypage-icon-button:hover,
+body.questions.classroom .mypage-icon-button:hover {
+    background-color: #286bd0;
+    transform: scale(1.08);
+}
+
+/* 人型アイコン */
+body.questions.index .mypage-icon-button svg,
+body.questions.classroom .mypage-icon-button svg {
+    width: 26px;
+    height: 26px;
+
+    fill: none;
+    stroke: white;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* 専用質問一覧の上部に余白を追加 */
+body.questions.classroom .classroom-container {
+  padding-top: 75px !important;
+}
+
+/* マイページボタンの位置 */
+body.questions.classroom .mypage-icon-button {
+  position: fixed;
+  top: 15px;
+  right: 25px;
+  z-index: 1000;
+}
