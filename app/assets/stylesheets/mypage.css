@@ -1,264 +1,394 @@
-.mypage-container {
-    height: 100vh;
-    overflow: hidden;
-}
 
 /* ==========================
-    マイページ全体
+   マイページ全体
 ========================== */
+
 .mypage-container {
     width: 100%;
     min-height: 100vh;
-    background-color: #ffffff;
-    color: #000000;
-    font-family: sans-serif;
+    background-color: #f2f7fc;
+    color: #26384d;
+    font-family: "Noto Sans JP", sans-serif;
     box-sizing: border-box;
-    border: 1px solid #777777;
 }
 
 /* ==========================
-    上部の青いバー
+   上部のヘッダー
 ========================== */
+
 .mypage-topbar {
     height: 80px;
-    background-color: #4285f4;
-    border-bottom: 1px solid #333333;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2eaf3;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 18px;
+    padding: 0 30px;
     box-sizing: border-box;
+    box-shadow: 0 2px 8px rgba(40, 80, 120, 0.05);
 }
 
 .back-button {
-    color: #ffffff;
+    color: #397fc7;
     font-size: 34px;
     text-decoration: none;
     line-height: 1;
+    transition: opacity 0.2s;
+}
+
+.back-button:hover {
+    opacity: 0.65;
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 50px;
-    color: #ffffff;
-    font-size: 20px;
+    gap: 45px;
+    margin-left: auto;
+    color: #38536f;
+    font-size: 17px;
 }
 
 .app-logo {
-    font-size: 40px;
-    font-weight: normal;
+    font-size: 36px;
+    font-weight: bold;
+    color: #245b91;
 }
 
 /* ==========================
-    左右の質問一覧
+   質問一覧全体
 ========================== */
+
 .questions-container {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    gap: 30px;
-    padding: 44px 38px 24px;
+    gap: 28px;
+    padding: 45px 32px 40px;
     box-sizing: border-box;
 }
 
-/* 質問一覧全体を下げる */
-.mypage-container .questions-container {
-    padding-top: 60px !important;
-}
+/* ==========================
+   左右のカード
+========================== */
 
 .saved-questions,
 .my-questions {
     flex: 1 1 0;
     min-width: 0;
     position: relative;
-    padding-bottom: 65px;
-}
-
-/* 見出し */
-.saved-questions h2,
-.my-questions h2 {
-    font-size: 21px;
-    font-weight: normal;
-    margin: 0 0 2px 24px;
+    padding: 28px 24px 85px;
+    background-color: #ffffff;
+    border: 1px solid #e3ebf4;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(50, 90, 130, 0.07);
+    box-sizing: border-box;
+    min-height: 0;
 }
 
 /* ==========================
-    テーブル
+   見出し
 ========================== */
+
+.saved-questions h2,
+.my-questions h2 {
+    font-size: 23px;
+    font-weight: bold;
+    color: #294b6d;
+    margin: 0 0 24px 0;
+    padding-left: 12px;
+    border-left: 5px solid #4285f4;
+}
+
+/* ==========================
+   テーブル
+========================== */
+
 .saved-questions table,
 .my-questions table {
     width: 100%;
-    height: 0;
     table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
-    font-size: 22px;
+    font-size: 17px;
 }
 
-/* 表の四隅を丸くする */
-.saved-questions th:first-child,
-.my-questions th:first-child {
-    border-top-left-radius: 8px;
-}
+/* 見出し・データ行 */
 
-.saved-questions th:last-child,
-.my-questions th:last-child {
-    border-top-right-radius: 8px;
-}
-
-.saved-questions tbody tr:last-child td:first-child,
-.my-questions tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 8px;
-}
-
-.saved-questions tbody tr:last-child td:last-child,
-.my-questions tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 8px;
-}
-
-/* 見出し・データ行の共通設定 */
 .saved-questions th,
 .saved-questions td,
 .my-questions th,
 .my-questions td {
-    height: 40px;
-    padding: 3px 6px;
+    height: 48px;
+    padding: 8px 10px;
     box-sizing: border-box;
     vertical-align: middle;
     text-align: left;
-    font-size: 22px;
+    font-size: 16px;
     font-weight: normal;
-    border: 1px solid #a6a6a6;
+    border-right: 1px solid #e2eaf2;
+    border-bottom: 1px solid #e2eaf2;
     white-space: nowrap;
 }
 
-/* 見出し行 */
+/* 左端の枠線 */
+
+.saved-questions th:first-child,
+.saved-questions td:first-child,
+.my-questions th:first-child,
+.my-questions td:first-child {
+    border-left: 1px solid #e2eaf2;
+}
+
+/* 上端の枠線 */
+
 .saved-questions th,
 .my-questions th {
-    padding: 3px 10px;
-    height: 38px;
-    background-color: #d9d9d9;
+    border-top: 1px solid #e2eaf2;
+}
+
+/* 見出し行 */
+
+.saved-questions th,
+.my-questions th {
+    height: 48px;
+    background-color: #e8f3ff;
+    color: #315b83;
+    font-weight: bold;
 }
 
 /* データ行 */
+
 .saved-questions td,
 .my-questions td {
-    padding: 3px 6px;
-    height: 50px;
+    height: 58px;
+    background-color: #ffffff;
+    color: #34495e;
 }
 
-/* 日付列 */
+/* 行にカーソルを合わせたとき */
+
+.saved-questions tbody tr:hover td,
+.my-questions tbody tr:hover td {
+    background-color: #f5faff;
+}
+
+/* ==========================
+   表の角を丸くする
+========================== */
+
+.saved-questions th:first-child,
+.my-questions th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.saved-questions th:last-child,
+.my-questions th:last-child {
+    border-top-right-radius: 10px;
+}
+
+.saved-questions tbody tr:last-child td:first-child,
+.my-questions tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.saved-questions tbody tr:last-child td:last-child,
+.my-questions tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+/* ==========================
+   日付列
+========================== */
+
 .saved-questions th:first-child,
 .saved-questions td:first-child,
 .my-questions th:first-child,
 .my-questions td:first-child {
     width: 115px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: clip;
-    font-size: 20px;
 }
 
-/* 保存した質問：ブックマーク列 */
-.saved-questions th:last-child,
-.saved-questions td:last-child {
-    width: 140px;
-    text-align: center;
-}
+/* ==========================
+   内容列
+========================== */
 
-/* ブックマーク見出しは全文表示 */
-.saved-questions th:last-child {
-    white-space: normal;
-    overflow-wrap: anywhere;
-    font-size: 18px;
-}
-
-/* 自分の質問：削除列 */
-.my-questions th:last-child,
-.my-questions td:last-child {
-    width: 85px;
-    text-align: center;
-}
-
-/* 内容列 */
 .saved-questions td:nth-child(2),
 .my-questions td:nth-child(2) {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* ブックマークボタン */
+/* 質問内容のリンク */
+
+.questions-container td a {
+    color: #26384d;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.questions-container td a:hover {
+    color: #287bd0;
+    text-decoration: underline;
+}
+
+/* ==========================
+   ブックマーク列
+========================== */
+
+.saved-questions th:last-child,
+.saved-questions td:last-child {
+    width: 110px;
+    text-align: center;
+}
+
+.saved-questions th:last-child {
+    white-space: normal;
+    font-size: 15px;
+}
+
 .saved-questions button {
     color: #4285f4;
     background: transparent;
     border: none;
-    font-size: 30px;
+    font-size: 29px;
     cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
 }
 
-/* 削除ボタン */
-.my-questions td button {
-    color: #ff0000;
-    background: transparent;
-    border: none;
-    font-size: 22px;
-    cursor: pointer;
+.saved-questions button:hover {
+    color: #2369c5;
+    transform: scale(1.12);
 }
 
 /* ==========================
-    ページ移動
+   削除列
 ========================== */
+
+.my-questions th:last-child,
+.my-questions td:last-child {
+    width: 85px;
+    text-align: center;
+}
+
+/* ゴミ箱ボタン */
+.my-questions td button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 38px;
+    height: 38px;
+    padding: 5px;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+/* ゴミ箱アイコン */
+.my-questions td button svg {
+    width: 23px;
+    height: 23px;
+    stroke: #e47782;
+}
+
+/* カーソルを合わせたとき */
+.my-questions td button:hover {
+    background-color: #fff0f1;
+    transform: scale(1.08);
+}
+
+/* ==========================
+   ページ移動
+========================== */
+
 .saved-questions .pagination,
 .my-questions .pagination {
     position: absolute;
-    top: 600px;
+    bottom: 25px;
     left: 0;
     right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    height: 38px;
+    gap: 10px;
+    height: 42px;
     margin: 0;
 }
 
-.pagination a,
-.pagination span {
+.saved-questions .pagination a,
+.my-questions .pagination a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 70px;
-    height: 38px;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 10px;
     box-sizing: border-box;
-    border: 1px solid #888888;
-    background-color: #d0d0d0;
-    color: #000000;
+    border: 1px solid #d5e4f3;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #397fc7;
     text-decoration: none;
-    font-size: 22px;
+    font-size: 17px;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-.pagination a.current-page {
-    background-color: #4285f4;
-    color: #000000;
+.saved-questions .pagination a:hover,
+.my-questions .pagination a:hover {
+    background-color: #e8f3ff;
+}
+
+/* ページ番号 */
+
+.mypage-container .pagination a.page-number {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    font-size: 17px;
+}
+
+/* 選択中のページ */
+
+.mypage-container .pagination a.page-number.current-page {
+    background-color: #4285f4 !important;
+    border-color: #4285f4;
+    color: #ffffff !important;
+    font-weight: bold;
 }
 
 /* 前後の矢印 */
-.pagination a:first-child,
-.pagination span:first-child,
-.pagination a:last-child,
-.pagination span:last-child {
-    min-width: 24px;
+
+.saved-questions .pagination a:first-child:not(.page-number),
+.saved-questions .pagination a:last-child:not(.page-number),
+.my-questions .pagination a:first-child:not(.page-number),
+.my-questions .pagination a:last-child:not(.page-number) {
+    min-width: 30px;
     border: none;
-    background: transparent;
-    font-size: 24px;
+    background-color: transparent;
+    color: #397fc7;
+    font-size: 22px;
 }
 
 /* ==========================
-    質問の削除確認モーダル
+   質問がない場合
 ========================== */
+
+.no-saved-questions,
+.no-my-questions {
+    text-align: center;
+    font-size: 17px;
+    color: #8295a8;
+    margin-top: 40px;
+}
+
+/* ==========================
+   質問の削除・解除モーダル
+========================== */
+
 .delete-modal[hidden] {
     display: none;
 }
@@ -266,7 +396,7 @@
 .delete-modal {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(30, 55, 80, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -278,15 +408,17 @@
     max-width: calc(100% - 40px);
     padding: 36px 24px 28px;
     background: #ffffff;
-    border: 1px solid #888888;
-    border-radius: 40px;
+    border: 1px solid #e1eaf3;
+    border-radius: 24px;
+    box-shadow: 0 8px 30px rgba(30, 60, 90, 0.15);
     text-align: center;
     box-sizing: border-box;
 }
 
 .delete-modal-content p {
-    font-size: 25px;
-    margin: 35px 0 12px;
+    font-size: 22px;
+    color: #304c68;
+    margin: 35px 0 24px;
 }
 
 .delete-modal-buttons {
@@ -298,29 +430,112 @@
 .delete-modal-buttons button {
     border: none;
     border-radius: 9px;
-    padding: 10px 18px;
-    font-size: 20px;
+    padding: 10px 22px;
+    font-size: 17px;
     cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.delete-modal-buttons button:hover {
+    opacity: 0.75;
 }
 
 #cancel-delete {
-    background: #bdbdbd;
-    color: #000000;
+    background: #e5edf5;
+    color: #40566c;
 }
 
 .confirm-delete {
-    background: #ff0000;
+    background: #e65b68;
     color: #ffffff;
 }
 
-.no-saved-questions {
-    text-align: center;
-    font-size: 20px;
-    margin-top: 30px;
+/* ==========================
+   画面幅が狭い場合
+========================== */
+
+@media screen and (max-width: 900px) {
+    .questions-container {
+        gap: 20px;
+        padding: 30px 20px;
+    }
+
+    .saved-questions,
+    .my-questions {
+        padding: 22px 15px 80px;
+    }
+
+    .saved-questions h2,
+    .my-questions h2 {
+        font-size: 19px;
+    }
+
+    .saved-questions th,
+    .saved-questions td,
+    .my-questions th,
+    .my-questions td {
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    .saved-questions th:first-child,
+    .saved-questions td:first-child,
+    .my-questions th:first-child,
+    .my-questions td:first-child {
+        width: 95px;
+    }
 }
 
-.no-my-questions {
-    text-align: center;
-    font-size: 20px;
-    margin-top: 30px;
+@media screen and (max-width: 650px) {
+    .mypage-topbar {
+        padding: 0 15px;
+    }
+
+    .user-info {
+        gap: 15px;
+        font-size: 13px;
+    }
+
+    .app-logo {
+        font-size: 27px;
+    }
+
+    .questions-container {
+        flex-direction: column;
+        padding: 24px 14px;
+    }
+
+    .saved-questions,
+    .my-questions {
+        width: 100%;
+        min-height: 450px;
+    }
+}
+
+/* ==========================
+   カードの高さとページ移動
+========================== */
+
+.saved-questions,
+.my-questions {
+    height: 680px;
+    min-height: 800px;
+    padding-bottom: 0;
+    box-sizing: border-box;
+}
+
+/* ページ移動 */
+.saved-questions .pagination,
+.my-questions .pagination {
+    top: auto;
+    bottom: 18px;
+}
+
+/* 星を黄色にする */
+.saved-questions button {
+    color: #ffc928;
+}
+
+.saved-questions button:hover {
+    color: #e6a800;
 }

@@ -1,7 +1,10 @@
 class GradeCourseSubject < ApplicationRecord
-  belongs_to :grade
-  belongs_to :course
-  belongs_to :subject
+  # テーブル名を実際のDB名（小文字・複数形）に指定
+  self.table_name = "grade_course_subjects"
 
-  validates :subject_id, uniqueness: { scope: [ :grade_id, :course_id ] }
+  has_many :questions, foreign_key: "GradeCourseSub"
+
+  belongs_to :grade, foreign_key: "id_grades", optional: true
+  belongs_to :course, foreign_key: "id_Course", optional: true
+  belongs_to :subject, foreign_key: "id_subjects", optional: true
 end

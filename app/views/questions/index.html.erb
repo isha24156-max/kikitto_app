@@ -1,8 +1,9 @@
-
 <% content_for :title, "質問一覧" %>
+
 
 <div class="questions-container">
   <p class="questions-notice"><%= notice %></p>
+
 
   <div class="questions-header">
     <!-- 学年 -->
@@ -18,6 +19,7 @@
       </div>
     </div>
 
+
     <!-- クラス -->
     <div class="dropdown">
       <button type="button" class="dropdown-label">クラス ▼</button>
@@ -31,27 +33,37 @@
       </div>
     </div>
 
+
     <!-- 教科 -->
-    <div class="dropdown">
-      <button type="button" class="dropdown-label">教科 ▼</button>
-      <div class="dropdown-menu">
-        <% (1..6).each do |n| %>
-          <button type="button"
-                  onclick="selectOption(this, 'subject', '<%= n %>')">
-            教科<%= n %>
-          </button>
-        <% end %>
-      </div>
-    </div>
+    <!-- 教科 -->
+<div class="dropdown">
+  <button type="button" class="dropdown-label">教科 ▼</button>
+
+  <div class="dropdown-menu">
+    <% (1..6).each do |n| %>
+      <% subject = Subject.find_by(id: n) %>
+      <% subject_name = subject&.subiect_name || "教科未登録" %>
+
+      <button
+        type="button"
+        data-subject-name="<%= subject_name %>"
+        onclick="selectOption(this, 'subject', '<%= n %>')">
+        <%= subject_name %>
+      </button>
+    <% end %>
+  </div>
+</div>
   </div>
 
-  <!-- 確認画面 -->
+
+  <!-- 確認画面（モーダル） -->
   <div id="class-confirm-modal"
         class="class-confirm-modal"
         hidden>
     <div class="class-confirm-box">
       <h2>クラスの確認</h2>
       <p id="class-confirm-message"></p>
+
 
       <div class="class-confirm-buttons">
         <button type="button" id="class-cancel">
@@ -63,6 +75,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- 質問検索 -->
   <form class="questions-search"
@@ -77,120 +90,65 @@
     >
     <button type="submit">検索</button>
   </form>
-
-  <!-- 質問一覧 -->
-  <table class="questions-table">
-    <thead>
-      <tr>
-        <th>日付</th>
-        <th>内容</th>
-        <th>回答</th>
-        <th>ブクマ</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @questions.each do |question| %>
-        <tr>
-          <td><%= question.deadline %></td>
-          <td>
-            <%= question.q_content %>
-            <div class="question-link">
-              <%= link_to "この質問を見る", new_answer_path(question_id:question.id) %>
-            </div>
-          </td>
-          <td></td>
-          
-<td class="bookmark-cell">
-  <% if logged_in? %>
-    <% bookmark = current_user.bookmarks.find_by(question_id: question.id) %>
-
-    <% if bookmark %>
-      <%= button_to "★",
-          bookmark_path(bookmark),
-          method: :delete,
-          class: "bookmark-button bookmarked",
-          title: "ブックマークを解除" %>
-    <% else %>
-      <%= button_to "☆",
-          bookmarks_path,
-          method: :post,
-          params: { question_id: question.id },
-          class: "bookmark-button",
-          title: "ブックマークに保存" %>
-    <% end %>
-  <% else %>
-    <%= link_to "☆", login_path, title: "ログインして保存" %>
-  <% end %>
-</td>
-
-        </tr>
-      <% end %>
-
-      <% if @questions.empty? %>
-        <tr>
-          <td colspan="4" class="empty-message">
-            質問はまだありません。
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-  <!-- ページ番号 -->
-  <div class="questions-pagination">
-    <%= paginate @questions, params: { q: params[:q] } %>
-  </div>
-
-  <!-- 質問追加 -->
-  <div class="questions-add">
-    <%= link_to "+", new_question_path, aria: { label: "質問を追加" } %>
-  </div>
 </div>
+
 
 <script>
 let selectedGrade = null;
 let selectedClassroom = null;
 let selectedSubject = null;
+let selectedSubjectName = null;
+
 
 function selectOption(button, category, number) {
   const dropdown = button.closest(".dropdown");
   const label = dropdown.querySelector(".dropdown-label");
 
+
   label.textContent = button.textContent.trim() + " ▼";
+
 
   dropdown.querySelectorAll(".dropdown-menu button").forEach((item) => {
     item.classList.remove("selected");
   });
 
+
   button.classList.add("selected");
+
 
   if (category === "grade") {
     selectedGrade = number;
   } else if (category === "classroom") {
     selectedClassroom = number;
   } else if (category === "subject") {
-    selectedSubject = number;
-  }
+  selectedSubject = number;
+  selectedSubjectName = button.dataset.subjectName;
+}
 
+
+  // 3つすべて選択されたら確認画面（モーダル）を表示
   if (selectedGrade && selectedClassroom && selectedSubject) {
     document.getElementById("class-confirm-message").textContent =
-      `あなたは${selectedGrade}年${selectedClassroom}組の教科${selectedSubject}のクラスに入りますか？`;
-
+     `あなたは${selectedGrade}年${selectedClassroom}組の${selectedSubjectName}のクラスに入りますか？`;
     document.getElementById("class-confirm-modal").hidden = false;
   }
 }
 
-document.getElementById("class-cancel").addEventListener("click", () => {
+
+// キャンセルを押したらモーダルを閉じる
+document.getElementById("class-cancel")?.addEventListener("click", () => {
   document.getElementById("class-confirm-modal").hidden = true;
 });
 
-document.getElementById("class-ok").addEventListener("click", () => {
+
+// OKを押したら指定した部屋（専用一覧画面）へ遷移
+document.getElementById("class-ok")?.addEventListener("click", () => {
   const params = new URLSearchParams({
     grade: selectedGrade,
     classroom: selectedClassroom,
     subject: selectedSubject
   });
+
 
   window.location.href = `/questions/classroom?${params.toString()}`;
 });

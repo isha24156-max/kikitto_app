@@ -1,16 +1,17 @@
-
 <% content_for :title, "質問追加" %>
 
 <h1>質問追加</h1>
 
-<%= render "form", question: @question %>
+<%= render "form",
+           question: @question,
+           grade: params[:grade],
+           classroom: params[:classroom],
+           subject: params[:subject] %>
 
 <br>
 
 <div>
-  <% if params[:grade].present? &&
-        params[:classroom].present? &&
-        params[:subject].present? %>
+  <% if params[:grade].present? && params[:classroom].present? && params[:subject].present? %>
     <%= link_to "戻る",
         classroom_questions_path(
           grade: params[:grade],

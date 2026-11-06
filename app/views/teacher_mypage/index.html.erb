@@ -30,14 +30,28 @@
                     <th>内容</th>
                     </tr>
                 </thead>
+                
                 <tbody>
-                    <% 3.times do %>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    <% if @unanswered_questions.present? %>
+                        <% @unanswered_questions.each do |question| %>
+                            <tr>
+                                <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
+                                <td>
+                                    <%= link_to question.q_content,
+                                    new_answer_path(
+                                        question_id: question.id,
+                                        from: "unanswered"
+                                    ) %>
+                                </td>
+                            </tr>
+                        <% end %>
+                    <% else %>
+                        <tr class="no-questions-row">
+                            <td colspan="2">未回答の質問はありません</td>
+                        </tr>
                     <% end %>
                 </tbody>
+
                 </table>
             </section>
 
@@ -52,14 +66,28 @@
                     <th>内容</th>
                     </tr>
                 </thead>
+                
                 <tbody>
-                    <% 3.times do %>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    <% if @history_questions.present? %>
+                        <% @history_questions.each do |question| %>
+                            <tr>
+                                <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
+                                <td>
+                                    <%= link_to question.q_content,
+                                    new_answer_path(
+                                        question_id: question.id,
+                                        from: "history"
+                                    ) %>
+                                </td>
+                            </tr>
+                        <% end %>
+                    <% else %>
+                        <tr class="no-questions-row">
+                            <td colspan="2">回答履歴はありません</td>
+                        </tr>
                     <% end %>
                 </tbody>
+
                 </table>
             </section>
 
@@ -75,17 +103,26 @@
                     <th>消去</th>
                     </tr>
                 </thead>
+                
                 <tbody>
-                    <% @questions.each do |question| %>
-                        <tr>
-                            <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
-                            <td><%= question.q_content %></td>
-                            <td>
+                    <% if @questions.present? %>
+                        <% @questions.each do |question| %>
+                            <tr>
+                                <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
+                                <td>
+                                    <%= link_to question.q_content,
+                                    new_answer_path(
+                                        question_id: question.id,
+                                        from: "all"
+                                    ) %>
+                                </td>
+
+                                <td>
                                 <button type="button"
-                                    class="teacher-delete-button"
-                                    data-question-id="<%= question.id %>"
-                                    data-question-content="<%= question.q_content %>"
-                                    aria-label="質問を削除">
+                                        class="teacher-delete-button"
+                                        data-question-id="<%= question.id %>"
+                                        aria-label="質問を削除">
+
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         width="28" height="28"
                                         viewBox="0 0 24 24"
@@ -100,10 +137,17 @@
                                         <path d="M10 11v5M14 11v5"/>
                                     </svg>
                                 </button>
-                            </td>
+                                </td>
+
+                            </tr>
+                        <% end %>
+                    <% else %>
+                        <tr class="no-questions-row">
+                            <td colspan="3">質問はありません</td>
                         </tr>
                     <% end %>
                 </tbody>
+
                 </table>
             </section>
 
@@ -139,5 +183,30 @@
             </nav>
 
         </aside>
+    </div>
+</div>
+
+<div id="teacher-delete-modal"
+        class="delete-modal"
+        hidden>
+
+    <div class="delete-modal-content">
+        <p>本当に<br>この質問を削除しますか</p>
+
+        <div class="delete-modal-buttons">
+
+            <button type="button" id="teacher-cancel-delete">
+                キャンセル
+            </button>
+
+            <%= form_with url: teacher_mypage_question_path(id: 0),
+                            method: :delete,
+                            id: "teacher-delete-form" do %>
+                <button type="submit" class="confirm-delete">
+                    削除
+                </button>
+            <% end %>
+
+        </div>
     </div>
 </div>
