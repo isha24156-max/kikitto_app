@@ -93,9 +93,13 @@ end
     @question.destroy!
 
     redirect_path = if params[:from] == "mypage"
-                      mypage_index_path
+      mypage_index_path(
+        grade: params[:grade],
+        classroom: params[:classroom],
+        subject: params[:subject]
+      )
     else
-                      questions_path
+      questions_path
     end
 
     respond_to do |format|
