@@ -1660,3 +1660,44 @@ body.questions.classroom .questions-pagination .next a:hover {
     background: transparent;
     color: #286bd0;
 }
+
+/* 専用質問一覧の日付・内容の区切り線を短くする */
+body.questions.classroom .questions-table td:nth-child(1) {
+    position: relative;
+    border-right: none;
+}
+
+body.questions.classroom .questions-table td:nth-child(2) {
+    position: relative;
+    border-left: none;
+}
+
+body.questions.classroom .questions-table td:nth-child(1)::after {
+    content: "";
+    position: absolute;
+    top: 20%;
+    right: 0;
+    width: 1px;
+    height: 60%;
+    background-color: #bdbdbd;
+}
+
+/* 質問内容とブクマの間にも短い縦線を追加 */
+body.questions.classroom .questions-table td:nth-child(2) {
+    position: relative;
+    border-right: none;
+}
+
+body.questions.classroom .questions-table td:nth-child(3) {
+    border-left: none;
+}
+
+body.questions.classroom .questions-table td:nth-child(2)::after {
+    content: "";
+    position: absolute;
+    top: 20%;
+    right: 0;
+    width: 1px;
+    height: 60%;
+    background-color: #bdbdbd;
+}
