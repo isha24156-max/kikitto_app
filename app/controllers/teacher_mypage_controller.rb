@@ -3,8 +3,7 @@ class TeacherMypageController < ApplicationController
   before_action :require_login
 
   def index
-    @subjects = Subject.order(:name)
-  
+    @subjects = Subject.order(:subject_name)
     @selected_subject_id = params[:subject_id]
   
     @questions = Question
@@ -14,7 +13,7 @@ class TeacherMypageController < ApplicationController
     if @selected_subject_id.present?
       @questions = @questions.joins(:grade_course_subject)
         .where(grade_course_subjects: {
-          id_subjects: @selected_subject_id
+          subject_id: @selected_subject_id
         })
     end
   
