@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_10_27_021359) do
+ActiveRecord::Schema[7.2].define(version: 2026_11_06_045554) do
   create_table "answers", force: :cascade do |t|
     t.text "ans_content"
     t.integer "user_id"
@@ -57,7 +57,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_27_021359) do
   end
 
   create_table "subjects", force: :cascade do |t|
-    t.string "subiect_name"
+    t.string "subject_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

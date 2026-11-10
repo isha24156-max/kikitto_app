@@ -165,9 +165,25 @@
 
             <div class="teacher-subject-select">
                 <label for="teacher-subject">教科変更</label>
-                <select id="teacher-subject">
-                <option value="">教科を選択</option>
-                </select>
+
+                <%= form_with url: teacher_mypage_index_path,
+                                method: :get,
+                                local: true do %>
+
+                    <%= select_tag :subject_id,
+                        options_from_collection_for_select(
+                        @subjects,
+                        :id,
+                        :subject_name,
+                        @selected_subject_id
+                        ),
+                        {
+                        id: "teacher-subject",
+                        include_blank: "教科を選択",
+                        onchange: "this.form.submit()"
+                        } %>
+
+                <% end %>
             </div>
 
             <nav class="teacher-menu">

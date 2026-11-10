@@ -91,8 +91,24 @@ end
 
   def destroy
     @question.destroy!
+
+    redirect_path = if params[:from] == "mypage"
+      mypage_index_path(
+        grade: params[:grade],
+        classroom: params[:classroom],
+        subject: params[:subject]
+      )
+    else
+      questions_path
+    end
+
     respond_to do |format|
-      format.html { redirect_to questions_path, notice: "質問を削除しました。", status: :see_other }
+      format.html do
+        redirect_to redirect_path,
+                    notice: "質問を削除しました。",
+                    status: :see_other
+      end
+
       format.json { head :no_content }
     end
   end

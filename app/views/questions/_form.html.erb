@@ -1,7 +1,9 @@
+<%= form_with(model: question,
+    local: true,
+    html: { class: "question-form" }) do |form| %>
 
-<%= form_with(model: question, local: true) do |form| %>
   <% if question.errors.any? %>
-    <div style="color: red">
+    <div class="question-form-errors">
       <h2>質問を保存できませんでした。</h2>
       <ul>
         <% question.errors.each do |error| %>
@@ -12,18 +14,25 @@
   <% end %>
 
   <%# 専用クラスルームに戻るためのパラメータ保持 %>
-  <%= hidden_field_tag :grade, params[:grade] || (defined?(grade) ? grade : nil) %>
-  <%= hidden_field_tag :classroom, params[:classroom] || (defined?(classroom) ? classroom : nil) %>
-  <%= hidden_field_tag :subject, params[:subject] || (defined?(subject) ? subject : nil) %>
+  <%= hidden_field_tag :grade,
+      params[:grade] || (defined?(grade) ? grade : nil) %>
 
-  <div>
-    <%= form.label :q_content, "質問内容", style: "display: block" %>
-    <%= form.text_area :q_content %>
+  <%= hidden_field_tag :classroom,
+      params[:classroom] || (defined?(classroom) ? classroom : nil) %>
+
+  <%= hidden_field_tag :subject,
+      params[:subject] || (defined?(subject) ? subject : nil) %>
+
+  <div class="question-form-field">
+    <%= form.label :q_content, "質問内容" %>
+
+    <%= form.text_area :q_content,
+        placeholder: "質問内容を入力してください",
+        class: "question-form-textarea" %>
   </div>
 
-  <br>
-
-  <div>
+  <div class="question-form-submit">
     <%= form.submit "質問を投稿する" %>
   </div>
+
 <% end %>
