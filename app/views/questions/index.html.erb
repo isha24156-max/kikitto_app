@@ -65,7 +65,7 @@
         </button>
 
         <div class="dropdown-menu">
-          <% (1..6).each do |n| %>
+          <% (1..40).each do |n| %>
             <% subject = Subject.find_by(id: n) %>
             <% subject_name = subject&.subject_name || "教科未登録" %>
 
