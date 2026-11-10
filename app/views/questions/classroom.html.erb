@@ -3,10 +3,14 @@
 <div class="questions-container classroom-container">
 
   <!-- マイページボタン -->
-  <%= link_to mypage_index_path,
-      class: "mypage-icon-button",
-      aria: { label: "マイページへ" },
-      title: "マイページ" do %>
+  <%= link_to mypage_index_path(
+      grade: @grade,
+      classroom: @classroom,
+      subject: @subject_number
+    ),
+    class: "mypage-icon-button",
+    aria: { label: "マイページへ" },
+    title: "マイページ" do %>
 
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="8" r="4"></circle>

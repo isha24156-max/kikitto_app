@@ -1,6 +1,10 @@
 <div class="mypage-container">
     <div class="mypage-topbar">
-        <%= link_to root_path, class: "back-button" do%>
+        <%= link_to classroom_questions_path(
+            grade: params[:grade],
+            classroom: params[:classroom],
+            subject: params[:subject]
+            ), class: "back-button" do %>
             ↩
         <% end %>
 
