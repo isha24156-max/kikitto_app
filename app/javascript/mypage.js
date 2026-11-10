@@ -23,11 +23,12 @@ document.addEventListener("turbo:load", () => {
 // 質問削除
 // =====================================
 
-const deleteModal = document.getElementById("delete-modal");
-const cancelDeleteButton = document.getElementById("cancel-delete");
-const deleteForm = document.getElementById("delete-form");
+document.addEventListener("turbo:load", () => {
+    const deleteModal = document.getElementById("delete-modal");
+    const cancelDeleteButton = document.getElementById("cancel-delete");
+    const deleteForm = document.getElementById("delete-form");
 
-if (deleteModal && cancelDeleteButton && deleteForm) {
+    if (!deleteModal || !cancelDeleteButton || !deleteForm) return;
 
     document.querySelectorAll(".delete-button").forEach((button) => {
         button.addEventListener("click", () => {
@@ -45,4 +46,4 @@ if (deleteModal && cancelDeleteButton && deleteForm) {
     cancelDeleteButton.addEventListener("click", () => {
         deleteModal.hidden = true;
     });
-}
+});
