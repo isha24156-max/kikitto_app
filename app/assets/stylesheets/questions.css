@@ -1,11 +1,18 @@
 
 /* =========================
-   全体
+   共通設定
 ========================= */
+
 body.questions.index .questions-container,
-body.questions.index .questions-container * {
+body.questions.classroom .questions-container,
+body.questions.index .questions-container *,
+body.questions.classroom .questions-container * {
     box-sizing: border-box;
 }
+
+/* =========================
+   質問一覧
+========================= */
 
 body.questions.index {
     width: 100%;
@@ -18,15 +25,15 @@ body.questions.index {
     background-color: #f5f7fa;
 }
 
-/* =========================
-   質問一覧の外側
-========================= */
-.questions-container {
+body.questions.index .questions-container {
+    position: relative;
+    display: block;
     width: 100%;
     max-width: none;
+    min-width: 0;
     min-height: 100vh;
     margin: 0;
-    padding: 30px;
+    padding: 75px 30px 30px;
     background: transparent;
     border: none;
 }
@@ -39,6 +46,7 @@ body.questions.index {
 /* =========================
    タイトル
 ========================= */
+
 .questions-title {
     font-size: 32px;
     font-weight: normal;
@@ -48,11 +56,12 @@ body.questions.index {
 /* =========================
    青い見出し
 ========================= */
-.questions-header {
+
+body.questions.index .questions-header {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
-    max-width: 100%;
+    max-width: none;
     min-height: 55px;
     background-color: #4285ee;
     color: white;
@@ -71,6 +80,7 @@ body.questions.index {
 /* =========================
    ドロップダウン
 ========================= */
+
 .dropdown {
     position: relative;
     min-width: 0;
@@ -145,6 +155,7 @@ body.questions.index {
 /* =========================
    検索欄
 ========================= */
+
 .questions-search {
     display: flex;
     justify-content: center;
@@ -153,7 +164,16 @@ body.questions.index {
     margin: 20px 0;
 }
 
-.questions-search input {
+.questions-search form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.questions-search input,
+.questions-search-input {
     width: 55%;
     max-width: 600px;
     min-width: 0;
@@ -163,7 +183,8 @@ body.questions.index {
     font-size: 18px;
 }
 
-.questions-search button {
+.questions-search button,
+.questions-search-button {
     padding: 10px 20px;
     background-color: #eee;
     border: 1px solid #bbb;
@@ -179,10 +200,13 @@ body.questions.index {
 /* =========================
    質問一覧テーブル
 ========================= */
+
 .questions-table {
+    display: table;
     width: 100%;
+    max-width: none;
     border-collapse: collapse;
-    table-layout: auto;
+    table-layout: fixed;
     margin-top: 20px;
     font-size: 18px;
 }
@@ -198,9 +222,12 @@ body.questions.index {
     border: 1px solid #bbb;
     padding: 10px;
     height: 35px;
-    overflow-wrap: normal;
+    overflow-wrap: anywhere;
     word-break: normal;
+    vertical-align: middle;
 }
+
+/* 日付 */
 
 .questions-table th:nth-child(1),
 .questions-table td:nth-child(1) {
@@ -208,10 +235,14 @@ body.questions.index {
     white-space: nowrap;
 }
 
+/* 内容 */
+
 .questions-table th:nth-child(2),
 .questions-table td:nth-child(2) {
     width: 55%;
 }
+
+/* 回答・ブックマーク（質問一覧で使用する場合） */
 
 .questions-table th:nth-child(3),
 .questions-table td:nth-child(3) {
@@ -223,17 +254,57 @@ body.questions.index {
     width: 20%;
 }
 
-.question-link {
-    margin-top: 3px;
-}
+/* =========================
+   専用質問一覧の質問内容
+========================= */
 
-.questions-table a {
-    color: #551a8b;
-}
-
-.bookmark-box {
+.question-content-link {
+    display: flex;
+    width: 100%;
+    min-height: 35px;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    color: #222;
+    text-decoration: none;
     cursor: pointer;
 }
+
+.question-content-link:hover {
+    color: #4285ee;
+    text-decoration: underline;
+}
+
+/* =========================
+   ブックマーク
+========================= */
+
+.bookmark-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.bookmark-button {
+    display: inline-block;
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+    color: #333;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.bookmark-button:hover {
+    color: #4285ee;
+}
+
+.bookmark-button.bookmarked {
+    color: #f0ad00;
+}
+
+/* =========================
+   空のときの表示
+========================= */
 
 .empty-message {
     text-align: center;
@@ -243,12 +314,14 @@ body.questions.index {
 /* =========================
    ページ番号
 ========================= */
+
 .questions-pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
+    width: 100%;
     margin: 20px 0;
 }
 
@@ -268,7 +341,8 @@ body.questions.index {
     background-color: #ccc;
 }
 
-.questions-pagination a.active {
+.questions-pagination a.active,
+.questions-pagination .current {
     background-color: #4285ee;
     color: white;
 }
@@ -276,9 +350,11 @@ body.questions.index {
 /* =========================
    質問追加ボタン
 ========================= */
+
 .questions-add {
     display: flex;
     justify-content: flex-end;
+    width: 100%;
     margin: 20px 0 0;
 }
 
@@ -302,6 +378,7 @@ body.questions.index {
 /* =========================
    確認画面の背景
 ========================= */
+
 .class-confirm-modal {
     position: fixed;
     inset: 0;
@@ -311,7 +388,6 @@ body.questions.index {
     justify-content: center;
     padding: 20px;
     background: rgba(0, 0, 0, 0.5);
-    box-sizing: border-box;
 }
 
 .class-confirm-modal[hidden] {
@@ -321,6 +397,7 @@ body.questions.index {
 /* =========================
    確認画面のポップアップ
 ========================= */
+
 .class-confirm-box {
     width: 100%;
     max-width: 420px;
@@ -329,7 +406,6 @@ body.questions.index {
     border-radius: 18px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
     text-align: center;
-    box-sizing: border-box;
 }
 
 .class-confirm-box h2 {
@@ -369,18 +445,268 @@ body.questions.index {
 }
 
 /* =========================
+   マイページボタン
+   質問一覧・専用質問一覧共通
+========================= */
+
+body.questions.index .mypage-icon-button,
+body.questions.classroom .mypage-icon-button {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    z-index: 1000;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4285ee;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+body.questions.index .mypage-icon-button:hover,
+body.questions.classroom .mypage-icon-button:hover {
+    background-color: #286bd0;
+    transform: scale(1.08);
+}
+
+body.questions.index .mypage-icon-button svg,
+body.questions.classroom .mypage-icon-button svg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: white;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* =========================
+   専用質問一覧
+========================= */
+
+body.questions.classroom {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: "Meiryo", sans-serif;
+    color: #222;
+    background-color: #f5f7fa;
+}
+
+body.questions.classroom .classroom-container {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    padding: 75px 30px 30px;
+    background: #f5f7fa;
+    font-family: "Meiryo", sans-serif;
+    font-size: 18px;
+}
+
+/* =========================
+   専用質問一覧の青い3列
+========================= */
+
+body.questions.classroom .classroom-header {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    min-height: 56px;
+    margin-bottom: 20px;
+    background: #4285ee;
+    color: white;
+}
+
+body.questions.classroom .classroom-header-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border-right: 1px solid rgba(255, 255, 255, 0.35);
+    font-weight: bold;
+    text-align: center;
+}
+
+body.questions.classroom .classroom-header-item:last-child {
+    border-right: none;
+}
+
+/* =========================
+   専用質問一覧の検索欄
+========================= */
+
+body.questions.classroom .questions-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 20px;
+}
+
+body.questions.classroom .questions-search form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+body.questions.classroom .questions-search-input {
+    flex: 0 1 480px;
+    width: 480px;
+    max-width: 60%;
+    min-width: 0;
+    height: 44px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+body.questions.classroom .questions-search-button {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 80px;
+    height: 44px;
+    padding: 8px 18px;
+    box-sizing: border-box;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* =========================
+   専用質問一覧のテーブル
+   日付・内容・ブクマの3列
+========================= */
+
+body.questions.classroom table.questions-table {
+    display: table;
+    width: 100%;
+    max-width: none;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: transparent;
+}
+
+body.questions.classroom .questions-table thead {
+    display: table-header-group;
+}
+
+body.questions.classroom .questions-table tbody {
+    display: table-row-group;
+}
+
+body.questions.classroom .questions-table tr {
+    display: table-row;
+}
+
+body.questions.classroom .questions-table th,
+body.questions.classroom .questions-table td {
+    display: table-cell;
+    box-sizing: border-box;
+    padding: 12px 10px;
+    border: 1px solid #bdbdbd;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    vertical-align: middle;
+}
+
+body.questions.classroom .questions-table th {
+    background: #d6d6d6;
+    font-weight: normal;
+}
+
+/* 日付 */
+
+body.questions.classroom .questions-table th:nth-child(1),
+body.questions.classroom .questions-table td:nth-child(1) {
+    width: 15%;
+    white-space: nowrap;
+}
+
+/* 内容 */
+
+body.questions.classroom .questions-table th:nth-child(2),
+body.questions.classroom .questions-table td:nth-child(2) {
+    width: 67%;
+    text-align: left;
+}
+
+/* ブックマーク */
+
+body.questions.classroom .questions-table th:nth-child(3),
+body.questions.classroom .questions-table td:nth-child(3) {
+    width: 18%;
+}
+
+/* 質問内容のリンク */
+
+body.questions.classroom .question-content-link {
+    display: flex;
+    width: 100%;
+    min-height: 35px;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    color: #222;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+body.questions.classroom .question-content-link:hover {
+    color: #4285ee;
+    text-decoration: underline;
+}
+
+/* ブックマーク */
+
+body.questions.classroom .bookmark-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+body.questions.classroom .bookmark-button {
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+    color: #333;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+body.questions.classroom .bookmark-button.bookmarked {
+    color: #f0ad00;
+}
+
+/* =========================
+   専用質問一覧に戻る
+========================= */
+
+body.questions.classroom .classroom-back {
+    margin-top: 20px;
+}
+
+/* =========================
    スマートフォン
 ========================= */
+
 @media (max-width: 600px) {
-    .questions-container {
-        padding: 15px 10px;
+
+    body.questions.index .questions-container {
+        padding: 75px 10px 15px;
     }
 
     .questions-title {
         font-size: 25px;
     }
 
-    .questions-header {
+    body.questions.index .questions-header {
         grid-template-columns: repeat(3, minmax(0, 1fr));
         max-width: 100%;
         font-size: 14px;
@@ -416,24 +742,24 @@ body.questions.index {
         padding: 6px;
     }
 
-    .questions-table th:nth-child(1),
-    .questions-table td:nth-child(1) {
+    body.questions.index .questions-table th:nth-child(1),
+    body.questions.index .questions-table td:nth-child(1) {
         width: 20%;
         white-space: normal;
     }
 
-    .questions-table th:nth-child(2),
-    .questions-table td:nth-child(2) {
+    body.questions.index .questions-table th:nth-child(2),
+    body.questions.index .questions-table td:nth-child(2) {
         width: 50%;
     }
 
-    .questions-table th:nth-child(3),
-    .questions-table td:nth-child(3) {
+    body.questions.index .questions-table th:nth-child(3),
+    body.questions.index .questions-table td:nth-child(3) {
         width: 10%;
     }
 
-    .questions-table th:nth-child(4),
-    .questions-table td:nth-child(4) {
+    body.questions.index .questions-table th:nth-child(4),
+    body.questions.index .questions-table td:nth-child(4) {
         width: 20%;
     }
 
@@ -447,571 +773,890 @@ body.questions.index {
         font-size: 16px;
     }
 
-}
-
-
-/* 質問一覧のレイアウトを優先して適用 */
-body.questions.index .questions-container {
-    display: block;
-    width: 100%;
-    max-width: none;
-    min-width: 0;
-    margin: 0;
-    padding: 30px;
-}
-
-body.questions.index .questions-header {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: 100%;
-    max-width: none;
-}
-
-body.questions.index .questions-search {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-}
-
-body.questions.index .questions-search input {
-    width: 55%;
-    max-width: 600px;
-}
-
-body.questions.index .questions-table {
-    display: table;
-    width: 100%;
-    max-width: none;
-    table-layout: fixed;
-    border-collapse: collapse;
-}
-
-body.questions.index .questions-table th:nth-child(1),
-body.questions.index .questions-table td:nth-child(1) {
-    width: 15%;
-}
-
-body.questions.index .questions-table th:nth-child(2),
-body.questions.index .questions-table td:nth-child(2) {
-    width: 55%;
-    overflow-wrap: anywhere;
-    word-break: normal;
-}
-
-body.questions.index .questions-table th:nth-child(3),
-body.questions.index .questions-table td:nth-child(3) {
-    width: 10%;
-}
-
-body.questions.index .questions-table th:nth-child(4),
-body.questions.index .questions-table td:nth-child(4) {
-    width: 20%;
-}
-
-body.questions.index .questions-pagination {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-body.questions.index .questions-add {
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-}
-
-
-/* ブックマークボタン */
-body.questions.index .bookmark-cell {
-    text-align: center;
-    vertical-align: middle;
-  }
-  
-  body.questions.index .bookmark-button {
-    display: inline-block;
-    padding: 4px 8px;
-    border: none;
-    background: transparent;
-    color: #333;
-    font-size: 25px;
-    cursor: pointer;
-  }
-  
-  body.questions.index .bookmark-button:hover {
-    color: #4285ee;
-  }
-  
-  body.questions.index .bookmark-button.bookmarked {
-    color: #f0ad00;
-  }
-
-
-/* 専用質問一覧のレイアウト */
-body.questions.classroom .classroom-container {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 30px;
-    background: #f5f7fa;
-    font-family: "Meiryo", sans-serif;
-    font-size: 18px;
-  }
-  
-  /* 上部の青い3列 */
-  body.questions.classroom .classroom-header {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: 100%;
-    min-height: 56px;
-    margin-bottom: 20px;
-    background: #4285ee;
-    color: white;
-  }
-  
-  body.questions.classroom .classroom-header-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px;
-    border-right: 1px solid rgba(255, 255, 255, 0.35);
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  body.questions.classroom .classroom-header-item:last-child {
-    border-right: none;
-  }
-  
-  /* 検索欄 */
-  body.questions.classroom .questions-search {
-    width: 100%;
-    margin: 0 0 20px;
-    text-align: center;
-  }
-  
-  body.questions.classroom .questions-search form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-  }
-  
-  body.questions.classroom .questions-search-input {
-    box-sizing: border-box;
-    width: min(55%, 500px);
-    min-width: 0;
-    height: 44px;
-    padding: 8px 12px;
-    font-size: 16px;
-  }
-  
-  body.questions.classroom .questions-search-button {
-    min-height: 44px;
-    padding: 8px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  /* 表 */
-  body.questions.classroom .questions-table {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-    background: transparent;
-  }
-  
-  body.questions.classroom .questions-table th,
-  body.questions.classroom .questions-table td {
-    padding: 12px 10px;
-    border: 1px solid #bdbdbd;
-    text-align: left;
-    overflow-wrap: anywhere;
-  }
-  
-  body.questions.classroom .questions-table th {
-    background: #d6d6d6;
-    font-weight: normal;
-  }
-  
-  body.questions.classroom .questions-table th:nth-child(1),
-  body.questions.classroom .questions-table td:nth-child(1) {
-    width: 15%;
-  }
-  
-  body.questions.classroom .questions-table th:nth-child(2),
-  body.questions.classroom .questions-table td:nth-child(2) {
-    width: 55%;
-  }
-  
-  body.questions.classroom .questions-table th:nth-child(3),
-  body.questions.classroom .questions-table td:nth-child(3) {
-    width: 12%;
-  }
-  
-  body.questions.classroom .questions-table th:nth-child(4),
-  body.questions.classroom .questions-table td:nth-child(4) {
-    width: 18%;
-  }
-  
-  /* ブックマーク */
-  body.questions.classroom .bookmark-cell {
-    text-align: center;
-    vertical-align: middle;
-  }
-  
-  body.questions.classroom .bookmark-button {
-    padding: 4px 8px;
-    border: none;
-    background: transparent;
-    color: #333;
-    font-size: 25px;
-    cursor: pointer;
-  }
-  
-  body.questions.classroom .bookmark-button.bookmarked {
-    color: #f0ad00;
-  }
-  
-  body.questions.classroom .classroom-back {
-    margin-top: 20px;
-  }
-  
-  @media (max-width: 600px) {
     body.questions.classroom .classroom-container {
-      padding: 12px;
+        padding: 75px 12px 15px;
     }
-  
+
     body.questions.classroom .classroom-header-item {
-      padding: 8px 4px;
-      font-size: 14px;
+        padding: 8px 4px;
+        font-size: 14px;
     }
-  
+
     body.questions.classroom .questions-table {
-      font-size: 14px;
+        font-size: 14px;
     }
-  
+
     body.questions.classroom .questions-table th,
     body.questions.classroom .questions-table td {
-      padding: 8px 5px;
+        padding: 8px 5px;
     }
-  
+
+    body.questions.classroom .questions-table th:nth-child(1),
+    body.questions.classroom .questions-table td:nth-child(1) {
+        width: 25%;
+    }
+
+    body.questions.classroom .questions-table th:nth-child(2),
+    body.questions.classroom .questions-table td:nth-child(2) {
+        width: 55%;
+    }
+
+    body.questions.classroom .questions-table th:nth-child(3),
+    body.questions.classroom .questions-table td:nth-child(3) {
+        width: 20%;
+    }
+
     body.questions.classroom .questions-search-input {
-      width: 75%;
+        width: 75%;
+        max-width: 75%;
     }
-  }
-  
-  
-/* 専用質問一覧の崩れを修正 */
+
+    body.questions.index .mypage-icon-button,
+    body.questions.classroom .mypage-icon-button {
+        top: 12px;
+        right: 12px;
+        width: 44px;
+        height: 44px;
+    }
+}
+
+
+
+/* =====================================
+   専用質問一覧：カード型デザイン
+   既存の項目・機能はそのまま
+===================================== */
+
+body.questions.classroom {
+  background: #f3f7fc;
+  color: #34445a;
+  font-family: "Meiryo", sans-serif;
+}
+
 body.questions.classroom .classroom-container {
-    display: block !important;
-    box-sizing: border-box;
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 30px !important;
-  }
-  
-  /* 各ブロックを縦に並べる */
-  body.questions.classroom .classroom-container > .classroom-header,
-  body.questions.classroom .classroom-container > .questions-search,
-  body.questions.classroom .classroom-container > .questions-table,
-  body.questions.classroom .classroom-container > .questions-pagination,
-  body.questions.classroom .classroom-container > .classroom-back {
-    display: block;
-    box-sizing: border-box;
-    width: 100% !important;
-    max-width: none !important;
-    float: none !important;
-    clear: both;
-  }
-  
-  /* ヘッダーは横3列 */
-  body.questions.classroom .classroom-container > .classroom-header {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin-bottom: 20px;
-  }
-  
-  /* 検索フォーム */
-  body.questions.classroom .classroom-search form,
-  body.questions.classroom .questions-search form {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  /* テーブルを通常の表として表示 */
-  body.questions.classroom table.questions-table {
-    display: table !important;
-    width: 100% !important;
-    max-width: none !important;
-    table-layout: fixed !important;
-    border-collapse: collapse;
-  }
-  
-  body.questions.classroom .questions-table thead {
-    display: table-header-group !important;
-  }
-  
-  body.questions.classroom .questions-table tbody {
-    display: table-row-group !important;
-  }
-  
-  body.questions.classroom .questions-table tr {
-    display: table-row !important;
-  }
-  
-  body.questions.classroom .questions-table th,
-  body.questions.classroom .questions-table td {
-    display: table-cell !important;
-    box-sizing: border-box;
-    float: none !important;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    vertical-align: middle;
-  }
-  
-  body.questions.classroom .questions-table th:nth-child(1),
-  body.questions.classroom .questions-table td:nth-child(1) {
-    width: 15% !important;
-  }
-  
-  body.questions.classroom .questions-table th:nth-child(2),
-  body.questions.classroom .questions-table td:nth-child(2) {
-    width: 55% !important;
-  }
-  
-  body.questions.classroom .questions-table th:nth-child(3),
-  body.questions.classroom .questions-table td:nth-child(3) {
-    width: 12% !important;
-  }
-  
-  body.questions.classroom .questions-table th:nth-child(4),
-  body.questions.classroom .questions-table td:nth-child(4) {
-    width: 18% !important;
-  }
-  
-  /* ページネーションを表の下に配置 */
-  body.questions.classroom .questions-pagination {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  
-/* 専用質問一覧の検索バーを短くする */
-body.questions.classroom .questions-search form {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-  }
-  
-  body.questions.classroom .questions-search-input {
-    flex: 0 1 480px !important;
-    width: 480px !important;
-    max-width: 60% !important;
-    min-width: 0;
-    height: 44px;
-    box-sizing: border-box;
-  }
-  
-  body.questions.classroom .questions-search-button {
-    flex: 0 0 auto;
-    width: auto !important;
-    min-width: 80px;
-    height: 44px;
-    padding: 8px 18px;
-    box-sizing: border-box;
-  }
-  
-  /* マイページボタン */
-body.questions.index .questions-container {
-  position: relative;
-}
-
-body.questions.index .mypage-icon-button {
-  position: absolute;
-  top: 15px;
-  right: 25px;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #4285ee;
-  border-radius: 50%;
-  text-decoration: none;
-  z-index: 100;
-  transition: 0.2s;
-}
-
-body.questions.index .mypage-icon-button:hover {
-  background-color: #286bd0;
-  transform: scale(1.08);
-}
-
-body.questions.index .mypage-icon-button svg {
-  width: 27px;
-  height: 27px;
-  fill: none;
-  stroke: white;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.mypage-icon-button {
-  position: fixed;
-  top: 20px;
-  right: 25px;
-  z-index: 1000;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #4285ee;
-  border-radius: 50%;
-  text-decoration: none;
-}
-
-.mypage-icon-button:hover {
-  background-color: #286bd0;
-}
-
-.mypage-icon-button svg {
-  width: 25px;
-  height: 25px;
-  fill: none;
-  stroke: white;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* 質問一覧の配置 */
-body.questions.index .questions-container {
-  position: relative;
-  padding-top: 65px;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 35px 30px;
+  background: transparent;
 }
 
 /* マイページボタン */
-body.questions.index .mypage-icon-button {
-  position: absolute;
-  top: 10px;
-  right: 20px;
+body.questions.classroom .mypage-icon-button {
+  top: 20px;
+  right: 25px;
+  background: #ffffff;
+  border: 1px solid #dce8f5;
+  box-shadow: 0 2px 8px rgba(60, 100, 150, 0.08);
+}
 
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+body.questions.classroom .mypage-icon-button svg {
+  stroke: #4285ee;
+}
 
-  background-color: #4285ee;
-  color: white;
+/* 学年・クラス・教科 */
+body.questions.classroom .classroom-header {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 22px;
+  background: transparent;
+}
 
-  display: flex;
-  align-items: center;
+body.questions.classroom .classroom-header-item {
+  min-height: 48px;
+  padding: 12px;
+  color: #34445a;
+  background: #ffffff;
+  border: 1px solid #dce8f5;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(60, 100, 150, 0.05);
+}
+
+/* 検索欄 */
+body.questions.classroom .questions-search {
+  margin: 0 0 22px;
+}
+
+body.questions.classroom .questions-search form {
   justify-content: center;
-
-  z-index: 10;
-  text-decoration: none;
+  gap: 12px;
 }
 
-/* 人型アイコン */
-body.questions.index .mypage-icon-button svg {
-  width: 26px;
-  height: 26px;
-  fill: none;
-  stroke: white;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+body.questions.classroom .questions-search-input {
+  flex: 1;
+  width: auto;
+  max-width: 600px;
+  height: 46px;
+  padding: 10px 18px;
+  background: #ffffff;
+  border: 1px solid #dce5ef;
+  border-radius: 24px;
+  font-size: 15px;
+  outline: none;
 }
 
-/* 質問内容を左寄せにする */
-body.questions.classroom .questions-table td:nth-child(2) {
-  text-align: left !important;
-  vertical-align: middle !important;
+body.questions.classroom .questions-search-input:focus {
+  border-color: #75b8ef;
+  box-shadow: 0 0 0 3px rgba(117, 184, 239, 0.15);
 }
 
-/* 質問内容のクリック範囲 */
-body.questions.classroom .question-content-link {
-  display: flex;
-  width: 100%;
-  min-height: 35px;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: left;
-  color: #222;
-  text-decoration: none;
+body.questions.classroom .questions-search-button {
+  height: 46px;
+  min-width: 85px;
+  padding: 8px 22px;
+  color: #ffffff;
+  background: #3988df;
+  border: none;
+  border-radius: 24px;
+  font-weight: bold;
   cursor: pointer;
 }
 
-/* マウスを乗せたとき */
+body.questions.classroom .questions-search-button:hover {
+  background: #2875c9;
+}
+
+/* 質問一覧 */
+body.questions.classroom table.questions-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  table-layout: fixed;
+  background: transparent;
+}
+
+/* 見出し */
+body.questions.classroom .questions-table thead th {
+  padding: 12px 16px;
+  color: #60758d;
+  background: #e8f2fc;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+body.questions.classroom .questions-table thead th:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+body.questions.classroom .questions-table thead th:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+/* 質問カード */
+body.questions.classroom .questions-table tbody td {
+  padding: 18px 16px;
+  background: #ffffff;
+  border-top: 1px solid #e8eef5;
+  border-bottom: 1px solid #e8eef5;
+  font-size: 16px;
+  line-height: 1.6;
+  vertical-align: middle;
+}
+
+body.questions.classroom .questions-table tbody td:first-child {
+  border-left: 1px solid #e8eef5;
+  border-radius: 12px 0 0 12px;
+}
+
+body.questions.classroom .questions-table tbody td:last-child {
+  border-right: 1px solid #e8eef5;
+  border-radius: 0 12px 12px 0;
+}
+
+body.questions.classroom .questions-table tbody tr {
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+body.questions.classroom .questions-table tbody tr:hover td {
+  background: #fafdff;
+}
+
+body.questions.classroom .questions-table tbody tr:hover {
+  filter: drop-shadow(0 3px 5px rgba(60, 100, 150, 0.08));
+}
+
+/* 列幅 */
+body.questions.classroom .questions-table th:nth-child(1),
+body.questions.classroom .questions-table td:nth-child(1) {
+  width: 20%;
+  white-space: nowrap;
+}
+
+body.questions.classroom .questions-table th:nth-child(2),
+body.questions.classroom .questions-table td:nth-child(2) {
+  width: 62%;
+}
+
+body.questions.classroom .questions-table th:nth-child(3),
+body.questions.classroom .questions-table td:nth-child(3) {
+  width: 18%;
+  text-align: center;
+}
+
+/* 質問内容 */
+body.questions.classroom .question-content-link {
+  min-height: 35px;
+  color: #34445a;
+  font-weight: bold;
+  text-decoration: none;
+}
+
 body.questions.classroom .question-content-link:hover {
-  color: #4285ee;
+  color: #3988df;
+  text-decoration: none;
+}
+
+/* ブックマーク */
+body.questions.classroom .bookmark-button {
+  color: #8da4bd;
+  font-size: 25px;
+}
+
+body.questions.classroom .bookmark-button:hover {
+  color: #3988df;
+}
+
+body.questions.classroom .bookmark-button.bookmarked {
+  color: #f0ad4e;
+}
+
+/* 質問がない場合 */
+body.questions.classroom .empty-message {
+  padding: 25px !important;
+  color: #7b8da3;
+  background: #ffffff;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* ページネーション */
+body.questions.classroom .questions-pagination {
+  margin: 25px 0;
+  gap: 8px;
+}
+
+body.questions.classroom .questions-pagination a {
+  min-width: 38px;
+  padding: 8px 12px;
+  color: #4d6b8d;
+  background: #ffffff;
+  border: 1px solid #dce8f5;
+  border-radius: 9px;
+  font-size: 15px;
+}
+
+body.questions.classroom .questions-pagination .current {
+  color: #ffffff;
+  background: #3988df;
+  border-color: #3988df;
+  border-radius: 9px;
+}
+
+/* 戻るボタン */
+body.questions.classroom .classroom-back a {
+  color: #3988df;
+  text-decoration: none;
+}
+
+body.questions.classroom .classroom-back a:hover {
   text-decoration: underline;
 }
 
-/* 質問一覧・専用質問一覧のマイページボタン */
-body.questions.index .mypage-icon-button,
-body.questions.classroom .mypage-icon-button {
-    position: fixed;
-    top: 15px;
-    right: 25px;
-    z-index: 1000;
+/* 質問追加ボタン */
+body.questions.classroom .questions-add a {
+  background: #3988df;
+  box-shadow: 0 3px 10px rgba(57, 136, 223, 0.2);
+}
 
-    width: 48px;
-    height: 48px;
+body.questions.classroom .questions-add a:hover {
+  background: #2875c9;
+}
 
+/* スマートフォン */
+@media (max-width: 600px) {
+  body.questions.classroom .classroom-container {
+      padding: 70px 12px 20px;
+  }
+
+  body.questions.classroom .classroom-header {
+      gap: 6px;
+  }
+
+  body.questions.classroom .classroom-header-item {
+      padding: 10px 4px;
+      font-size: 13px;
+  }
+
+  body.questions.classroom .questions-search form {
+      gap: 6px;
+  }
+
+  body.questions.classroom .questions-search-input {
+      font-size: 14px;
+  }
+
+  body.questions.classroom .questions-search-button {
+      min-width: 65px;
+      padding: 8px 12px;
+      font-size: 14px;
+  }
+
+  body.questions.classroom .questions-table {
+      font-size: 13px;
+  }
+
+  body.questions.classroom .questions-table th,
+  body.questions.classroom .questions-table td {
+      padding: 10px 6px;
+      font-size: 13px;
+  }
+
+  body.questions.classroom .questions-table th:nth-child(1),
+  body.questions.classroom .questions-table td:nth-child(1) {
+      width: 25%;
+      white-space: normal;
+  }
+
+  body.questions.classroom .questions-table th:nth-child(2),
+  body.questions.classroom .questions-table td:nth-child(2) {
+      width: 55%;
+  }
+
+  body.questions.classroom .questions-table th:nth-child(3),
+  body.questions.classroom .questions-table td:nth-child(3) {
+      width: 20%;
+  }
+}
+
+/* =========================
+   ホーム画面
+========================= */
+
+body.questions.index .home-container {
+  min-height: 100vh;
+  background: #f4f8fc;
+  padding: 75px 30px 30px;
+}
+
+/* 選択エリア */
+
+body.questions.index .home-selection-area {
+  width: 100%;
+  max-width: 950px;
+  margin: 100px auto 0;
+  padding: 45px 35px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 5px 20px rgba(80, 120, 160, 0.10);
+}
+
+/* タイトル */
+
+body.questions.index .home-title {
+  margin: 0 0 35px;
+  color: #344b63;
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* 学年・クラス・教科 */
+
+body.questions.index .questions-header {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  background: transparent;
+  border: none;
+}
+
+/* 選択ボタン */
+
+body.questions.index .dropdown {
+  border: none;
+}
+
+body.questions.index .dropdown-label {
+  min-height: 55px;
+  padding: 12px;
+  background: #ffffff;
+  color: #344b63;
+  border: 1px solid #d5e2ee;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+body.questions.index .dropdown-label:hover {
+  background: #edf6ff;
+  border-color: #7db7ec;
+}
+
+/* 選択肢 */
+
+body.questions.index .dropdown-menu {
+  overflow: hidden;
+  border: 1px solid #d5e2ee;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(50, 90, 130, 0.12);
+}
+
+body.questions.index .dropdown-menu button {
+  padding: 13px;
+  color: #344b63;
+  font-size: 16px;
+}
+
+body.questions.index .dropdown-menu button:hover,
+body.questions.index .dropdown-menu button.selected {
+  background: #e5f2ff;
+  color: #2879c7;
+}
+
+/* 確認画面 */
+
+body.questions.index .class-confirm-box {
+  border-radius: 16px;
+  color: #344b63;
+}
+
+body.questions.index .class-confirm-box h2 {
+  color: #344b63;
+}
+
+body.questions.index #class-cancel,
+body.questions.index #class-ok {
+  border-radius: 8px;
+}
+
+body.questions.index #class-ok {
+  background: #4285ee;
+}
+
+/* スマートフォン */
+
+@media (max-width: 600px) {
+
+  body.questions.index .home-selection-area {
+      margin-top: 70px;
+      padding: 30px 15px;
+  }
+
+  body.questions.index .home-title {
+      font-size: 21px;
+  }
+
+  body.questions.index .questions-header {
+      grid-template-columns: 1fr;
+      gap: 12px;
+  }
+
+  body.questions.index .dropdown-label {
+      font-size: 16px;
+  }
+}
+
+/* =========================
+   質問追加画面
+========================= */
+
+body.questions.new {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: "Meiryo", sans-serif;
+    color: #263b55;
+    background-color: #f2f6fc;
+}
+
+body.questions.new .question-new-container {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 30px;
+}
+
+body.questions.new .question-new-header {
+    max-width: 1000px;
+    margin: 0 auto 25px;
+}
+
+body.questions.new .question-new-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+    color: #263b55;
+}
+
+body.questions.new .question-new-card {
+    box-sizing: border-box;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 35px;
+    background-color: #ffffff;
+    border: 1px solid #e1eaf5;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(50, 90, 140, 0.06);
+}
+
+body.questions.new .question-form-field {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 12px;
+}
+
+body.questions.new .question-form-field label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #263b55;
+}
+
+body.questions.new .question-content-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 250px;
+    padding: 16px;
+    border: 1px solid #d6e2f0;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #263b55;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.8;
+    resize: vertical;
+}
+
+body.questions.new .question-content-input:focus {
+    outline: none;
+    border-color: #4285ee;
+    box-shadow: 0 0 0 3px rgba(66, 133, 238, 0.12);
+}
+
+body.questions.new .question-form-submit {
+    display: flex;
     justify-content: center;
+    margin-top: 30px;
+}
 
+body.questions.new .question-submit-button {
+    min-width: 230px;
+    padding: 13px 25px;
+    border: none;
+    border-radius: 25px;
     background-color: #4285ee;
-    border-radius: 50%;
-    text-decoration: none;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
 
-    transition: 0.2s;
+body.questions.new .question-submit-button:hover {
+    background-color: #286bd0;
+}
+
+body.questions.new .question-new-back {
+    margin-top: 25px;
+}
+
+body.questions.new .question-new-back a {
+    color: #4285ee;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+body.questions.new .question-new-back a:hover {
+    text-decoration: underline;
+}
+
+body.questions.new .question-form-errors {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #f0b7b7;
+    border-radius: 8px;
+    background-color: #fff2f2;
+    color: #b42318;
+}
+
+/* スマートフォン */
+
+@media (max-width: 600px) {
+    body.questions.new .question-new-container {
+        padding: 25px 12px;
+    }
+
+    body.questions.new .question-new-header h1 {
+        font-size: 24px;
+    }
+
+    body.questions.new .question-new-card {
+        padding: 20px 15px;
+    }
+
+    body.questions.new .question-content-input {
+        min-height: 200px;
+    }
+
+    body.questions.new .question-submit-button {
+        width: 100%;
+    }
+}
+
+/* =========================
+   質問追加画面
+========================= */
+
+body.questions.new {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f6fc;
+    font-family: "Meiryo", sans-serif;
+    color: #263d5c;
+}
+
+body.questions.new .question-new-container {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+    padding: 55px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+body.questions.new .question-new-card {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 650px;
+    padding: 35px 45px;
+    background-color: #ffffff;
+    border: 1px solid #dce8f6;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(50, 90, 140, 0.08);
+}
+
+body.questions.new .question-new-title {
+    margin: 0 0 30px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #263d5c;
+    text-align: center;
+}
+
+/* 入力欄 */
+
+body.questions.new .question-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+body.questions.new .question-form-field label {
+    font-size: 17px;
+    font-weight: bold;
+    color: #263d5c;
+}
+
+body.questions.new .question-form-textarea {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: 230px;
+    padding: 16px;
+    border: 1px solid #d2e0f2;
+    border-radius: 12px;
+    background-color: #ffffff;
+    color: #263d5c;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.7;
+    resize: vertical;
+}
+
+body.questions.new .question-form-textarea:focus {
+    outline: none;
+    border-color: #4285ee;
+    box-shadow: 0 0 0 3px rgba(66, 133, 238, 0.12);
+}
+
+/* 投稿ボタン */
+
+body.questions.new .question-form-submit {
+    margin-top: 28px;
+    text-align: center;
+}
+
+body.questions.new .question-form-submit input {
+    width: 100%;
+    max-width: 280px;
+    min-height: 50px;
+    border: none;
+    border-radius: 30px;
+    background-color: #286bd0;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+body.questions.new .question-form-submit input:hover {
+    background-color: #1d58b5;
+}
+
+/* 戻るリンク */
+
+body.questions.new .question-new-back {
+    margin-top: 25px;
+    text-align: center;
+}
+
+body.questions.new .question-new-back a {
+    color: #4285ee;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+body.questions.new .question-new-back a:hover {
+    text-decoration: underline;
+}
+
+/* エラー表示 */
+
+body.questions.new .question-form-errors {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #e8a0a0;
+    border-radius: 10px;
+    background-color: #fff5f5;
+    color: #c0392b;
+}
+
+/* スマートフォン */
+
+@media (max-width: 600px) {
+    body.questions.new .question-new-container {
+        padding: 25px 12px;
+    }
+
+    body.questions.new .question-new-card {
+        padding: 25px 18px;
+    }
+
+    body.questions.new .question-new-title {
+        font-size: 24px;
+    }
+
+    body.questions.new .question-form-textarea {
+        min-height: 200px;
+    }
+}
+
+/* =========================
+   質問一覧のページネーション
+   マイページと同じデザイン
+========================= */
+
+body.questions.classroom .questions-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+    margin: 25px 0;
+}
+
+/* ページ番号全体 */
+body.questions.classroom .questions-pagination .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* ページ番号・次へボタン */
+body.questions.classroom .questions-pagination .page a,
+body.questions.classroom .questions-pagination .next a,
+body.questions.classroom .questions-pagination .prev a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #cfe0f5;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #4285ee;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+/* 現在選択中のページ */
+body.questions.classroom .questions-pagination .page.current {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #4285ee;
+    border-radius: 8px;
+    background-color: #4285ee;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 /* マウスを乗せたとき */
-body.questions.index .mypage-icon-button:hover,
-body.questions.classroom .mypage-icon-button:hover {
-    background-color: #286bd0;
-    transform: scale(1.08);
+body.questions.classroom .questions-pagination .page a:hover,
+body.questions.classroom .questions-pagination .next a:hover,
+body.questions.classroom .questions-pagination .prev a:hover {
+    background-color: #e8f1ff;
 }
 
-/* 人型アイコン */
-body.questions.index .mypage-icon-button svg,
-body.questions.classroom .mypage-icon-button svg {
-    width: 26px;
-    height: 26px;
-
-    fill: none;
-    stroke: white;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+/* 最後のページへのボタンは非表示 */
+body.questions.classroom .questions-pagination .last {
+    display: none;
 }
 
-/* 専用質問一覧の上部に余白を追加 */
-body.questions.classroom .classroom-container {
-  padding-top: 75px !important;
+/* Nextを三角形だけの表示にする */
+body.questions.classroom .questions-pagination .next a {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #4285ee;
+    font-size: 24px;
+    text-decoration: none;
 }
 
-/* マイページボタンの位置 */
-body.questions.classroom .mypage-icon-button {
-  position: fixed;
-  top: 15px;
-  right: 25px;
-  z-index: 1000;
+/* Nextの文字を非表示にして三角形を表示 */
+body.questions.classroom .questions-pagination .next a {
+    font-size: 0;
+}
+
+body.questions.classroom .questions-pagination .next a::after {
+    content: "▷";
+    font-size: 24px;
+}
+
+body.questions.classroom .questions-pagination .next a:hover {
+    background: transparent;
+    color: #286bd0;
 }

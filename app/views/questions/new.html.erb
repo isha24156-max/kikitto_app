@@ -1,24 +1,33 @@
 <% content_for :title, "質問追加" %>
 
-<h1>質問追加</h1>
+<div class="question-new-container">
 
-<%= render "form",
-           question: @question,
-           grade: params[:grade],
-           classroom: params[:classroom],
-           subject: params[:subject] %>
+  <div class="question-new-card">
 
-<br>
+    <h1 class="question-new-title">質問追加</h1>
 
-<div>
-  <% if params[:grade].present? && params[:classroom].present? && params[:subject].present? %>
-    <%= link_to "戻る",
-        classroom_questions_path(
-          grade: params[:grade],
-          classroom: params[:classroom],
-          subject: params[:subject]
-        ) %>
-  <% else %>
-    <%= link_to "戻る", questions_path %>
-  <% end %>
+    <%= render "form",
+        question: @question,
+        grade: params[:grade],
+        classroom: params[:classroom],
+        subject: params[:subject] %>
+
+    <div class="question-new-back">
+      <% if params[:grade].present? &&
+            params[:classroom].present? &&
+            params[:subject].present? %>
+
+        <%= link_to "戻る",
+            classroom_questions_path(
+              grade: params[:grade],
+              classroom: params[:classroom],
+              subject: params[:subject]
+            ) %>
+
+      <% else %>
+        <%= link_to "戻る", questions_path %>
+      <% end %>
+    </div>
+
+  </div>
 </div>

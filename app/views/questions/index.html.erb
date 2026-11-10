@@ -1,7 +1,6 @@
+<% content_for :title, "ホーム" %>
 
-<% content_for :title, "質問一覧" %>
-
-<div class="questions-container">
+<div class="questions-container home-container">
 
   <!-- マイページボタン -->
   <%= link_to mypage_index_path,
@@ -16,59 +15,74 @@
 
   <p class="questions-notice"><%= notice %></p>
 
-  <!-- 学年・クラス・教科 -->
-  <div class="questions-header">
+  <!-- 学年・クラス・教科の選択 -->
+  <div class="home-selection-area">
 
-    <!-- 学年 -->
-    <div class="dropdown">
-      <button type="button" class="dropdown-label">学年 ▼</button>
+    <h1 class="home-title">クラスを選択してください</h1>
 
-      <div class="dropdown-menu">
-        <% (1..3).each do |n| %>
-          <button type="button"
-                  onclick="selectOption(this, 'grade', '<%= n %>')">
-            <%= n %>年
-          </button>
-        <% end %>
+    <div class="questions-header">
+
+      <!-- 学年 -->
+      <div class="dropdown">
+        <button type="button" class="dropdown-label">
+          学年 ▼
+        </button>
+
+        <div class="dropdown-menu">
+          <% (1..3).each do |n| %>
+            <button type="button"
+                    data-category="grade"
+                    data-value="<%= n %>"
+                    data-label="<%= n %>年">
+              <%= n %>年
+            </button>
+          <% end %>
+        </div>
       </div>
-    </div>
 
-    <!-- クラス -->
-    <div class="dropdown">
-      <button type="button" class="dropdown-label">クラス ▼</button>
+      <!-- クラス -->
+      <div class="dropdown">
+        <button type="button" class="dropdown-label">
+          クラス ▼
+        </button>
 
-      <div class="dropdown-menu">
-        <% (1..4).each do |n| %>
-          <button type="button"
-                  onclick="selectOption(this, 'classroom', '<%= n %>')">
-            <%= n %>組
-          </button>
-        <% end %>
+        <div class="dropdown-menu">
+          <% (1..4).each do |n| %>
+            <button type="button"
+                    data-category="classroom"
+                    data-value="<%= n %>"
+                    data-label="<%= n %>組">
+              <%= n %>組
+            </button>
+          <% end %>
+        </div>
       </div>
-    </div>
 
-    <!-- 教科 -->
-    <div class="dropdown">
-      <button type="button" class="dropdown-label">教科 ▼</button>
+      <!-- 教科 -->
+      <div class="dropdown">
+        <button type="button" class="dropdown-label">
+          教科 ▼
+        </button>
 
-      <div class="dropdown-menu">
-        <% (1..6).each do |n| %>
-          <% subject = Subject.find_by(id: n) %>
-          <% subject_name = subject&.subject_name || "教科未登録" %>
+        <div class="dropdown-menu">
+          <% (1..6).each do |n| %>
+            <% subject = Subject.find_by(id: n) %>
+            <% subject_name = subject&.subject_name || "教科未登録" %>
 
-          <button
-            type="button"
-            data-subject-name="<%= subject_name %>"
-            onclick="selectOption(this, 'subject', '<%= n %>')">
-            <%= subject_name %>
-          </button>
-        <% end %>
+            <button type="button"
+                    data-category="subject"
+                    data-value="<%= n %>"
+                    data-label="<%= subject_name %>">
+              <%= subject_name %>
+            </button>
+          <% end %>
+        </div>
       </div>
-    </div>
 
+    </div>
   </div>
 
-  <!-- 確認画面（モーダル） -->
+  <!-- 選択確認画面 -->
   <div id="class-confirm-modal"
        class="class-confirm-modal"
        hidden>
@@ -90,73 +104,99 @@
     </div>
   </div>
 
-  <!-- 質問検索 -->
-  <form class="questions-search"
-        action="<%= questions_path %>"
-        method="get">
-
-    <input
-      type="text"
-      name="q"
-      placeholder="質問を検索"
-      value="<%= params[:q] %>"
-      aria-label="質問を検索"
-    >
-
-    <button type="submit">検索</button>
-  </form>
-
 </div>
 
 <script>
-let selectedGrade = null;
-let selectedClassroom = null;
-let selectedSubject = null;
-let selectedSubjectName = null;
+(function () {
+  const container = document.querySelector(".home-container");
 
-function selectOption(button, category, number) {
-  const dropdown = button.closest(".dropdown");
-  const label = dropdown.querySelector(".dropdown-label");
-
-  label.textContent = button.textContent.trim() + " ▼";
-
-  dropdown.querySelectorAll(".dropdown-menu button").forEach((item) => {
-    item.classList.remove("selected");
-  });
-
-  button.classList.add("selected");
-
-  if (category === "grade") {
-    selectedGrade = number;
-  } else if (category === "classroom") {
-    selectedClassroom = number;
-  } else if (category === "subject") {
-    selectedSubject = number;
-    selectedSubjectName = button.dataset.subjectName;
+  if (!container || container.dataset.initialized === "true") {
+    return;
   }
 
-  // 3つすべて選択されたら確認画面を表示
-  if (selectedGrade && selectedClassroom && selectedSubject) {
-    document.getElementById("class-confirm-message").textContent =
-      `あなたは${selectedGrade}年${selectedClassroom}組の${selectedSubjectName}のクラスに入りますか？`;
+  container.dataset.initialized = "true";
 
-    document.getElementById("class-confirm-modal").hidden = false;
-  }
-}
+  let selectedGrade = null;
+  let selectedClassroom = null;
+  let selectedSubject = null;
+  let selectedSubjectName = null;
 
-// キャンセルを押したらモーダルを閉じる
-document.getElementById("class-cancel")?.addEventListener("click", () => {
-  document.getElementById("class-confirm-modal").hidden = true;
-});
+  const modal = document.getElementById("class-confirm-modal");
+  const message = document.getElementById("class-confirm-message");
+  const cancelButton = document.getElementById("class-cancel");
+  const okButton = document.getElementById("class-ok");
 
-// OKを押したら専用質問一覧へ移動
-document.getElementById("class-ok")?.addEventListener("click", () => {
-  const params = new URLSearchParams({
-    grade: selectedGrade,
-    classroom: selectedClassroom,
-    subject: selectedSubject
+  // 選択肢をクリックしたとき
+  container.querySelectorAll(".dropdown-menu button").forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+      const dropdown = button.closest(".dropdown");
+      const label = dropdown.querySelector(".dropdown-label");
+
+      const category = button.dataset.category;
+      const value = button.dataset.value;
+      const text = button.dataset.label;
+
+      // 選択した内容を表示
+      label.textContent = text + " ▼";
+
+      // 選択状態を更新
+      dropdown.querySelectorAll(".dropdown-menu button").forEach(function(item) {
+        item.classList.remove("selected");
+      });
+
+      button.classList.add("selected");
+
+      // 選択内容を保存
+      if (category === "grade") {
+        selectedGrade = value;
+      }
+
+      if (category === "classroom") {
+        selectedClassroom = value;
+      }
+
+      if (category === "subject") {
+        selectedSubject = value;
+        selectedSubjectName = text;
+      }
+
+      // 3項目すべて選択されたら確認画面を表示
+      if (selectedGrade && selectedClassroom && selectedSubject) {
+
+        message.textContent =
+          "あなたは" +
+          selectedGrade + "年" +
+          selectedClassroom + "組の" +
+          selectedSubjectName +
+          "のクラスに入りますか？";
+
+        modal.hidden = false;
+      }
+
+    });
+
   });
 
-  window.location.href = `/questions/classroom?${params.toString()}`;
-});
+  // キャンセル
+  cancelButton.addEventListener("click", function() {
+    modal.hidden = true;
+  });
+
+  // OK
+  okButton.addEventListener("click", function() {
+
+    const params = new URLSearchParams({
+      grade: selectedGrade,
+      classroom: selectedClassroom,
+      subject: selectedSubject
+    });
+
+    window.location.href =
+      "/questions/classroom?" + params.toString();
+
+  });
+
+})();
 </script>
