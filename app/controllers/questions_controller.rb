@@ -131,7 +131,7 @@ def classroom
     @questions = Question.none
   end
 
-  # 検索機能
+  # 質問検索
   if params[:q].present?
     keyword = ActiveRecord::Base.sanitize_sql_like(
       params[:q].strip
@@ -143,11 +143,26 @@ def classroom
     )
   end
 
-  # 新しい質問から順番に表示
-  @questions = @questions
-    .order(created_at: :desc)
-    .page(params[:page])
-    .per(15)
+  # 並び替え
+  case params[:sort]
+  when "oldest"
+    @questions = @questions.order(created_at: :asc)
+
+  when "unanswered"
+    @questions = @questions.where.missing(:answers)
+                           .order(created_at: :desc)
+
+  when "answered"
+    @questions = @questions.where.associated(:answers)
+                           .distinct
+                           .order(created_at: :desc)
+
+  else
+    @questions = @questions.order(created_at: :desc)
+  end
+
+  # ページネーション
+  @questions = @questions.page(params[:page]).per(15)
 end
 
   private
