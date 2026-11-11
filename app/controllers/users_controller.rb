@@ -21,14 +21,22 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
-    @user = User.new(user_params) # user_params から next_action を除外してモデル作成
+    @user = User.new(user_params)
+
+    # ラジオボタンの値 (A / B) に応じて role を設定
+    case params.dig(:user, :next_action)
+    when "A"
+      @user.role = :student
+    when "B"
+      @user.role = :teacher
+    end
 
     respond_to do |format|
       if @user.save
         session[:user_id] = @user.id
 
-        # 送信された next_action の値で遷移先を判定
-        redirect_url = params[:user][:next_action] == "A" ? questions_path : login_path
+        # 生徒なら質問ページ、教師ならクラス選択画面へ
+        redirect_url = @user.teacher? ? teacher_questions_select_path : questions_path
 
         format.html { redirect_to redirect_url, notice: "ユーザー登録が完了しました。" }
         format.json { render :show, status: :created, location: @user }

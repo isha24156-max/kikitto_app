@@ -1,0 +1,112 @@
+<% content_for :title, "教師側質問一覧" %>
+
+<div class="teacher-questions-container">
+
+  <p class="teacher-questions-notice">
+    <%= notice %>
+  </p>
+
+  <!-- 検索欄 -->
+  <div class="teacher-questions-search">
+    <%= form_with url: teacher_questions_path,
+                  method: :get,
+                  local: true do %>
+
+      <%= hidden_field_tag :grade, @grade %>
+      <%= hidden_field_tag :classroom, @classroom %>
+      <%= hidden_field_tag :subject, @subject_number %>
+
+      <%= text_field_tag :q, params[:q],
+          placeholder: "質問を検索",
+          class: "teacher-search-input" %>
+
+      <%= submit_tag "検索",
+          class: "teacher-search-button" %>
+    <% end %>
+  </div>
+
+  <!-- 質問一覧 -->
+  <table class="teacher-questions-table">
+    <thead>
+      <tr>
+  <th>日付</th>
+  <th>内容</th>
+  <th>回答状況</th>
+  <th></th>
+</tr>
+    </thead>
+
+    <tbody>
+      <% @questions.each do |question| %>
+        <tr>
+          <!-- 日付 -->
+          <td>
+            <%= question.deadline %>
+          </td>
+
+          <!-- 質問内容 -->
+          <td>
+            <%= link_to new_answer_path(question_id: question.id),
+                class: "teacher-question-content-link" do %>
+              <%= question.q_content %>
+            <% end %>
+          </td>
+
+          <!-- 回答状況 -->
+          <td>
+            <% if question.answers.any? %>
+              <span class="teacher-answer-status answered">
+                回答済み
+              </span>
+            <% else %>
+              <span class="teacher-answer-status unanswered">
+                未回答
+              </span>
+            <% end %>
+          </td>
+
+          <!-- 削除ボタン -->
+          <td>
+            <%= button_to "削除",
+                teacher_question_path(
+                  question,
+                  grade: @grade,
+                  classroom: @classroom,
+                  subject: @subject_number,
+                  q: params[:q]
+                ),
+                method: :delete,
+                class: "teacher-question-delete-button",
+                data: {
+                  turbo_confirm: "この質問を削除してもよろしいですか？"
+                } %>
+          </td>
+        </tr>
+      <% end %>
+
+      <% if @questions.empty? %>
+        <tr>
+          <td colspan="4" class="teacher-empty-message">
+            質問はまだありません。
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <!-- ページネーション -->
+  <div class="teacher-questions-pagination">
+    <%= paginate @questions,
+        params: {
+          grade: @grade,
+          classroom: @classroom,
+          subject: @subject_number,
+          q: params[:q]
+        } %>
+  </div>
+
+  <div class="teacher-questions-back">
+    <%= link_to "クラス選択に戻る", teacher_questions_select_path %>
+  </div>
+
+</div>

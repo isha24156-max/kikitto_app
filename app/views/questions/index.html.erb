@@ -65,18 +65,16 @@
         </button>
 
         <div class="dropdown-menu">
-          <% (1..40).each do |n| %>
-            <% subject = Subject.find_by(id: n) %>
-            <% subject_name = subject&.subject_name || "教科未登録" %>
-
+          <% Subject.all.each do |subject| %>
             <button type="button"
-                    data-category="subject"
-                    data-value="<%= n %>"
-                    data-label="<%= subject_name %>">
-              <%= subject_name %>
-            </button>
+            data-category="subject"
+            data-value="<%= subject.id %>"
+            data-label="<%= subject.subject_name %>">
+              <%= subject.subject_name %>
+              </button>
           <% end %>
         </div>
+
       </div>
 
     </div>

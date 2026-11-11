@@ -24,6 +24,16 @@ Rails.application.routes.draw do
       to: "teacher_mypage#classroom_select",
       as: :teacher_classroom_select
 
+
+get "teacher_questions/select",
+to: "teacher_questions#select",
+as: :teacher_questions_select
+
+get "teacher_questions",
+to: "teacher_questions#index",
+as: :teacher_questions
+
+
   # 教師側：選択後の質問一覧画面
   get "/teacher_mypage/classroom_questions",
       to: "teacher_mypage#classroom_questions",
@@ -42,4 +52,8 @@ Rails.application.routes.draw do
   delete "teacher_mypage/:id",
          to: "teacher_mypage#destroy_question",
          as: :teacher_mypage_question
+
+         delete "teacher_questions/:id",
+       to: "teacher_questions#destroy",
+       as: :teacher_question
 end
