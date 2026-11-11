@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
 
+  enum role: { student: 0, teacher: 1 }
+
   has_many :questions, dependent: :nullify
   has_many :answers, dependent: :nullify
   has_many :bookmarks, dependent: :destroy

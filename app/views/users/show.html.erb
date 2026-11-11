@@ -1,6 +1,26 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @user %>
+<div>
+  <p>
+    <strong>ID:</strong>
+    <%= @user.mail %>
+  </p>
+
+  <p>
+    <strong>Name:</strong>
+    <%= @user.name %>
+  </p>
+
+  <p>
+    <strong>Role:</strong>
+    <%= @user.teacher? ? "教師" : "生徒" %>
+  </p>
+
+  <p>
+    <strong>Password:</strong>
+    ••••••••
+  </p>
+</div>
 
 <div>
   <%= link_to "Edit this user", edit_user_path(@user) %> |
