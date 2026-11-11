@@ -36,20 +36,69 @@
     </div>
   </div>
 
-  <!-- 検索欄 -->
-  <div class="questions-search">
-    <%= form_with url: classroom_questions_path, method: :get, local: true do %>
-      <%= hidden_field_tag :grade, @grade %>
-      <%= hidden_field_tag :classroom, @classroom %>
-      <%= hidden_field_tag :subject, @subject_number %>
+  <!-- 検索欄・並び替え -->
+<div class="questions-search">
 
-      <%= text_field_tag :q, params[:q],
-          placeholder: "質問を検索",
-          class: "questions-search-input" %>
+  <details class="questions-sort">
+    <summary>並び替え</summary>
 
-      <%= submit_tag "検索", class: "questions-search-button" %>
-    <% end %>
-  </div>
+    <div class="questions-sort-menu">
+      <%= link_to "新しい順",
+          classroom_questions_path(
+            grade: @grade,
+            classroom: @classroom,
+            subject: @subject_number,
+            q: params[:q],
+            sort: "newest"
+          ) %>
+
+      <%= link_to "古い順",
+          classroom_questions_path(
+            grade: @grade,
+            classroom: @classroom,
+            subject: @subject_number,
+            q: params[:q],
+            sort: "oldest"
+          ) %>
+
+      <%= link_to "未回答",
+          classroom_questions_path(
+            grade: @grade,
+            classroom: @classroom,
+            subject: @subject_number,
+            q: params[:q],
+            sort: "unanswered"
+          ) %>
+
+      <%= link_to "回答済み",
+          classroom_questions_path(
+            grade: @grade,
+            classroom: @classroom,
+            subject: @subject_number,
+            q: params[:q],
+            sort: "answered"
+          ) %>
+    </div>
+  </details>
+
+  <%= form_with url: classroom_questions_path,
+                method: :get,
+                local: true do %>
+
+    <%= hidden_field_tag :grade, @grade %>
+    <%= hidden_field_tag :classroom, @classroom %>
+    <%= hidden_field_tag :subject, @subject_number %>
+    <%= hidden_field_tag :sort, params[:sort] %>
+
+    <%= text_field_tag :q, params[:q],
+        placeholder: "質問を検索",
+        class: "questions-search-input" %>
+
+    <%= submit_tag "検索",
+        class: "questions-search-button" %>
+  <% end %>
+
+</div>
 
   <!-- 質問一覧 -->
   <table class="questions-table">
@@ -118,29 +167,44 @@
 
   <!-- ページネーション -->
   <div class="questions-pagination">
-    <%= paginate @questions,
-        params: {
-          grade: @grade,
-          classroom: @classroom,
-          subject: @subject_number,
-          q: params[:q]
-        } %>
-  </div>
+  <%= paginate @questions,
+      params: {
+        grade: @grade,
+        classroom: @classroom,
+        subject: @subject_number,
+        q: params[:q],
+        sort: params[:sort]
+      } %>
+</div>
 
-  <!-- 質問一覧に戻る -->
-  <div class="classroom-back">
-    <%= link_to "質問一覧に戻る", questions_path %>
-  </div>
-
-  <!-- 質問追加ボタン -->
-  <div class="questions-add">
-    <%= link_to "+",
-        new_question_path(
+  <div class="questions-back">
+  <% if params.key?(:q) %>
+    <!-- 検索後の画面 -->
+    <%= link_to "質問一覧に戻る",
+        classroom_questions_path(
           grade: @grade,
           classroom: @classroom,
           subject: @subject_number
         ),
-        aria: { label: "質問を追加" } %>
+        class: "questions-back-link" %>
+  <% else %>
+    <!-- 通常の質問一覧画面 -->
+    <%= link_to "クラス選択に戻る",
+        questions_path,
+        class: "questions-back-link",
+        data: { turbo: false } %>
+  <% end %>
+</div>
+
+  <!-- 質問追加ボタン -->
+  <div class="questions-add">
+  <%= link_to "質問追加",
+      new_question_path(
+        grade: @grade,
+        classroom: @classroom,
+        subject: @subject_number
+      ),
+      aria: { label: "質問を追加" } %>
   </div>
 
 </div>

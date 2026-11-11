@@ -379,7 +379,7 @@ body.teacher_questions.select {
     display: inline-block;
     min-width: 50px;
     padding: 8px 14px;
-    margin-left: 400px;
+    margin-left: 0 !important;
     border-radius: 20px;
     font-size: 14px;
     font-weight: bold;
@@ -489,3 +489,307 @@ body.teacher_questions.select {
     margin: 0;
   }
 
+ /* 回答状況の文字だけ右に移動 */
+.teacher-answer-heading {
+  display: inline-block;
+  white-space: nowrap;
+  transform: none !important;
+}
+
+/* ページネーション */
+.teacher-questions-pagination .first,
+.teacher-questions-pagination .last {
+  display: none !important;
+}
+
+.teacher-questions-pagination .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 矢印ボタン */
+.teacher-questions-pagination .prev a,
+.teacher-questions-pagination .next a {
+  font-size: 25px;
+  text-decoration: none;
+  color: #3485e8;
+  border: none;
+  background: transparent;
+  padding: 8px;
+}
+
+/* ページ番号 */
+.teacher-questions-pagination .page a,
+.teacher-questions-pagination .page.active span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  border: 1px solid #cbdcf5;
+  text-decoration: none;
+  background: white;
+  color: #3485e8;
+}
+
+.teacher-questions-pagination .page.active span {
+  background: #4285ee;
+  color: white;
+  border-color: #4285ee;
+}
+
+/* First・Lastの空白も含めて非表示 */
+.teacher-questions-pagination .first,
+.teacher-questions-pagination .last {
+  display: none !important;
+}
+
+/* 前へ・次への白い四角をなくす */
+.teacher-questions-pagination .prev a,
+.teacher-questions-pagination .next a {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 8px !important;
+  color: #3485e8 !important;
+  font-size: 25px !important;
+}
+
+/* 前へ・次へのボタンの外枠もなくす */
+.teacher-questions-pagination .prev,
+.teacher-questions-pagination .next {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ページ番号のデザインは維持 */
+.teacher-questions-pagination .page a,
+.teacher-questions-pagination .page.active span {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+}
+
+/* 教師側：ページ番号の四角の大きさを統一 */
+.teacher-questions-pagination .page a,
+.teacher-questions-pagination .page span {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  box-sizing: border-box !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 9px !important;
+  line-height: 1 !important;
+}
+
+/* 通常のページ番号 */
+.teacher-questions-pagination .page a {
+  background: white !important;
+  border: 1px solid #cbdcf5 !important;
+  color: #3485e8 !important;
+}
+
+/* 選択中のページ番号 */
+.teacher-questions-pagination .page.active span {
+  background: #4285ee !important;
+  border: 1px solid #4285ee !important;
+  color: white !important;
+}
+
+/* 4列の幅を統一 */
+body.teacher_questions.index .teacher-questions-table th:nth-child(1),
+body.teacher_questions.index .teacher-questions-table td:nth-child(1) {
+  width: 18% !important;
+}
+
+body.teacher_questions.index .teacher-questions-table th:nth-child(2),
+body.teacher_questions.index .teacher-questions-table td:nth-child(2) {
+  width: 52% !important;
+}
+
+body.teacher_questions.index .teacher-questions-table th:nth-child(3),
+body.teacher_questions.index .teacher-questions-table td:nth-child(3) {
+  width: 15% !important;
+  text-align: center !important;
+}
+
+body.teacher_questions.index .teacher-questions-table th:nth-child(4),
+body.teacher_questions.index .teacher-questions-table td:nth-child(4) {
+  width: 15% !important;
+}
+
+/* 見出しの回答状況も中央に配置 */
+body.teacher_questions.index .teacher-questions-table th:nth-child(3) {
+  text-align: center !important;
+}
+
+/* 縦線は質問の行だけに表示 */
+body.teacher_questions.index .teacher-questions-table tbody td:nth-child(-n+3) {
+  position: relative;
+}
+
+body.teacher_questions.index .teacher-questions-table tbody td:nth-child(-n+3)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 45px;
+  background-color: #aebdce;
+}
+
+/* 見出しには縦線を表示しない */
+body.teacher_questions.index .teacher-questions-table thead th::after {
+  content: none !important;
+}
+
+/* 選択した学年・クラス・教科 */
+body.teacher_questions.index .teacher-selected-class {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  margin: 0 auto 22px;
+}
+
+/* それぞれの表示ボックス */
+body.teacher_questions.index .teacher-selected-class span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 56px;
+  padding: 0 15px;
+
+  background-color: #ffffff;
+  border: 1px solid #d9e6f5;
+  border-radius: 12px;
+
+  box-shadow: 0 3px 8px rgba(50, 90, 130, 0.06);
+
+  color: #263f5c;
+  font-size: 16px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* スマホなど画面が狭い場合 */
+@media (max-width: 600px) {
+  body.teacher_questions.index .teacher-selected-class {
+    gap: 6px;
+  }
+
+  body.teacher_questions.index .teacher-selected-class span {
+    font-size: 14px;
+    padding: 0 5px;
+  }
+}
+
+/* 戻るリンク */
+body.teacher_questions.index .teacher-questions-back {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+body.teacher_questions.index .teacher-back-link {
+  color: #3988df;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+body.teacher_questions.index .teacher-back-link:hover {
+  text-decoration: underline;
+}
+
+/* 並び替えと検索欄 */
+body.teacher_questions.index .teacher-questions-search {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+/* 並び替えボタン */
+body.teacher_questions.index .teacher-questions-sort {
+  position: relative;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+body.teacher_questions.index .teacher-questions-sort summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  background: #ffffff;
+  border: 1px solid #dce5ef;
+  border-radius: 8px;
+  color: #34445a;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  list-style: none;
+}
+
+body.teacher_questions.index .teacher-questions-sort summary::-webkit-details-marker {
+  display: none;
+}
+
+body.teacher_questions.index .teacher-questions-sort summary::after {
+  content: "▼";
+  font-size: 10px;
+}
+
+body.teacher_questions.index .teacher-questions-sort[open] summary::after {
+  content: "▲";
+}
+
+/* 選択肢 */
+body.teacher_questions.index .teacher-questions-sort-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  z-index: 200;
+  min-width: 145px;
+  padding: 5px 0;
+  background: #ffffff;
+  border: 1px solid #dce5ef;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+body.teacher_questions.index .teacher-questions-sort-menu a {
+  display: block;
+  padding: 11px 15px;
+  color: #34445a;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+body.teacher_questions.index .teacher-questions-sort-menu a:hover {
+  background: #edf5ff;
+  color: #3988df;
+}
+
+body.teacher_questions.index .teacher-questions-search form {
+  flex: 1;
+  min-width: 0;
+}
