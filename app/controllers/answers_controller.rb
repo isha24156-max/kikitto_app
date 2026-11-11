@@ -17,7 +17,7 @@ class AnswersController < ApplicationController
       @question = Question.find(params[:question_id])
 
       @answers = Answer.where(question_id: @question.id)
-                       .order(created_at: :desc)
+                        .order(created_at: :desc)
     else
       @question = nil
       @answers = Answer.none
