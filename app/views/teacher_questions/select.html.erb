@@ -1,0 +1,163 @@
+
+<% content_for :title, "教師側クラス選択" %>
+
+<div class="teacher-select-container">
+  <div class="teacher-selection-area">
+    <h1 class="teacher-select-title">クラスを選択してください</h1>
+
+    <div class="teacher-questions-header">
+
+      <!-- 学年 -->
+      <div class="teacher-dropdown">
+        <button type="button" class="teacher-dropdown-label">
+          学年 ▼
+        </button>
+
+        <div class="teacher-dropdown-menu">
+          <% (1..3).each do |n| %>
+            <button type="button"
+                    data-category="grade"
+                    data-value="<%= n %>"
+                    data-label="<%= n %>年">
+              <%= n %>年
+            </button>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- クラス -->
+      <div class="teacher-dropdown">
+        <button type="button" class="teacher-dropdown-label">
+          クラス ▼
+        </button>
+
+        <div class="teacher-dropdown-menu">
+          <% (1..4).each do |n| %>
+            <button type="button"
+                    data-category="classroom"
+                    data-value="<%= n %>"
+                    data-label="<%= n %>組">
+              <%= n %>組
+            </button>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- 教科 -->
+      <div class="teacher-dropdown">
+        <button type="button" class="teacher-dropdown-label">
+          教科 ▼
+        </button>
+
+        <div class="teacher-dropdown-menu">
+          <% (1..40).each do |n| %>
+            <% subject = Subject.find_by(id: n) %>
+            <% subject_name = subject&.subject_name || "教科未登録" %>
+
+            <button type="button"
+                    data-category="subject"
+                    data-value="<%= n %>"
+                    data-label="<%= subject_name %>">
+              <%= subject_name %>
+            </button>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 確認モーダル -->
+<div id="teacher-confirm-modal"
+     class="teacher-confirm-modal"
+     hidden>
+  <div class="teacher-confirm-box">
+    <h2>クラスの確認</h2>
+
+    <p id="teacher-confirm-message"></p>
+
+    <div class="teacher-confirm-buttons">
+      <button type="button" id="teacher-cancel">
+        キャンセル
+      </button>
+
+      <button type="button" id="teacher-ok">
+        OK
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const container = document.querySelector(".teacher-select-container");
+
+  if (!container || container.dataset.initialized === "true") {
+    return;
+  }
+
+  container.dataset.initialized = "true";
+
+  let selectedGrade = null;
+  let selectedClassroom = null;
+  let selectedSubject = null;
+  let selectedSubjectName = null;
+
+  const modal = document.getElementById("teacher-confirm-modal");
+  const message = document.getElementById("teacher-confirm-message");
+  const cancelButton = document.getElementById("teacher-cancel");
+  const okButton = document.getElementById("teacher-ok");
+
+  container.querySelectorAll(".teacher-dropdown-menu button").forEach(function(button) {
+    button.addEventListener("click", function() {
+      const dropdown = button.closest(".teacher-dropdown");
+      const label = dropdown.querySelector(".teacher-dropdown-label");
+
+      const category = button.dataset.category;
+      const value = button.dataset.value;
+      const text = button.dataset.label;
+
+      label.textContent = text + " ▼";
+
+      dropdown.querySelectorAll(".teacher-dropdown-menu button").forEach(function(item) {
+        item.classList.remove("selected");
+      });
+
+      button.classList.add("selected");
+
+      if (category === "grade") selectedGrade = value;
+      if (category === "classroom") selectedClassroom = value;
+
+      if (category === "subject") {
+        selectedSubject = value;
+        selectedSubjectName = text;
+      }
+
+      if (selectedGrade && selectedClassroom && selectedSubject) {
+        message.textContent =
+          "あなたは" + selectedGrade + "年" +
+          selectedClassroom + "組の" +
+          selectedSubjectName + "のクラスに入りますか？";
+
+        modal.hidden = false;
+      }
+    });
+  });
+
+  cancelButton.addEventListener("click", function() {
+    modal.hidden = true;
+  });
+
+  okButton.addEventListener("click", function() {
+    const params = new URLSearchParams({
+      grade: selectedGrade,
+      classroom: selectedClassroom,
+      subject: selectedSubject
+    });
+
+    window.location.href =
+      "/teacher_questions?" + params.toString();
+  });
+})();
+</script>
