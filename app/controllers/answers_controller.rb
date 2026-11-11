@@ -28,19 +28,23 @@ class AnswersController < ApplicationController
   end
 
 
-  def create
-    @answer = Answer.new(answer_params)
+  
+def create
+  @answer = Answer.new(answer_params)
 
-    if @answer.save
-      redirect_to new_answer_path(question_id: @answer.question_id),
-                  notice: "回答を投稿しました",
-                  status: :see_other
-    else
-      redirect_to new_answer_path(question_id: @answer.question_id),
-                  alert: "回答を投稿できませんでした",
-                  status: :see_other
-    end
+  if @answer.save
+    redirect_to new_answer_path(question_id: @answer.question_id),
+                notice: "回答を投稿しました",
+                status: :see_other
+  else
+    Rails.logger.debug "回答保存失敗: #{@answer.errors.full_messages}"
+
+    redirect_to new_answer_path(question_id: @answer.question_id),
+                alert: "回答を投稿できませんでした: #{@answer.errors.full_messages.join(', ')}",
+                status: :see_other
   end
+end
+
 
   def update
     if @answer.update(answer_params)
