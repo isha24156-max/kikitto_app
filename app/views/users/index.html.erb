@@ -1,16 +1,90 @@
-<p style="color: green"><%= notice %></p>
+<h1>ユーザー一覧</h1>
 
-<% content_for :title, "Users" %>
+<p><%= link_to '新規ユーザー登録', new_user_path %></p>
 
-<h1>Users</h1>
+<hr>
 
-<div id="users">
-  <% @users.each do |user| %>
-    <%= render user %>
-    <p>
-      <%= link_to "Show this user", user %>
-    </p>
+<!-- 教師セクション -->
+<section style="margin-bottom: 30px;">
+  <h2>教師一覧 (<%= @teachers.count %>名)</h2>
+  <% if @teachers.any? %>
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+      <thead>
+        <tr style="background-color: #f2f2f2;">
+          <th>ID (メール)</th>
+          <th>氏名</th>
+          <th>パスワード</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @teachers.each do |teacher| %>
+          <tr>
+            <td><%= teacher.mail %></td>
+            <td><%= teacher.name %></td>
+            <td>••••••••</td>
+            <td><%= link_to '詳細', teacher %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>登録されている教師はいません。</p>
   <% end %>
-</div>
+</section>
 
-<%= link_to "New user", new_user_path %>
+<!-- 生徒セクション -->
+<section style="margin-bottom: 30px;">
+  <h2>生徒一覧 (<%= @students.count %>名)</h2>
+  <% if @students.any? %>
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+      <thead>
+        <tr style="background-color: #f2f2f2;">
+          <th>ID (メール)</th>
+          <th>氏名</th>
+          <th>パスワード</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @students.each do |student| %>
+          <tr>
+            <td><%= student.mail %></td>
+            <td><%= student.name %></td>
+            <td>••••••••</td>
+            <td><%= link_to '詳細', student %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>登録されている生徒はいません。</p>
+  <% end %>
+</section>
+
+<!-- 未設定・その他（必要な場合） -->
+<% if @others.present? && @others.any? %>
+  <section>
+    <h2>その他・未設定 (<%= @others.count %>名)</h2>
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+      <thead>
+        <tr style="background-color: #f2f2f2;">
+          <th>ID (メール)</th>
+          <th>氏名</th>
+          <th>パスワード</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @others.each do |user| %>
+          <tr>
+            <td><%= user.mail %></td>
+            <td><%= user.name %></td>
+            <td>••••••••</td>
+            <td><%= link_to '詳細', user %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+<% end %>

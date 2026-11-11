@@ -1,9 +1,12 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy ]
+  http_basic_authenticate_with name: "hanasaki", password: "hanasaki", only: :index
 
+  before_action :set_user, only: %i[ show edit update destroy ]
   # GET /users or /users.json
   def index
-    @users = User.all
+    @teachers = User.teacher
+    @students = User.student
+    @others   = User.where(role: nil)
   end
 
   # GET /users/1 or /users/1.json
