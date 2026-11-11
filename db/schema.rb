@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_11_06_045554) do
+ActiveRecord::Schema[7.2].define(version: 2026_11_11_023004) do
   create_table "answers", force: :cascade do |t|
     t.text "ans_content"
     t.integer "user_id"
@@ -69,6 +69,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_11_06_045554) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
+    t.integer "role"
   end
 
   add_foreign_key "questions", "grade_course_subjects"

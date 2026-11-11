@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    email = params[:email] # フォームのフィールド名に合わせて変更してください (:mail など)
+    email = params[:email]
     password = params[:password]
 
     # 1. 未入力チェック
@@ -14,12 +14,16 @@ class SessionsController < ApplicationController
     end
 
     # 2. ユーザー検索 & パスワード照合
-    user = User.find_by(mail: email) # DBのカラム名が mail の場合
+    user = User.find_by(mail: email)
     if user && user.authenticate(password)
       session[:user_id] = user.id
-      redirect_to questions_path, notice: "ログインしました"
+
+      # 3. 役割（role）に応じた遷移先の分岐
+      redirect_url = user.teacher? ? teacher_questions_select_path : questions_path
+
+      redirect_to redirect_url, notice: "ログインしました"
     else
-      # 3. 不一致エラー
+      # 4. 不一致エラー
       flash.now[:alert] = "メールアドレスまたはパスワードが正しくありません"
       render :new, status: :unprocessable_entity
     end
