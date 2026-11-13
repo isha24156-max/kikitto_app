@@ -7,3 +7,13 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+# 学年の初期データ
+(1..3).each do |number|
+  Grade.find_or_create_by!(g_number: number)
+end
+
+# クラスの初期データ
+(1..4).each do |number|
+  Course.find_or_create_by!(c_number: number)
+end
