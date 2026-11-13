@@ -2,9 +2,27 @@
 
 <div class="teacher-questions-container">
 
+  <%= link_to teacher_mypage_index_path,
+    class: "mypage-icon-button",
+    aria: { label: "マイページへ" },
+    title: "マイページ" do %>
+  <svg viewBox="0 0 24 24"
+       aria-hidden="true"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="1.8"
+       stroke-linecap="round"
+       stroke-linejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </svg>
+<% end %>
+
   <p class="teacher-questions-notice">
     <%= notice %>
   </p>
+
+  
 
   <!-- 選択した学年・クラス・教科 -->
 <div class="teacher-selected-class">

@@ -1905,3 +1905,19 @@ body.questions.classroom .questions-search {
     flex: 1;
     min-width: 0;
   }
+
+  /* 生徒側ホーム画面：白いマイページボタン */
+body.questions.index .home-container .mypage-icon-button {
+    background-color: #ffffff;
+    border: 1px solid #dce8f5;
+    box-shadow: 0 2px 8px rgba(60, 100, 150, 0.08);
+}
+
+body.questions.index .home-container .mypage-icon-button:hover {
+    background-color: #edf6ff;
+    transform: scale(1.08);
+}
+
+body.questions.index .home-container .mypage-icon-button svg {
+    stroke: #4285ee;
+}

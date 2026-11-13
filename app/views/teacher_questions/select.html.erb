@@ -2,6 +2,22 @@
 <% content_for :title, "教師側クラス選択" %>
 
 <div class="teacher-select-container">
+
+  <%= link_to teacher_mypage_index_path,
+    class: "mypage-icon-button",
+    aria: { label: "マイページへ" },
+    title: "マイページ" do %>
+  <svg viewBox="0 0 24 24"
+       aria-hidden="true"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="1.8"
+       stroke-linecap="round"
+       stroke-linejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </svg>
+<% end %>
   <div class="teacher-selection-area">
     <h1 class="teacher-select-title">クラスを選択してください</h1>
 

@@ -793,3 +793,90 @@ body.teacher_questions.index .teacher-questions-search form {
   flex: 1;
   min-width: 0;
 }
+
+/* 教師側質問一覧：マイページボタン */
+body.teacher_questions.index .mypage-icon-button {
+  position: fixed;
+  top: 18px;
+  right: 30px;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 48px;
+  height: 48px;
+
+  color: #4285ee;
+  background: #ffffff;
+  border: 1px solid #d5e2ee;
+  border-radius: 50%;
+
+  box-shadow: 0 3px 8px rgba(50, 90, 130, 0.12);
+  text-decoration: none;
+
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+body.teacher_questions.index .mypage-icon-button:hover {
+  background: #e8f2fc;
+  transform: translateY(-2px);
+}
+
+body.teacher_questions.index .mypage-icon-button svg {
+  width: 27px;
+  height: 27px;
+}
+
+@media (max-width: 600px) {
+  body.teacher_questions.index .mypage-icon-button {
+      top: 12px;
+      right: 15px;
+      width: 43px;
+      height: 43px;
+  }
+}
+
+/* 教師側：学年・クラス・教科選択画面のマイページボタン */
+body.teacher_questions.select .mypage-icon-button {
+  position: fixed;
+  top: 18px;
+  right: 30px;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 48px;
+  height: 48px;
+
+  color: #4285ee;
+  background: #ffffff;
+  border: 1px solid #d5e2ee;
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(50, 90, 130, 0.12);
+
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+body.teacher_questions.select .mypage-icon-button:hover {
+  background: #e8f2fc;
+  transform: translateY(-2px);
+}
+
+body.teacher_questions.select .mypage-icon-button svg {
+  width: 27px;
+  height: 27px;
+}
+
+@media (max-width: 600px) {
+  body.teacher_questions.select .mypage-icon-button {
+      top: 12px;
+      right: 15px;
+      width: 43px;
+      height: 43px;
+  }
+}
