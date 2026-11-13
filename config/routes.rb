@@ -35,9 +35,9 @@ as: :teacher_questions
 
 
   # 教師側：選択後の質問一覧画面
-  get "/teacher_mypage/classroom_questions",
-      to: "teacher_mypage#classroom_questions",
-      as: :teacher_classroom_questions
+get "/teacher_mypage/classroom_questions",
+to: "teacher_questions#index",
+as: :teacher_classroom_questions
 
   # 各モデルのルート
   resources :questions

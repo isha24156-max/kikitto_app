@@ -11,7 +11,7 @@ class TeacherQuestionsController < ApplicationController
       return
     end
 
-    # 既存の紐付けデータを検索（新規登録はしない）
+    # 既存の紐付けデータを検索
     if @grade_course_subject
       @questions = Question
         .includes(:answers)
@@ -22,29 +22,48 @@ class TeacherQuestionsController < ApplicationController
 
     # 質問検索
     if params[:q].present?
-      keyword = ActiveRecord::Base.sanitize_sql_like(params[:q].strip)
+      keyword = ActiveRecord::Base.sanitize_sql_like(
+        params[:q].strip
+      )
+
       @questions = @questions.where(
         "q_content LIKE ?", "%#{keyword}%"
       )
     end
 
-    @questions = @questions
-      .order(created_at: :desc)
-      .page(params[:page])
-      .per(15)
-  end
+    # 並び替え
+    case params[:sort]
+    when "oldest"
+      @questions = @questions.order(created_at: :asc)
 
+    when "unanswered"
+      @questions = @questions.where.missing(:answers)
+                             .order(created_at: :desc)
+
+    when "answered"
+      @questions = @questions.where.associated(:answers)
+                             .distinct
+                             .order(created_at: :desc)
+
+    else
+      @questions = @questions.order(created_at: :desc)
+    end
+
+    # ページネーション
+    @questions = @questions.page(params[:page]).per(15)
+  end
   # 質問削除
   def destroy
     question = Question.find(params[:id])
     question.destroy!
 
     redirect_to teacher_questions_path(
-      grade: params[:grade],
-      classroom: params[:classroom],
-      subject: params[:subject],
-      q: params[:q]
-    ), notice: "質問を削除しました。"
+  grade: params[:grade],
+  classroom: params[:classroom],
+  subject: params[:subject],
+  q: params[:q],
+  sort: params[:sort]
+), notice: "質問を削除しました。"
 
   rescue ActiveRecord::RecordNotFound
     redirect_to teacher_questions_select_path,
@@ -57,6 +76,9 @@ class TeacherQuestionsController < ApplicationController
     @grade = params[:grade]
     @classroom = params[:classroom]
     @subject_number = params[:subject] || params[:subject_number]
+
+    # 選択した教科を取得
+    @subject = Subject.find_by(id: @subject_number)
 
     grade_record = Grade.find_by(g_number: @grade)
     course_record = Course.find_by(c_number: @classroom)

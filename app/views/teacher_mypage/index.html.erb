@@ -3,7 +3,11 @@
 
     <!-- 上部の青いバー -->
     <header class="teacher-topbar">
-        <%= link_to root_path, class: "teacher-back-button", aria: { label: "質問一覧に戻る" } do %>
+        <%= link_to teacher_classroom_questions_path(
+            grade: params[:grade],
+            classroom: params[:classroom],
+            subject: params[:subject_id] || params[:subject]
+            ), class: "back-button" do %>
         ↩
         <% end %>
 

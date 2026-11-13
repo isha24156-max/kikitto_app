@@ -6,24 +6,76 @@
     <%= notice %>
   </p>
 
-  <!-- 検索欄 -->
-  <div class="teacher-questions-search">
-    <%= form_with url: teacher_questions_path,
-                  method: :get,
-                  local: true do %>
+  <!-- 選択した学年・クラス・教科 -->
+<div class="teacher-selected-class">
+  <span><%= @grade %>年</span>
+  <span><%= @classroom %>組</span>
+  <span><%= @subject&.subject_name || "教科未登録" %></span>
+</div>
 
-      <%= hidden_field_tag :grade, @grade %>
-      <%= hidden_field_tag :classroom, @classroom %>
-      <%= hidden_field_tag :subject, @subject_number %>
+  <!-- 検索欄・並び替え -->
+<div class="teacher-questions-search">
 
-      <%= text_field_tag :q, params[:q],
-          placeholder: "質問を検索",
-          class: "teacher-search-input" %>
+  <details class="teacher-questions-sort">
+    <summary>並び替え</summary>
 
-      <%= submit_tag "検索",
-          class: "teacher-search-button" %>
-    <% end %>
-  </div>
+    <div class="teacher-questions-sort-menu">
+      <%= link_to "新しい順",
+          teacher_questions_path(
+            grade: @grade,
+            classroom: @classroom,
+            subject: @subject_number,
+            q: params[:q],
+            sort: "newest"
+          ) %>
+
+      <%= link_to "古い順",
+          teacher_questions_path(
+            grade: @grade,
+            classroom: @classroom,
+            subject: @subject_number,
+            q: params[:q],
+            sort: "oldest"
+          ) %>
+
+      <%= link_to "未回答",
+          teacher_questions_path(
+            grade: @grade,
+            classroom: @classroom,
+            subject: @subject_number,
+            q: params[:q],
+            sort: "unanswered"
+          ) %>
+
+      <%= link_to "回答済み",
+          teacher_questions_path(
+            grade: @grade,
+            classroom: @classroom,
+            subject: @subject_number,
+            q: params[:q],
+            sort: "answered"
+          ) %>
+    </div>
+  </details>
+
+  <%= form_with url: teacher_questions_path,
+                method: :get,
+                local: true do %>
+
+    <%= hidden_field_tag :grade, @grade %>
+    <%= hidden_field_tag :classroom, @classroom %>
+    <%= hidden_field_tag :subject, @subject_number %>
+    <%= hidden_field_tag :sort, params[:sort] %>
+
+    <%= text_field_tag :q, params[:q],
+        placeholder: "質問を検索",
+        class: "teacher-search-input" %>
+
+    <%= submit_tag "検索",
+        class: "teacher-search-button" %>
+  <% end %>
+
+</div>
 
   <!-- 質問一覧 -->
   <table class="teacher-questions-table">
@@ -31,7 +83,7 @@
       <tr>
   <th>日付</th>
   <th>内容</th>
-  <th>回答状況</th>
+  <th><span class="teacher-answer-heading">回答状況</span></th>
   <th></th>
 </tr>
     </thead>
@@ -96,17 +148,30 @@
 
   <!-- ページネーション -->
   <div class="teacher-questions-pagination">
-    <%= paginate @questions,
-        params: {
-          grade: @grade,
-          classroom: @classroom,
-          subject: @subject_number,
-          q: params[:q]
-        } %>
-  </div>
+  <%= paginate @questions,
+      params: {
+        grade: @grade,
+        classroom: @classroom,
+        subject: @subject_number,
+        q: params[:q],
+        sort: params[:sort]
+      } %>
+</div>
 
   <div class="teacher-questions-back">
-    <%= link_to "クラス選択に戻る", teacher_questions_select_path %>
+  <% if params.key?(:q) %>
+    <!-- 検索後の画面 -->
+    <%= link_to "質問一覧に戻る",
+        teacher_questions_path(
+          grade: @grade,
+          classroom: @classroom,
+          subject: @subject_number
+        ),
+        class: "teacher-back-link" %>
+  <% else %>
+    <!-- 通常の質問一覧画面 -->
+    <%= link_to "クラス選択に戻る",
+        teacher_questions_select_path,
+        class: "teacher-back-link" %>
+  <% end %>
   </div>
-
-</div>
