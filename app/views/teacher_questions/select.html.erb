@@ -2,6 +2,22 @@
 <% content_for :title, "教師側クラス選択" %>
 
 <div class="teacher-select-container">
+
+  <%= link_to teacher_mypage_index_path,
+    class: "mypage-icon-button",
+    aria: { label: "マイページへ" },
+    title: "マイページ" do %>
+  <svg viewBox="0 0 24 24"
+       aria-hidden="true"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="1.8"
+       stroke-linecap="round"
+       stroke-linejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </svg>
+<% end %>
   <div class="teacher-selection-area">
     <h1 class="teacher-select-title">クラスを選択してください</h1>
 
@@ -43,25 +59,23 @@
         </div>
       </div>
 
-      <!-- 教科 -->
+       <!-- 教科 -->
       <div class="teacher-dropdown">
         <button type="button" class="teacher-dropdown-label">
           教科 ▼
         </button>
 
         <div class="teacher-dropdown-menu">
-          <% (1..40).each do |n| %>
-            <% subject = Subject.find_by(id: n) %>
-            <% subject_name = subject&.subject_name || "教科未登録" %>
-
+          <% Subject.all.each do |subject| %>
             <button type="button"
-                    data-category="subject"
-                    data-value="<%= n %>"
-                    data-label="<%= subject_name %>">
-              <%= subject_name %>
-            </button>
+            data-category="subject"
+            data-value="<%= subject.id %>"
+            data-label="<%= subject.subject_name %>">
+              <%= subject.subject_name %>
+              </button>
           <% end %>
         </div>
+
       </div>
 
     </div>

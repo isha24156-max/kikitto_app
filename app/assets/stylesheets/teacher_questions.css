@@ -793,3 +793,188 @@ body.teacher_questions.index .teacher-questions-search form {
   flex: 1;
   min-width: 0;
 }
+
+/* 教師側質問一覧：マイページボタン */
+body.teacher_questions.index .mypage-icon-button {
+  position: fixed;
+  top: 18px;
+  right: 30px;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 48px;
+  height: 48px;
+
+  color: #4285ee;
+  background: #ffffff;
+  border: 1px solid #d5e2ee;
+  border-radius: 50%;
+
+  box-shadow: 0 3px 8px rgba(50, 90, 130, 0.12);
+  text-decoration: none;
+
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+body.teacher_questions.index .mypage-icon-button:hover {
+  background: #e8f2fc;
+  transform: translateY(-2px);
+}
+
+body.teacher_questions.index .mypage-icon-button svg {
+  width: 27px;
+  height: 27px;
+}
+
+@media (max-width: 600px) {
+  body.teacher_questions.index .mypage-icon-button {
+      top: 12px;
+      right: 15px;
+      width: 43px;
+      height: 43px;
+  }
+}
+
+/* 教師側：学年・クラス・教科選択画面のマイページボタン */
+body.teacher_questions.select .mypage-icon-button {
+  position: fixed;
+  top: 18px;
+  right: 30px;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 48px;
+  height: 48px;
+
+  color: #4285ee;
+  background: #ffffff;
+  border: 1px solid #d5e2ee;
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(50, 90, 130, 0.12);
+
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+body.teacher_questions.select .mypage-icon-button:hover {
+  background: #e8f2fc;
+  transform: translateY(-2px);
+}
+
+body.teacher_questions.select .mypage-icon-button svg {
+  width: 27px;
+  height: 27px;
+}
+
+@media (max-width: 600px) {
+  body.teacher_questions.select .mypage-icon-button {
+      top: 12px;
+      right: 15px;
+      width: 43px;
+      height: 43px;
+  }
+}
+
+
+/* 教師側：質問削除確認モーダル */
+body.teacher_questions.index .teacher-delete-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+body.teacher_questions.index .teacher-delete-modal[hidden] {
+  display: none !important;
+}
+
+/* モーダル本体 */
+body.teacher_questions.index .teacher-delete-modal-box {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 450px;
+  padding: 30px 25px;
+
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+
+  text-align: center;
+}
+
+body.teacher_questions.index .teacher-delete-modal-box h2 {
+  margin: 0 0 18px;
+  color: #34445a;
+  font-size: 21px;
+}
+
+body.teacher_questions.index .teacher-delete-modal-box p {
+  margin: 0;
+  color: #52657a;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ボタン */
+body.teacher_questions.index .teacher-delete-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+body.teacher_questions.index .teacher-delete-modal-buttons button {
+  min-width: 110px;
+  padding: 12px 18px;
+
+  border: none;
+  border-radius: 25px;
+
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* キャンセル */
+body.teacher_questions.index #teacher-delete-cancel {
+  color: #34445a;
+  background: #e8eef5;
+}
+
+body.teacher_questions.index #teacher-delete-cancel:hover {
+  background: #d8e2ee;
+}
+
+/* 削除する */
+body.teacher_questions.index #teacher-delete-confirm {
+  color: #ffffff;
+  background: #e76b6b;
+}
+
+body.teacher_questions.index #teacher-delete-confirm:hover {
+  background: #cc4848;
+}
+
+/* スマートフォン */
+@media (max-width: 600px) {
+  body.teacher_questions.index .teacher-delete-modal-box {
+    padding: 25px 18px;
+  }
+
+  body.teacher_questions.index .teacher-delete-modal-buttons {
+    gap: 10px;
+  }
+}
