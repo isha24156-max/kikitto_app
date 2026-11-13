@@ -1,3 +1,4 @@
+
 /* =========================
    ページ全体
 ========================= */
@@ -8,37 +9,47 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* 上から配置する */
-  padding: 0 20px 30px;       /* 上の余白をなくす */
+  justify-content: flex-start;
+  padding: 0 20px 30px;
   box-sizing: border-box;
-  background-color: #ffffff;
+  background-color: #f3f7fc;
+  color: #344966;
 }
+
+/* =========================
+   ヘッダー
+========================= */
 
 .kikitto-header {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+
   width: calc(100% + 40px);
   max-width: 1200px;
   height: 45px;
+
   flex-shrink: 0;
-  margin: 0 -20px 20px; /* 一番上に配置 */
-  background-color: #4c80d4;
-  color: #ffffff;
+  margin: 0 -20px 20px;
+
+  background-color: #f3f7fc;
+  color: #344966;
+
   box-sizing: border-box;
 }
 
 .kikitto-header h1 {
   margin: 0;
   font-size: 18px;
-  font-weight: normal;
+  font-weight: 600;
 }
 
 .back-button {
   position: absolute;
   left: 12px;
-  color: #ffffff;
+
+  color: #3889e8;
   text-decoration: none;
   font-size: 24px;
 }
@@ -49,6 +60,7 @@
 
 .question-area {
   position: relative;
+
   width: 90%;
   max-width: 1000px;
   min-height: 140px;
@@ -56,20 +68,28 @@
   margin: 0 auto 10px;
   padding: 10px;
 
-  border: 1px solid #aaaaaa;
+  border: 1px solid #dce7f5;
+  border-radius: 12px;
+
   background-color: #ffffff;
+
+  box-shadow: 0 2px 8px rgba(50, 90, 140, 0.05);
+
   box-sizing: border-box;
 }
 
 .question-label {
   margin-bottom: 8px;
-  color: #333333;
+
+  color: #526782;
   font-size: 14px;
 }
 
 .question-content {
   min-height: 40px;
   overflow-wrap: anywhere;
+
+  color: #344966;
 }
 
 .question-content p {
@@ -81,7 +101,7 @@
   right: 10px;
   bottom: 8px;
 
-  color: #666666;
+  color: #8495aa;
   font-size: 12px;
 }
 
@@ -92,16 +112,27 @@
 .answer-list-area {
   width: 90%;
   max-width: 1000px;
+
   margin: 0 auto;
+
   box-sizing: border-box;
 }
 
 .answer-table {
   width: 100%;
-  border-collapse: collapse;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
   table-layout: fixed;
 
-  border: 1px solid #aaaaaa;
+  border: 1px solid #dce7f5;
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  background-color: #ffffff;
+
   font-size: 14px;
 }
 
@@ -109,13 +140,15 @@
 
 .answer-table th,
 .answer-table td {
-  border: 1px solid #aaaaaa;
+  border: none;
+  border-bottom: 1px solid #e5edf6;
   padding: 10px;
 
   text-align: left;
   vertical-align: middle;
 
   overflow-wrap: anywhere;
+
   box-sizing: border-box;
 }
 
@@ -123,8 +156,11 @@
 
 .answer-table th {
   height: 35px;
-  background-color: #dddddd;
-  font-weight: normal;
+
+  background-color: #e8f2ff;
+  color: #526d8c;
+
+  font-weight: 600;
 }
 
 /* 日付の列 */
@@ -134,10 +170,18 @@
   width: 90px;
 }
 
+/* 操作列 */
+
+.answer-table .delete-column {
+  width: 90px;
+  text-align: center;
+}
+
 /* 回答内容 */
 
 .answer-table td {
   background-color: #ffffff;
+  color: #526782;
 }
 
 /* simple_formatで生成される段落の余白 */
@@ -150,12 +194,21 @@
   margin-bottom: 0;
 }
 
+/* 最後の行 */
+
+.answer-table tr:last-child td {
+  border-bottom: none;
+}
+
 /* 回答がない場合 */
 
 .empty-message {
-  height: 35px;
+  height: 75px;
+
   text-align: center !important;
-  color: #888888;
+
+  color: #8193aa;
+  background-color: #ffffff;
 }
 
 /* =========================
@@ -177,6 +230,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   gap: 12px;
 }
 
@@ -192,20 +246,23 @@
   height: 25px;
   padding: 0 8px;
 
-  border: 1px solid #aaaaaa;
-  background-color: #eeeeee;
-  color: #333333;
+  border: 1px solid #dce7f5;
+  border-radius: 7px;
+
+  background-color: #ffffff;
+  color: #526782;
 
   font-size: 14px;
   cursor: pointer;
+
   box-sizing: border-box;
 }
 
 /* 選択中のページ */
 
 .page-number.active {
-  background-color: #4c80d4;
-  border-color: #4c80d4;
+  background-color: #3889e8;
+  border-color: #3889e8;
   color: #ffffff;
 }
 
@@ -244,17 +301,17 @@
   border: none;
   border-radius: 50%;
 
-  background-color: #4c80d4;
+  background-color: #3889e8;
   color: #ffffff;
 
   font-size: 28px;
   cursor: pointer;
 
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 8px rgba(50, 90, 140, 0.18);
 }
 
 #open-answer:hover {
-  background-color: #386bc0;
+  background-color: #2674cf;
 }
 
 /* =========================
@@ -272,16 +329,18 @@
   width: 90%;
   max-width: 640px;
   max-height: 85vh;
+
   overflow-y: auto;
 
   margin: 0;
   padding: 25px;
 
-  border: 1px solid #dddddd;
+  border: 1px solid #dce7f5;
   border-radius: 12px;
 
   background-color: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+  box-shadow: 0 4px 15px rgba(50, 90, 140, 0.12);
 
   box-sizing: border-box;
 }
@@ -303,7 +362,7 @@
   display: block;
   margin-bottom: 10px;
 
-  color: #555555;
+  color: #526782;
   font-size: 15px;
 }
 
@@ -316,22 +375,26 @@
   min-height: 180px;
   padding: 12px;
 
-  border: 1px solid #cccccc;
-  border-radius: 6px;
+  border: 1px solid #dce7f5;
+  border-radius: 9px;
 
-  background-color: #f0f0f0;
+  background-color: #f7faff;
+  color: #344966;
 
   font-family: inherit;
   font-size: 15px;
 
   resize: vertical;
+
   box-sizing: border-box;
 }
 
 .answer-textarea:focus {
   outline: none;
-  border-color: #4c80d4;
-  box-shadow: 0 0 5px rgba(76, 128, 212, 0.3);
+
+  border-color: #3889e8;
+
+  box-shadow: 0 0 5px rgba(56, 137, 232, 0.2);
 }
 
 /* フォーム内のボタン配置 */
@@ -350,18 +413,18 @@
 .close-answer-button {
   padding: 10px 20px;
 
-  border: 1px solid #cccccc;
-  border-radius: 6px;
+  border: 1px solid #dce7f5;
+  border-radius: 8px;
 
   background-color: #ffffff;
-  color: #444444;
+  color: #526782;
 
   font-size: 14px;
   cursor: pointer;
 }
 
 .close-answer-button:hover {
-  background-color: #f5f5f5;
+  background-color: #f3f7fc;
 }
 
 /* 回答投稿ボタン */
@@ -370,9 +433,9 @@
   padding: 10px 22px;
 
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
 
-  background-color: #4c80d4;
+  background-color: #3889e8;
   color: #ffffff;
 
   font-size: 14px;
@@ -380,7 +443,36 @@
 }
 
 .submit-answer-button:hover {
-  background-color: #386bc0;
+  background-color: #2674cf;
+}
+
+/* =========================
+   削除ボタン
+========================= */
+
+.delete-answer-button {
+  background-color: #e57373;
+  color: #ffffff;
+
+  border: none;
+  border-radius: 7px;
+
+  padding: 6px 14px;
+
+  cursor: pointer;
+  font-size: 13px;
+
+  transition: 0.2s;
+}
+
+.delete-answer-button:hover {
+  background-color: #d32f2f;
+}
+
+/* 削除ボタンのフォーム */
+
+.answer-table td form {
+  margin: 0;
 }
 
 /* =========================
@@ -431,6 +523,10 @@
     width: 65px;
   }
 
+  .answer-table .delete-column {
+    width: 65px;
+  }
+
   .pagination-area {
     gap: 6px;
     margin-top: 15px;
@@ -451,8 +547,10 @@
   #open-answer {
     right: 20px;
     bottom: 20px;
+
     width: 45px;
     height: 45px;
+
     font-size: 25px;
   }
 
@@ -467,32 +565,4 @@
   .answer-buttons {
     gap: 10px;
   }
-}
-
-/* 削除ボタンの列 */
-.answer-table .delete-column {
-  width: 90px;
-  text-align: center;
-}
-
-/* 削除ボタン */
-.delete-answer-button {
-  background-color: #e57373;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 6px 14px;
-  cursor: pointer;
-  font-size: 13px;
-  transition: 0.2s;
-}
-
-/* マウスを乗せたとき */
-.delete-answer-button:hover {
-  background-color: #d32f2f;
-}
-
-/* 削除ボタンのフォーム */
-.answer-table td form {
-  margin: 0;
 }
