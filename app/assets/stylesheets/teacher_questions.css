@@ -880,3 +880,101 @@ body.teacher_questions.select .mypage-icon-button svg {
       height: 43px;
   }
 }
+
+
+/* 教師側：質問削除確認モーダル */
+body.teacher_questions.index .teacher-delete-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+body.teacher_questions.index .teacher-delete-modal[hidden] {
+  display: none !important;
+}
+
+/* モーダル本体 */
+body.teacher_questions.index .teacher-delete-modal-box {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 450px;
+  padding: 30px 25px;
+
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+
+  text-align: center;
+}
+
+body.teacher_questions.index .teacher-delete-modal-box h2 {
+  margin: 0 0 18px;
+  color: #34445a;
+  font-size: 21px;
+}
+
+body.teacher_questions.index .teacher-delete-modal-box p {
+  margin: 0;
+  color: #52657a;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ボタン */
+body.teacher_questions.index .teacher-delete-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+body.teacher_questions.index .teacher-delete-modal-buttons button {
+  min-width: 110px;
+  padding: 12px 18px;
+
+  border: none;
+  border-radius: 25px;
+
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* キャンセル */
+body.teacher_questions.index #teacher-delete-cancel {
+  color: #34445a;
+  background: #e8eef5;
+}
+
+body.teacher_questions.index #teacher-delete-cancel:hover {
+  background: #d8e2ee;
+}
+
+/* 削除する */
+body.teacher_questions.index #teacher-delete-confirm {
+  color: #ffffff;
+  background: #e76b6b;
+}
+
+body.teacher_questions.index #teacher-delete-confirm:hover {
+  background: #cc4848;
+}
+
+/* スマートフォン */
+@media (max-width: 600px) {
+  body.teacher_questions.index .teacher-delete-modal-box {
+    padding: 25px 18px;
+  }
+
+  body.teacher_questions.index .teacher-delete-modal-buttons {
+    gap: 10px;
+  }
+}
