@@ -4,18 +4,17 @@ class TeacherMypageController < ApplicationController
 
   def index
     @subjects = Subject.order(:subject_name)
-    @selected_subject_id = params[:subject_id]
-  
+
+    # 質問一覧から引き継いだ情報
+    @grade = params[:grade]
+    @classroom = params[:classroom]
+    @subject_number = params[:subject] || params[:subject_number]
+
+    @selected_subject_id = params[:subject_id] || @subject_number
+
     @questions = Question
       .includes(:grade_course_subject, :answers)
       .order(created_at: :desc)
-  
-    if @selected_subject_id.present?
-      @questions = @questions.joins(:grade_course_subject)
-        .where(grade_course_subjects: {
-          subject_id: @selected_subject_id
-        })
-    end
   
     @unanswered_questions = @questions.select do |question|
       question.answers.empty?

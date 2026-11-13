@@ -4,10 +4,10 @@
     <!-- 上部の青いバー -->
     <header class="teacher-topbar">
         <%= link_to teacher_classroom_questions_path(
-            grade: params[:grade],
-            classroom: params[:classroom],
-            subject: params[:subject_id] || params[:subject]
-            ), class: "back-button" do %>
+            grade: @grade,
+            classroom: @classroom,
+            subject: @subject_number
+        ), class: "back-button" do %>
         ↩
         <% end %>
 
@@ -171,21 +171,24 @@
                 <label for="teacher-subject">教科変更</label>
 
                 <%= form_with url: teacher_mypage_index_path,
-                                method: :get,
-                                local: true do %>
+                            method: :get,
+                            local: true do %>
 
-                    <%= select_tag :subject_id,
-                        options_from_collection_for_select(
+                <%= hidden_field_tag :grade, @grade %>
+                <%= hidden_field_tag :classroom, @classroom %>
+
+                <%= select_tag :subject_id,
+                    options_from_collection_for_select(
                         @subjects,
                         :id,
                         :subject_name,
                         @selected_subject_id
-                        ),
-                        {
+                    ),
+                    {
                         id: "teacher-subject",
                         include_blank: "教科を選択",
                         onchange: "this.form.submit()"
-                        } %>
+                    } %>
 
                 <% end %>
             </div>
