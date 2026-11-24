@@ -11,17 +11,55 @@ class AnswersController < ApplicationController
   end
 
   def new
-    @answer = Answer.new
-
-    if params[:question_id].present?
-      @question = Question.find(params[:question_id])
-
-      @answers = Answer.where(question_id: @question.id)
+      @answer = Answer.new
+    
+      if params[:question_id].present?
+        @question = Question.find(params[:question_id])
+    
+        @answers = Answer.where(question_id: @question.id)
                         .order(created_at: :desc)
-    else
-      @question = nil
-      @answers = Answer.none
-    end
+      else
+        @question = nil
+        @answers = Answer.none
+      end
+    
+      # 戻り先を決定
+      @back_path = case params[:from]
+      when "student"
+        classroom_questions_path(
+          grade: params[:grade],
+          classroom: params[:classroom],
+          subject: params[:subject],
+          q: params[:q],
+          sort: params[:sort]
+        )
+      when "teacher"
+        teacher_questions_path(
+          grade: params[:grade],
+          classroom: params[:classroom],
+          subject: params[:subject],
+          q: params[:q],
+          sort: params[:sort],
+          page: params[:page]
+        )
+      when "student_mypage"
+        mypage_index_path(
+          saved_page: params[:saved_page],
+          my_page: params[:my_page],
+          grade: params[:grade],
+          classroom: params[:classroom],
+          subject: params[:subject]
+        )
+      when "unanswered", "history", "all"
+        teacher_mypage_index_path(
+          view: params[:from],
+          grade: params[:grade],
+          classroom: params[:classroom],
+          subject_id: params[:subject_id]
+        )
+      else
+        root_path
+      end
   end
 
   def edit
@@ -31,11 +69,19 @@ class AnswersController < ApplicationController
   
 def create
   @answer = Answer.new(answer_params)
+  @answer.user_id = current_user.id
 
   if @answer.save
-    redirect_to new_answer_path(question_id: @answer.question_id),
-                notice: "回答を投稿しました",
-                status: :see_other
+    redirect_to new_answer_path(
+      question_id: @answer.question_id,
+      from: params[:from],
+      grade: params[:grade],
+      classroom: params[:classroom],
+      subject: params[:subject],
+      subject_id: params[:subject_id]
+    ),
+    notice: "回答を投稿しました",
+    status: :see_other
   else
     Rails.logger.debug "回答保存失敗: #{@answer.errors.full_messages}"
 
@@ -75,7 +121,6 @@ end
   def answer_params
     params.require(:answer).permit(
       :ans_content,
-      :user_id,
       :question_id
     )
   end

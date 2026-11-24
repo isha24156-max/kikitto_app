@@ -120,8 +120,16 @@
 
           <!-- 質問内容をクリックすると回答一覧画面へ移動 -->
           <td>
-            <%= link_to new_answer_path(question_id: question.id),
-              class: "question-content-link" do %>
+            <%= link_to new_answer_path(
+                  question_id: question.id,
+                  from: "student",
+                  grade: @grade,
+                  classroom: @classroom,
+                  subject: @subject_number,
+                  q: params[:q],
+                  sort: params[:sort]
+                ),
+                class: "question-content-link" do %>
               <%= question.q_content %>
             <% end %>
           </td>

@@ -37,7 +37,15 @@
                                 <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
                                 <td>
                                     <%= link_to question.q_content,
-                                        new_answer_path(question_id: question.id) %>
+                                        new_answer_path(
+                                        question_id: question.id,
+                                        from: "student_mypage",
+                                        saved_page: @saved_page,
+                                        my_page: @my_page,
+                                        grade: @grade,
+                                        classroom: @classroom,
+                                        subject: @subject_number
+                                        ) %>
                                 </td>
                                 <td>
                                     <button type="button"
@@ -103,7 +111,15 @@
                                 <td><%= question.created_at.strftime("%Y/%m/%d") %></td>
                                 <td>
                                     <%= link_to question.q_content,
-                                        new_answer_path(question_id: question.id) %>
+                                        new_answer_path(
+                                        question_id: question.id,
+                                        from: "student_mypage",
+                                        saved_page: @saved_page,
+                                        my_page: @my_page,
+                                        grade: @grade,
+                                        classroom: @classroom,
+                                        subject: @subject_number
+                                        ) %>
                                 </td>
                                 <td>
                                     <button type="button"
