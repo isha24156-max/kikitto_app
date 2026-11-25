@@ -3,7 +3,7 @@
 
   <!-- ヘッダー -->
   <header class="kikitto-header">
-  <%= link_to "←", root_path, class: "back-button" %>
+  <%= link_to "←", @back_path, class: "back-button" %>
 
   <h1>Kikitto</h1>
 </header>
@@ -105,8 +105,14 @@
   <div id="answer-form-area" hidden>
 
     <%= form_with model: @answer,
-                  url: answers_path,
-                  local: true do |f| %>
+              url: answers_path(
+                from: params[:from],
+                grade: params[:grade],
+                classroom: params[:classroom],
+                subject: params[:subject],
+                subject_id: params[:subject_id]
+              ),
+              local: true do |f| %>
 
       <%= f.hidden_field :question_id,
           value: @question&.id || params[:question_id] %>

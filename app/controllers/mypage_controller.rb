@@ -4,6 +4,10 @@ class MypageController < ApplicationController
   def index
     @user = current_user
 
+    @grade = params[:grade]
+    @classroom = params[:classroom]
+    @subject_number = params[:subject]
+
     # 保存した質問
     saved_bookmarks = @user.bookmarks
       .includes(question: :grade_course_subject)

@@ -13,8 +13,11 @@ class TeacherMypageController < ApplicationController
     @selected_subject_id = params[:subject_id] || @subject_number
 
     @questions = Question
-      .includes(:grade_course_subject, :answers)
-      .order(created_at: :desc)
+    .includes(:grade_course_subject, :answers)
+    .where(grade_course_subjects: {
+      subject_id: @selected_subject_id
+    })
+    .order(created_at: :desc)
   
     @unanswered_questions = @questions.select do |question|
       question.answers.empty?

@@ -119,7 +119,16 @@
 
           <!-- 質問内容 -->
           <td>
-            <%= link_to new_answer_path(question_id: question.id),
+            <%= link_to new_answer_path(
+                  question_id: question.id,
+                  from: "teacher",
+                  grade: @grade,
+                  classroom: @classroom,
+                  subject: @subject_number,
+                  q: params[:q],
+                  sort: params[:sort],
+                  page: params[:page]
+                ),
                 class: "teacher-question-content-link" do %>
               <%= question.q_content %>
             <% end %>

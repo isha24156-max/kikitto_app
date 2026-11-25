@@ -6,7 +6,7 @@
         <%= link_to teacher_classroom_questions_path(
             grade: @grade,
             classroom: @classroom,
-            subject: @subject_number
+            subject: @selected_subject_id
         ), class: "back-button" do %>
         ↩
         <% end %>
@@ -44,7 +44,10 @@
                                     <%= link_to question.q_content,
                                     new_answer_path(
                                         question_id: question.id,
-                                        from: "unanswered"
+                                        from: "unanswered",
+                                        grade: @grade,
+                                        classroom: @classroom,
+                                        subject_id: @selected_subject_id
                                     ) %>
                                 </td>
                             </tr>
@@ -80,7 +83,10 @@
                                     <%= link_to question.q_content,
                                     new_answer_path(
                                         question_id: question.id,
-                                        from: "history"
+                                        from: "history",
+                                        grade: @grade,
+                                        classroom: @classroom,
+                                        subject_id: @selected_subject_id
                                     ) %>
                                 </td>
                             </tr>
@@ -117,7 +123,10 @@
                                     <%= link_to question.q_content,
                                     new_answer_path(
                                         question_id: question.id,
-                                        from: "all"
+                                        from: "all",
+                                        grade: @grade,
+                                        classroom: @classroom,
+                                        subject_id: @selected_subject_id
                                     ) %>
                                 </td>
 
